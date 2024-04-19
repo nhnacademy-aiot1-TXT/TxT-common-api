@@ -31,6 +31,7 @@ public class NotificationRestController {
     @PostMapping
     public ResponseEntity<Void> addNotification(@RequestBody NotificationRequest notificationRequest) {
         notificationService.createNotification(notificationRequest);
+
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 }
