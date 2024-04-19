@@ -1,11 +1,11 @@
-package kr.co.contxt.commonapi.adaptor;
+package kr.co.contxt.commonapi.adapter;
 
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @FeignClient(name = "weather-api", url = "http://apis.data.go.kr", path = "/1360000/VilageFcstInfoService_2.0/getUltraSrtFcst")
-public interface WeatherAdaptor {
+public interface WeatherAdapter {
     @GetMapping
     String getWeatherInfo(
             @RequestParam("serviceKey") String serviceKey,

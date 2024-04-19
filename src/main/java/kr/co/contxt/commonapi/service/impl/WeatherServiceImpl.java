@@ -2,7 +2,7 @@ package kr.co.contxt.commonapi.service.impl;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import kr.co.contxt.commonapi.adaptor.WeatherAdaptor;
+import kr.co.contxt.commonapi.adapter.WeatherAdapter;
 import kr.co.contxt.commonapi.dto.ApiInfo;
 import kr.co.contxt.commonapi.dto.WeatherResponseDto;
 import kr.co.contxt.commonapi.properties.WeatherApiProperties;
@@ -21,7 +21,7 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class WeatherServiceImpl implements WeatherService {
     private final Map<String, String> skyMap;
-    private final WeatherAdaptor weatherAdaptor;
+    private final WeatherAdapter weatherAdapter;
     private final WeatherApiProperties weatherApiProperties;
 
     @Override
@@ -50,7 +50,7 @@ public class WeatherServiceImpl implements WeatherService {
             dateTime = dateTime.minusMinutes(30);
         }
 
-        String weatherInfo = weatherAdaptor.getWeatherInfo(
+        String weatherInfo = weatherAdapter.getWeatherInfo(
                 weatherApiProperties.getServiceKey(),
                 weatherApiProperties.getPageNo(),
                 weatherApiProperties.getNumOfRows(),

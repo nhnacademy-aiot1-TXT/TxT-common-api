@@ -1,6 +1,6 @@
 package kr.co.contxt.commonapi.service;
 
-import kr.co.contxt.commonapi.adaptor.WeatherAdaptor;
+import kr.co.contxt.commonapi.adapter.WeatherAdapter;
 import kr.co.contxt.commonapi.dto.WeatherResponseDto;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +17,7 @@ class WeatherServiceTest {
     @Autowired
     private WeatherService weatherService;
     @MockBean
-    private WeatherAdaptor weatherAdaptor;
+    private WeatherAdapter weatherAdapter;
 
     @Test
     void getWeather() {
@@ -44,7 +44,7 @@ class WeatherServiceTest {
                 "            \"ny\": 127\n" +
                 "          }\n" +
                 "]}}}}";
-        given(weatherAdaptor.getWeatherInfo(anyString(), anyString(), anyString(), anyString(), anyString(), anyString(), anyString(), anyString())).willReturn(mockWeatherInfo);
+        given(weatherAdapter.getWeatherInfo(anyString(), anyString(), anyString(), anyString(), anyString(), anyString(), anyString(), anyString())).willReturn(mockWeatherInfo);
 
         // 테스트 실행
         WeatherResponseDto result = weatherService.getWeather();
