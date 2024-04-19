@@ -1,7 +1,7 @@
 package kr.co.contxt.commonapi.service.impl;
 
 import kr.co.contxt.commonapi.adaptor.WeatherAdaptor;
-import kr.co.contxt.commonapi.dto.WeatherDto;
+import kr.co.contxt.commonapi.dto.WeatherResponseDto;
 import kr.co.contxt.commonapi.properties.WeatherApiProperties;
 import kr.co.contxt.commonapi.service.WeatherService;
 import lombok.RequiredArgsConstructor;
@@ -21,7 +21,7 @@ public class WeatherServiceImpl implements WeatherService {
     private final WeatherApiProperties weatherApiProperties;
 
     @Override
-    public WeatherDto getWeather() {
+    public WeatherResponseDto getWeather() {
         LocalDateTime dateTime = LocalDateTime.now().minusHours(1);
         String weatherInfo = weatherAdaptor.getWeatherInfo(
                 weatherApiProperties.getServiceKey(),
@@ -41,6 +41,6 @@ public class WeatherServiceImpl implements WeatherService {
         JSONObject temperatureInfo = jsonArray.getJSONObject(0);
         JSONObject skyInfo = jsonArray.getJSONObject(5);
 
-        return new WeatherDto(temperatureInfo.getFloat("fcstValue"), skyMap.get(skyInfo.getString("fcstValue")));
+        return new WeatherResponseDto(temperatureInfo.getFloat("fcstValue"), skyMap.get(skyInfo.getString("fcstValue")));
     }
 }

@@ -1,6 +1,6 @@
 package kr.co.contxt.commonapi.controller;
 
-import kr.co.contxt.commonapi.dto.WeatherDto;
+import kr.co.contxt.commonapi.dto.WeatherResponseDto;
 import kr.co.contxt.commonapi.service.WeatherService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -15,8 +15,8 @@ public class WeatherRestController {
     private final WeatherService weatherService;
 
     @GetMapping
-    public ResponseEntity<WeatherDto> getWeather() {
-        WeatherDto weather = weatherService.getWeather();
+    public ResponseEntity<WeatherResponseDto> getWeather() {
+        WeatherResponseDto weather = weatherService.getWeather();
 
         return ResponseEntity.ok(weather);
     }
