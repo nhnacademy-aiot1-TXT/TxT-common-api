@@ -1,0 +1,17 @@
+### admin권한 notification
+GET localhost:8400/api/common/notification
+X-USER-ID: admin
+
+### user권한 notification
+GET localhost:8400/api/common/notification
+X-USER-ID: test1
+
+### notification 등록
+POST localhost:8400/api/common/notification
+Content-Type: application/json
+
+{
+  "time": "2024-04-19T11:44:30",
+  "roleId": 2,
+  "contents": "user notification add test2"
+}
