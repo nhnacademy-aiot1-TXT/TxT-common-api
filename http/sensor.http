@@ -1,0 +1,21 @@
+### 모든 센서 정보 조회
+GET http://localhost:8400/api/common/sensor
+
+### 단일 센서 조회
+GET http://localhost:8400/api/common/sensor/1
+
+### 센서 정보 저장
+POST http://localhost:8400/api/common/sensor
+Content-Type: application/json
+
+{
+  "sensorName": "test sensor"
+}
+
+### 센서 정보 업데이트
+PUT http://localhost:8400/api/common/sensor/9
+Content-Type: application/json
+
+{
+  "sensorName": "update test sensor"
+}
