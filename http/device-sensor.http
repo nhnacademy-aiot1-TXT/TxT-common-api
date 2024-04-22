@@ -1,0 +1,5 @@
+### 장비별 단일 센서 on/off 조회
+GET http://localhost:8400/api/common/device-sensor/1/1
+
+### 장비별 모든 센서 on/off 조회
+GET http://localhost:8400/api/common/device-sensor/1
