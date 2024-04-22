@@ -1,6 +1,8 @@
 package kr.co.contxt.commonapi.controller;
 
 import kr.co.contxt.commonapi.dto.WeatherResponseDto;
+import kr.co.contxt.commonapi.exception.SkyInfoNotFoundException;
+import kr.co.contxt.commonapi.exception.TemperatureInfoNotFoundException;
 import kr.co.contxt.commonapi.service.WeatherService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,5 +44,29 @@ class WeatherRestControllerTest {
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.temperature", equalTo(temperature.doubleValue())))
                 .andExpect(jsonPath("$.sky", equalTo(sky)));
+    }
+
+    @Test
+    void getWeatherTemperatureInfoNotFoundException() throws Exception {
+        given(weatherService.getWeather())
+                .willThrow(new TemperatureInfoNotFoundException("온도를 가져올 수 없습니다."));
+
+        mockMvc.perform(get("/api/common/weather"))
+                .andDo(print())
+                .andExpect(status().isNotFound())
+                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.message", equalTo("온도를 가져올 수 없습니다.")));
+    }
+
+    @Test
+    void getWeatherSkyInfoNotFoundException() throws Exception {
+        given(weatherService.getWeather())
+                .willThrow(new SkyInfoNotFoundException("날씨를 가져올 수 없습니다."));
+
+        mockMvc.perform(get("/api/common/weather"))
+                .andDo(print())
+                .andExpect(status().isNotFound())
+                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.message", equalTo("날씨를 가져올 수 없습니다.")));
     }
 }

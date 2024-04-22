@@ -1,6 +1,7 @@
 package kr.co.contxt.commonapi.controller;
 
 import kr.co.contxt.commonapi.dto.DeviceSensorResponse;
+import kr.co.contxt.commonapi.exception.DeviceSensorNotFoundException;
 import kr.co.contxt.commonapi.service.DeviceSensorService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -68,5 +69,19 @@ class DeviceSensorRestControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.onValue", equalTo(onValue.doubleValue())))
                 .andExpect(jsonPath("$.offValue", equalTo(offValue.doubleValue())));
+    }
+
+    @Test
+    void getSensorByDeviceAndSensorException() throws Exception {
+        long deviceId = 1L;
+        long sensorId = 1L;
+
+        given(deviceSensorService.getSensorByDeviceAndSensor(anyLong(), anyLong()))
+                .willThrow(new DeviceSensorNotFoundException("장비별 센서 데이터를 찾을 수 없습니다."));
+
+        mockMvc.perform(get("/api/common/device-sensor/" + deviceId + "/" + sensorId))
+                .andDo(print())
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$.message", equalTo("장비별 센서 데이터를 찾을 수 없습니다.")));
     }
 }

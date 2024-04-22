@@ -85,9 +85,11 @@ class DeviceRestControllerTest {
 
     @Test
     void updateDeviceException() {
+        DeviceRequest deviceRequest = new DeviceRequest();
+
         given(deviceService.updateDevice(anyLong(), any())).willThrow(DeviceNotFoundException.class);
 
-        assertThrows(DeviceNotFoundException.class, () -> deviceRestController.updateDevice(1L, new DeviceRequest()));
+        assertThrows(DeviceNotFoundException.class, () -> deviceRestController.updateDevice(1L, deviceRequest));
     }
 
 }
