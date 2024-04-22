@@ -3,6 +3,7 @@ package kr.co.contxt.commonapi.service;
 import kr.co.contxt.commonapi.dto.SensorRequest;
 import kr.co.contxt.commonapi.dto.SensorResponse;
 import kr.co.contxt.commonapi.entity.Sensor;
+import kr.co.contxt.commonapi.exception.SensorNotFoundException;
 import kr.co.contxt.commonapi.repository.SensorRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -71,6 +72,13 @@ class SensorServiceTest {
     }
 
     @Test
+    void getSensorException() {
+        given(sensorRepository.findById(1L)).willThrow(SensorNotFoundException.class);
+
+        assertThrows(SensorNotFoundException.class, () -> sensorService.getSensor(1L));
+    }
+
+    @Test
     void saveSensor() {
         // given
         Long sensorId = 1L;
@@ -117,5 +125,12 @@ class SensorServiceTest {
                 () -> assertEquals(sensorId, updateSensor.getSensorId()),
                 () -> assertEquals(sensorName, updateSensor.getSensorName())
         );
+    }
+
+    @Test
+    void updateSensorException() {
+        given(sensorRepository.findById(1L)).willThrow(SensorNotFoundException.class);
+
+        assertThrows(SensorNotFoundException.class, () -> sensorService.updateSensor(1L, new SensorRequest()));
     }
 }

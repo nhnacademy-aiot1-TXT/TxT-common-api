@@ -32,6 +32,12 @@ public class DeviceServiceImpl implements DeviceService {
                 .toDto();
     }
 
+
+    @Override
+    public DeviceResponse addDevice(DeviceRequest deviceRequest) {
+        return deviceRepository.save(deviceRequest.toEntity()).toDto();
+    }
+
     @Override
     public DeviceResponse updateDevice(Long deviceId, DeviceRequest deviceRequest) {
         Device device = deviceRepository.findById(deviceId)
@@ -41,10 +47,5 @@ public class DeviceServiceImpl implements DeviceService {
         device.setCycle(deviceRequest.getCycle());
 
         return deviceRepository.save(device).toDto();
-    }
-
-    @Override
-    public DeviceResponse addDevice(DeviceRequest deviceRequest) {
-        return deviceRepository.save(deviceRequest.toEntity()).toDto();
     }
 }
