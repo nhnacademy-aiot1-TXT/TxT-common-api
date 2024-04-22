@@ -1,7 +1,6 @@
 package kr.co.contxt.commonapi.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import kr.co.contxt.commonapi.dto.SensorRequest;
 import kr.co.contxt.commonapi.dto.SensorResponse;
 import kr.co.contxt.commonapi.entity.Sensor;
 import kr.co.contxt.commonapi.exception.SensorNotFoundException;
@@ -17,7 +16,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import java.util.List;
 
 import static org.hamcrest.Matchers.equalTo;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.given;
@@ -78,10 +76,17 @@ class SensorRestControllerTest {
     }
 
     @Test
-    void getSensorException() {
-        given(sensorService.getSensor(anyLong())).willThrow(SensorNotFoundException.class);
+    void getSensorException() throws Exception {
+        long sensorId = 1L;
 
-        assertThrows(SensorNotFoundException.class, () -> sensorService.getSensor(1L));
+        given(sensorService.getSensor(anyLong()))
+                .willThrow(new SensorNotFoundException("Sensor를 찾을 수 없습니다."));
+
+        mockMvc.perform(get("/api/common/sensor/" + sensorId))
+                .andDo(print())
+                .andExpect(status().isNotFound())
+                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.message", equalTo("Sensor를 찾을 수 없습니다.")));
     }
 
     @Test
@@ -135,10 +140,25 @@ class SensorRestControllerTest {
     }
 
     @Test
-    void updateSensorException() {
-        given(sensorService.updateSensor(anyLong(), any())).willThrow(SensorNotFoundException.class);
+    void updateSensorException() throws Exception {
+        Long sensorId = 1L;
+        String sensorName = "test sensor";
+        Sensor sensor = Sensor.builder()
+                .sensorId(sensorId)
+                .sensorName(sensorName)
+                .build();
 
-        assertThrows(SensorNotFoundException.class, () -> sensorService.updateSensor(1L, new SensorRequest()));
+        given(sensorService.updateSensor(anyLong(), any()))
+                .willThrow(new SensorNotFoundException("Sensor를 찾을 수 없습니다."));
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        mockMvc.perform(put("/api/common/sensor/" + sensorId)
+                        .content(objectMapper.writeValueAsString(sensor))
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isNotFound())
+                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.message", equalTo("Sensor를 찾을 수 없습니다.")));
     }
 
 }
