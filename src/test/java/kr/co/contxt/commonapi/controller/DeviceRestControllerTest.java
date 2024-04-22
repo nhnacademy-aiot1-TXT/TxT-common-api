@@ -58,7 +58,7 @@ class DeviceRestControllerTest {
 
         ResponseEntity<DeviceResponse> responseEntity = deviceRestController.addDevice(new DeviceRequest());
 
-        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+        assertEquals(HttpStatus.CREATED, responseEntity.getStatusCode());
         assertEquals(device, responseEntity.getBody());
     }
 
@@ -70,7 +70,7 @@ class DeviceRestControllerTest {
 
         ResponseEntity<DeviceResponse> responseEntity = deviceRestController.updateDevice(1L, new DeviceRequest());
 
-        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+        assertEquals(HttpStatus.CREATED, responseEntity.getStatusCode());
         assertEquals(device, responseEntity.getBody());
     }
 }
