@@ -17,10 +17,10 @@ public class DataLoader implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
         sensorList.stream()
-                .filter(s -> !sensorRepository.existsBySensorName(s))
-                .forEach(s -> sensorRepository.save(
+                .filter(sensorName -> !sensorRepository.existsBySensorName(sensorName))
+                .forEach(sensorName -> sensorRepository.save(
                         Sensor.builder()
-                                .sensorName(s)
+                                .sensorName(sensorName)
                                 .build())
                 );
     }
