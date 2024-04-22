@@ -1,6 +1,8 @@
 package kr.co.contxt.commonapi.data;
 
+import kr.co.contxt.commonapi.entity.Device;
 import kr.co.contxt.commonapi.entity.Sensor;
+import kr.co.contxt.commonapi.repository.DeviceRepository;
 import kr.co.contxt.commonapi.repository.SensorRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
@@ -11,7 +13,9 @@ import java.util.List;
 @Component
 @RequiredArgsConstructor
 public class DataLoader implements CommandLineRunner {
+    private final List<Device> deviceList;
     private final List<String> sensorList;
+    private final DeviceRepository deviceRepository;
     private final SensorRepository sensorRepository;
 
     @Override
@@ -23,5 +27,8 @@ public class DataLoader implements CommandLineRunner {
                                 .sensorName(sensorName)
                                 .build())
                 );
+        deviceList.stream()
+                .filter(device -> !deviceRepository.existsById(device.getId()))
+                .forEach(deviceRepository::save);
     }
 }
