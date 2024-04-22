@@ -22,5 +22,14 @@ Content-Type: application/json
   "cycle": "00:15:00"
 }
 
-#### device 단일 조회 exception
-#GET http://localhost:8400/api/common/device/0
+### device 단일 조회 exception
+GET http://localhost:8400/api/common/device/0
+
+### device update exception
+PUT http://localhost:8400/api/common/device/0
+Content-Type: application/json
+
+{
+  "deviceName": "change-test",
+  "cycle": "00:15:00"
+}
