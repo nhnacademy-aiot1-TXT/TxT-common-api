@@ -10,7 +10,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -28,27 +27,23 @@ public class DeviceServiceImpl implements DeviceService {
 
     @Override
     public DeviceResponse getDevice(Long deviceId) {
-        Optional<Device> response = deviceRepository.findById(deviceId);
-        return response.orElseThrow(DeviceNotFoundException::new).toDto();
+        return deviceRepository.findById(deviceId)
+                .orElseThrow(DeviceNotFoundException::new)
+                .toDto();
     }
 
     @Override
-    public void updateDevice(Long deviceId, DeviceRequest deviceRequest) {
-        Optional<Device> response = deviceRepository.findById(deviceId);
+    public DeviceResponse updateDevice(Long deviceId, DeviceRequest deviceRequest) {
+        Device device = deviceRepository.findById(deviceId).orElseThrow(DeviceNotFoundException::new);
 
-        if (response.isEmpty()) {
-            throw new DeviceNotFoundException();
-        }
-
-        Device device = response.get();
         device.setName(deviceRequest.getDeviceName());
         device.setCycle(deviceRequest.getCycle());
 
-        deviceRepository.save(device);
+        return deviceRepository.save(device).toDto();
     }
 
     @Override
-    public void addDevice(DeviceRequest deviceRequest) {
-        deviceRepository.save(deviceRequest.toEntity());
+    public DeviceResponse addDevice(DeviceRequest deviceRequest) {
+        return deviceRepository.save(deviceRequest.toEntity()).toDto();
     }
 }

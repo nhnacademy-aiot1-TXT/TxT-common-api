@@ -26,14 +26,12 @@ public class DeviceRestController {
     }
 
     @PostMapping
-    public ResponseEntity<Void> addDevice(@RequestBody DeviceRequest deviceRequest) {
-        deviceService.addDevice(deviceRequest);
-        return ResponseEntity.ok().build();
+    public ResponseEntity<DeviceResponse> addDevice(@RequestBody DeviceRequest deviceRequest) {
+        return ResponseEntity.ok(deviceService.addDevice(deviceRequest));
     }
 
     @PutMapping("/{deviceId}")
-    public ResponseEntity<Void> updateDevice(@PathVariable Long deviceId, @RequestBody DeviceRequest deviceRequest) {
-        deviceService.updateDevice(deviceId, deviceRequest);
-        return ResponseEntity.ok().build();
+    public ResponseEntity<DeviceResponse> updateDevice(@PathVariable Long deviceId, @RequestBody DeviceRequest deviceRequest) {
+        return ResponseEntity.ok(deviceService.updateDevice(deviceId, deviceRequest));
     }
 }
