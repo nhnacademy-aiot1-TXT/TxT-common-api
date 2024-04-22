@@ -9,11 +9,11 @@ POST http://localhost:8400/api/common/device
 Content-Type: application/json
 
 {
-  "deviceName": "test-device",
+  "deviceName": "test-device111",
   "cycle": "00:30:00"
 }
 
-### device 전체 조회
+### device 수정
 PUT http://localhost:8400/api/common/device/4
 Content-Type: application/json
 

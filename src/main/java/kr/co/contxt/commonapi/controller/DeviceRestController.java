@@ -4,6 +4,7 @@ import kr.co.contxt.commonapi.dto.DeviceRequest;
 import kr.co.contxt.commonapi.dto.DeviceResponse;
 import kr.co.contxt.commonapi.service.DeviceService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,11 +28,11 @@ public class DeviceRestController {
 
     @PostMapping
     public ResponseEntity<DeviceResponse> addDevice(@RequestBody DeviceRequest deviceRequest) {
-        return ResponseEntity.ok(deviceService.addDevice(deviceRequest));
+        return ResponseEntity.status(HttpStatus.CREATED).body(deviceService.addDevice(deviceRequest));
     }
 
     @PutMapping("/{deviceId}")
     public ResponseEntity<DeviceResponse> updateDevice(@PathVariable Long deviceId, @RequestBody DeviceRequest deviceRequest) {
-        return ResponseEntity.ok(deviceService.updateDevice(deviceId, deviceRequest));
+        return ResponseEntity.status(HttpStatus.CREATED).body(deviceService.updateDevice(deviceId, deviceRequest));
     }
 }
