@@ -28,7 +28,7 @@ public class SensorServiceImpl implements SensorService {
     @Override
     public SensorResponse getSensor(Long sensorId) {
         return sensorRepository.findById(sensorId)
-                .orElseThrow(SensorNotFoundException::new)
+                .orElseThrow(() -> new SensorNotFoundException("Sensor를 찾을 수 없습니다."))
                 .toDto();
     }
 
@@ -40,7 +40,7 @@ public class SensorServiceImpl implements SensorService {
     @Override
     public Sensor updateSensor(Long sensorId, SensorRequest sensorRequest) {
         Sensor sensor = sensorRepository.findById(sensorId)
-                .orElseThrow(SensorNotFoundException::new);
+                .orElseThrow(() -> new SensorNotFoundException("Sensor를 찾을 수 없습니다."));
 
         sensor.setSensorName(sensorRequest.getSensorName());
 

@@ -19,3 +19,14 @@ Content-Type: application/json
 {
   "sensorName": "update test sensor"
 }
+
+### 센서 단일 조회 exception
+GET http://localhost:8400/api/common/sensor/0
+
+### 센서 update exception
+PUT http://localhost:8400/api/common/sensor/0
+Content-Type: application/json
+
+{
+  "sensorName": "update test sensor"
+}

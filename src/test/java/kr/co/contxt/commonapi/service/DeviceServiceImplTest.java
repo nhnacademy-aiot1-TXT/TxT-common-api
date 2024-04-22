@@ -3,6 +3,7 @@ package kr.co.contxt.commonapi.service;
 import kr.co.contxt.commonapi.dto.DeviceRequest;
 import kr.co.contxt.commonapi.dto.DeviceResponse;
 import kr.co.contxt.commonapi.entity.Device;
+import kr.co.contxt.commonapi.exception.DeviceNotFoundException;
 import kr.co.contxt.commonapi.repository.DeviceRepository;
 import kr.co.contxt.commonapi.service.impl.DeviceServiceImpl;
 import org.junit.jupiter.api.Test;
@@ -18,6 +19,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.given;
@@ -58,17 +60,10 @@ class DeviceServiceImplTest {
     }
 
     @Test
-    void updateDevice() {
-        Device device = new Device(1L, "test1", LocalTime.of(0, 10, 0));
+    void getDeviceException() {
+        given(deviceRepository.findById(anyLong())).willThrow(DeviceNotFoundException.class);
 
-        given(deviceRepository.findById(anyLong())).willReturn(Optional.of(device));
-        given(deviceRepository.save(any())).willReturn(device);
-        
-        DeviceResponse result = deviceService.updateDevice(1L, new DeviceRequest());
-
-        assertEquals(device.getId(), result.getDeviceId());
-        assertEquals(device.getName(), result.getDeviceName());
-        assertEquals(device.getCycle(), result.getCycle());
+        assertThrows(DeviceNotFoundException.class, () -> deviceService.getDevice(1L));
     }
 
     @Test
@@ -82,5 +77,26 @@ class DeviceServiceImplTest {
         assertEquals(device.getId(), result.getDeviceId());
         assertEquals(device.getName(), result.getDeviceName());
         assertEquals(device.getCycle(), result.getCycle());
+    }
+
+    @Test
+    void updateDevice() {
+        Device device = new Device(1L, "test1", LocalTime.of(0, 10, 0));
+
+        given(deviceRepository.findById(anyLong())).willReturn(Optional.of(device));
+        given(deviceRepository.save(any())).willReturn(device);
+
+        DeviceResponse result = deviceService.updateDevice(1L, new DeviceRequest());
+
+        assertEquals(device.getId(), result.getDeviceId());
+        assertEquals(device.getName(), result.getDeviceName());
+        assertEquals(device.getCycle(), result.getCycle());
+    }
+
+    @Test
+    void updateDeviceException() {
+        given(deviceRepository.findById(anyLong())).willThrow(DeviceNotFoundException.class);
+
+        assertThrows(DeviceNotFoundException.class, () -> deviceService.updateDevice(1L, new DeviceRequest()));
     }
 }

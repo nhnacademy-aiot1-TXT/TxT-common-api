@@ -1,8 +1,10 @@
 package kr.co.contxt.commonapi.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import kr.co.contxt.commonapi.dto.SensorRequest;
 import kr.co.contxt.commonapi.dto.SensorResponse;
 import kr.co.contxt.commonapi.entity.Sensor;
+import kr.co.contxt.commonapi.exception.SensorNotFoundException;
 import kr.co.contxt.commonapi.service.SensorService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +17,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import java.util.List;
 
 import static org.hamcrest.Matchers.equalTo;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.given;
@@ -75,6 +78,13 @@ class SensorRestControllerTest {
     }
 
     @Test
+    void getSensorException() {
+        given(sensorService.getSensor(anyLong())).willThrow(SensorNotFoundException.class);
+
+        assertThrows(SensorNotFoundException.class, () -> sensorService.getSensor(1L));
+    }
+
+    @Test
     void addSensor() throws Exception {
         // given
         Long sensorId = 1L;
@@ -123,4 +133,12 @@ class SensorRestControllerTest {
                 .andExpect(jsonPath("$.sensorId", equalTo(sensorId.intValue())))
                 .andExpect(jsonPath("$.sensorName", equalTo(sensorName)));
     }
+
+    @Test
+    void updateSensorException() {
+        given(sensorService.updateSensor(anyLong(), any())).willThrow(SensorNotFoundException.class);
+
+        assertThrows(SensorNotFoundException.class, () -> sensorService.updateSensor(1L, new SensorRequest()));
+    }
+
 }

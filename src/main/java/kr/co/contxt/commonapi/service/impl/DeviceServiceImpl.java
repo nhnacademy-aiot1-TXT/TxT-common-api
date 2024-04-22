@@ -28,22 +28,24 @@ public class DeviceServiceImpl implements DeviceService {
     @Override
     public DeviceResponse getDevice(Long deviceId) {
         return deviceRepository.findById(deviceId)
-                .orElseThrow(DeviceNotFoundException::new)
+                .orElseThrow(() -> new DeviceNotFoundException("Device를 찾을 수 없습니다."))
                 .toDto();
+    }
+
+
+    @Override
+    public DeviceResponse addDevice(DeviceRequest deviceRequest) {
+        return deviceRepository.save(deviceRequest.toEntity()).toDto();
     }
 
     @Override
     public DeviceResponse updateDevice(Long deviceId, DeviceRequest deviceRequest) {
-        Device device = deviceRepository.findById(deviceId).orElseThrow(DeviceNotFoundException::new);
+        Device device = deviceRepository.findById(deviceId)
+                .orElseThrow(() -> new DeviceNotFoundException("Device를 찾을 수 없습니다."));
 
         device.setName(deviceRequest.getDeviceName());
         device.setCycle(deviceRequest.getCycle());
 
         return deviceRepository.save(device).toDto();
-    }
-
-    @Override
-    public DeviceResponse addDevice(DeviceRequest deviceRequest) {
-        return deviceRepository.save(deviceRequest.toEntity()).toDto();
     }
 }

@@ -10,7 +10,8 @@ public interface DeviceService {
 
     DeviceResponse getDevice(Long deviceId);
 
+    DeviceResponse addDevice(DeviceRequest deviceRequest);
+
     DeviceResponse updateDevice(Long deviceId, DeviceRequest deviceRequest);
 
-    DeviceResponse addDevice(DeviceRequest deviceRequest);
 }

@@ -2,6 +2,7 @@ package kr.co.contxt.commonapi.controller;
 
 import kr.co.contxt.commonapi.dto.DeviceRequest;
 import kr.co.contxt.commonapi.dto.DeviceResponse;
+import kr.co.contxt.commonapi.exception.DeviceNotFoundException;
 import kr.co.contxt.commonapi.service.DeviceService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -15,6 +16,7 @@ import java.time.LocalTime;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.given;
@@ -51,6 +53,13 @@ class DeviceRestControllerTest {
     }
 
     @Test
+    void getDeviceException() {
+        given(deviceService.getDevice(anyLong())).willThrow(DeviceNotFoundException.class);
+
+        assertThrows(DeviceNotFoundException.class, () -> deviceRestController.getDevice(1L));
+    }
+
+    @Test
     void addDevice() {
         DeviceResponse device = new DeviceResponse(1L, "test", LocalTime.of(0, 30, 0));
 
@@ -73,4 +82,12 @@ class DeviceRestControllerTest {
         assertEquals(HttpStatus.CREATED, responseEntity.getStatusCode());
         assertEquals(device, responseEntity.getBody());
     }
+
+    @Test
+    void updateDeviceException() {
+        given(deviceService.updateDevice(anyLong(), any())).willThrow(DeviceNotFoundException.class);
+
+        assertThrows(DeviceNotFoundException.class, () -> deviceRestController.updateDevice(1L, new DeviceRequest()));
+    }
+
 }
