@@ -28,11 +28,13 @@ public class DeviceRestController {
 
     @PostMapping
     public ResponseEntity<DeviceResponse> addDevice(@RequestBody DeviceRequest deviceRequest) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(deviceService.addDevice(deviceRequest));
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(deviceService.addDevice(deviceRequest));
     }
 
     @PutMapping("/{deviceId}")
     public ResponseEntity<DeviceResponse> updateDevice(@PathVariable Long deviceId, @RequestBody DeviceRequest deviceRequest) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(deviceService.updateDevice(deviceId, deviceRequest));
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(deviceService.updateDevice(deviceId, deviceRequest));
     }
 }
