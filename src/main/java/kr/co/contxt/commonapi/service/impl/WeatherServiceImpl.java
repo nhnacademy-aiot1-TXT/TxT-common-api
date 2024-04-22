@@ -5,6 +5,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import kr.co.contxt.commonapi.adapter.WeatherAdapter;
 import kr.co.contxt.commonapi.dto.ApiInfo;
 import kr.co.contxt.commonapi.dto.WeatherResponseDto;
+import kr.co.contxt.commonapi.exception.SkyInfoNotFoundException;
+import kr.co.contxt.commonapi.exception.TemperatureInfoNotFoundException;
 import kr.co.contxt.commonapi.properties.WeatherApiProperties;
 import kr.co.contxt.commonapi.service.WeatherService;
 import lombok.RequiredArgsConstructor;
@@ -71,11 +73,17 @@ public class WeatherServiceImpl implements WeatherService {
         try {
             apiInfos = objectMapper.readValue(jsonArray.toString(), ApiInfo[].class);
         } catch (JsonProcessingException e) {
-            throw new RuntimeException(e);
+            apiInfos = new ApiInfo[]{};
         }
 
-        ApiInfo temperatureInfo = Arrays.stream(apiInfos).filter(apiInfo -> "T1H".equals(apiInfo.getCategory())).findFirst().orElse(null);
-        ApiInfo skyInfo = Arrays.stream(apiInfos).filter(apiInfo -> "SKY".equals(apiInfo.getCategory())).findFirst().orElse(null);
+        ApiInfo temperatureInfo = Arrays.stream(apiInfos)
+                .filter(apiInfo -> "T1H".equals(apiInfo.getCategory()))
+                .findFirst()
+                .orElseThrow(() -> new TemperatureInfoNotFoundException("온도를 가져올 수 없습니다."));
+        ApiInfo skyInfo = Arrays.stream(apiInfos)
+                .filter(apiInfo -> "SKY".equals(apiInfo.getCategory()))
+                .findFirst()
+                .orElseThrow(() -> new SkyInfoNotFoundException("날씨를 가져올 수 없습니다."));
 
         return new WeatherResponseDto(Float.valueOf(temperatureInfo.getFcstValue()), skyMap.get(skyInfo.getFcstValue()));
     }
