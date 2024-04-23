@@ -7,6 +7,7 @@ import kr.co.contxt.commonapi.repository.DeviceSensorRepository;
 import kr.co.contxt.commonapi.service.DeviceSensorService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -17,6 +18,7 @@ public class DeviceSensorServiceImpl implements DeviceSensorService {
     private final DeviceSensorRepository deviceSensorRepository;
 
     @Override
+    @Transactional(readOnly = true)
     public List<DeviceSensorResponse> getSensorListByDevice(Long deviceId) {
         return deviceSensorRepository.findByDevice_Id(deviceId)
                 .stream()
@@ -25,6 +27,7 @@ public class DeviceSensorServiceImpl implements DeviceSensorService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public DeviceSensorResponse getSensorByDeviceAndSensor(Long deviceId, Long sensorId) {
         return deviceSensorRepository.findByDevice_IdAndSensor_SensorId(deviceId, sensorId)
                 .map(DeviceSensor::toDto)
