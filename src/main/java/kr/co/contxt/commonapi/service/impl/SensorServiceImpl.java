@@ -8,6 +8,7 @@ import kr.co.contxt.commonapi.repository.SensorRepository;
 import kr.co.contxt.commonapi.service.SensorService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -18,6 +19,7 @@ public class SensorServiceImpl implements SensorService {
     private final SensorRepository sensorRepository;
 
     @Override
+    @Transactional(readOnly = true)
     public List<SensorResponse> getAllSensors() {
         return sensorRepository.findAll()
                 .stream()
@@ -26,6 +28,7 @@ public class SensorServiceImpl implements SensorService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public SensorResponse getSensor(Long sensorId) {
         return sensorRepository.findById(sensorId)
                 .orElseThrow(() -> new SensorNotFoundException("Sensor를 찾을 수 없습니다."))
@@ -33,11 +36,13 @@ public class SensorServiceImpl implements SensorService {
     }
 
     @Override
+    @Transactional
     public Sensor saveSensor(Sensor sensor) {
         return sensorRepository.save(sensor);
     }
 
     @Override
+    @Transactional
     public Sensor updateSensor(Long sensorId, SensorRequest sensorRequest) {
         Sensor sensor = sensorRepository.findById(sensorId)
                 .orElseThrow(() -> new SensorNotFoundException("Sensor를 찾을 수 없습니다."));

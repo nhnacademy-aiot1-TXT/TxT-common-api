@@ -8,6 +8,7 @@ import kr.co.contxt.commonapi.repository.DeviceRepository;
 import kr.co.contxt.commonapi.service.DeviceService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -18,6 +19,7 @@ public class DeviceServiceImpl implements DeviceService {
     private final DeviceRepository deviceRepository;
 
     @Override
+    @Transactional(readOnly = true)
     public List<DeviceResponse> getDeviceList() {
         return deviceRepository.findAll()
                 .stream()
@@ -26,6 +28,7 @@ public class DeviceServiceImpl implements DeviceService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public DeviceResponse getDevice(Long deviceId) {
         return deviceRepository.findById(deviceId)
                 .orElseThrow(() -> new DeviceNotFoundException("Device를 찾을 수 없습니다."))
@@ -34,11 +37,13 @@ public class DeviceServiceImpl implements DeviceService {
 
 
     @Override
+    @Transactional
     public DeviceResponse addDevice(DeviceRequest deviceRequest) {
         return deviceRepository.save(deviceRequest.toEntity()).toDto();
     }
 
     @Override
+    @Transactional
     public DeviceResponse updateDevice(Long deviceId, DeviceRequest deviceRequest) {
         Device device = deviceRepository.findById(deviceId)
                 .orElseThrow(() -> new DeviceNotFoundException("Device를 찾을 수 없습니다."));
