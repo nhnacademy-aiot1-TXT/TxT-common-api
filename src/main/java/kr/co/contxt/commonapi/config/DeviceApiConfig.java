@@ -8,8 +8,19 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Device 초기 정보를 생성하는 클래스
+ *
+ * @author jongsikk
+ * @version 1.0.0
+ */
 @Configuration
 public class DeviceApiConfig {
+    /**
+     * Device 리스트를 반환하는 Bean
+     *
+     * @return the list
+     */
     @Bean
     public List<Device> deviceList() {
         List<Device> deviceList = new ArrayList<>();
