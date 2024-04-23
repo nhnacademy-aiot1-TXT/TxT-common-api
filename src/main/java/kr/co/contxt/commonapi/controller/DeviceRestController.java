@@ -12,6 +12,12 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+/**
+ * Device Rest Controller 클래스
+ *
+ * @author jongsikk
+ * @version 1.0.0
+ */
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/common/device")
@@ -19,18 +25,35 @@ import java.util.List;
 public class DeviceRestController {
     private final DeviceService deviceService;
 
+    /**
+     * 장비 정보 리스트 조회 api
+     *
+     * @return the device list
+     */
     @GetMapping
     @Operation(summary = "장비 정보 리스트 조회")
     public ResponseEntity<List<DeviceResponse>> getDeviceList() {
         return ResponseEntity.ok(deviceService.getDeviceList());
     }
 
+    /**
+     * 장비 정보 단일 조회 api
+     *
+     * @param deviceId the device id
+     * @return the device
+     */
     @GetMapping("/{deviceId}")
     @Operation(summary = "장비 정보 단일 조회")
     public ResponseEntity<DeviceResponse> getDevice(@PathVariable Long deviceId) {
         return ResponseEntity.ok(deviceService.getDevice(deviceId));
     }
 
+    /**
+     * 장비 정보 추가 api
+     *
+     * @param deviceRequest the device request
+     * @return the response entity
+     */
     @PostMapping
     @Operation(summary = "장비 정보 추가")
     public ResponseEntity<DeviceResponse> addDevice(@RequestBody DeviceRequest deviceRequest) {
@@ -38,6 +61,13 @@ public class DeviceRestController {
                 .body(deviceService.addDevice(deviceRequest));
     }
 
+    /**
+     * 장비 정보 수정 api
+     *
+     * @param deviceId      the device id
+     * @param deviceRequest the device request
+     * @return the response entity
+     */
     @PutMapping("/{deviceId}")
     @Operation(summary = "장비 정보 수정")
     public ResponseEntity<DeviceResponse> updateDevice(@PathVariable Long deviceId, @RequestBody DeviceRequest deviceRequest) {
