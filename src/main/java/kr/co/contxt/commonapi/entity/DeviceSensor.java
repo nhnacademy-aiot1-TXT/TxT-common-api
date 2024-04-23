@@ -8,6 +8,12 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
+/**
+ * DeviceSensor Entity
+ *
+ * @author parksangwon
+ * @version 1.0.0
+ */
 @Entity
 @Getter
 @Builder
@@ -30,6 +36,11 @@ public class DeviceSensor {
     @JoinColumn(name = "sensor_id")
     private Sensor sensor;
 
+    /**
+     * To dto device sensor response.
+     *
+     * @return the device sensor response
+     */
     public DeviceSensorResponse toDto() {
         return DeviceSensorResponse.builder()
                 .sensorName(sensor.getSensorName())
