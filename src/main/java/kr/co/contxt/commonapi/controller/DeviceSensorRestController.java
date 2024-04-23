@@ -29,7 +29,7 @@ public class DeviceSensorRestController {
     }
 
     @GetMapping("/{deviceId}/{sensorId}")
-    @Operation(summary = "장비별 단일 센서 정보 조회")
+    @Operation(summary = "장비별 센서 정보 단일 조회")
     public ResponseEntity<DeviceSensorResponse> getSensorByDeviceAndSensor(@PathVariable Long deviceId, @PathVariable Long sensorId) {
         DeviceSensorResponse deviceSensor = deviceSensorService.getSensorByDeviceAndSensor(deviceId, sensorId);
 
