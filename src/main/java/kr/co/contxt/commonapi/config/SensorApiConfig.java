@@ -7,8 +7,19 @@ import org.springframework.context.annotation.Configuration;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * sensor 정보 초기 데이터 설정 class
+ *
+ * @author parksangwon
+ * @version 1.0.0
+ */
 @Configuration
 public class SensorApiConfig {
+    /**
+     * 센서 객체가 들어있는 list bean
+     *
+     * @return the sensor list
+     */
     @Bean
     List<Sensor> sensorList() {
         List<Sensor> sensors = new ArrayList<>();
