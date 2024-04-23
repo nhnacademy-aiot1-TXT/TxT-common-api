@@ -2,6 +2,7 @@ package kr.co.contxt.commonapi.service;
 
 import kr.co.contxt.commonapi.dto.DeviceSensorResponse;
 import kr.co.contxt.commonapi.entity.DeviceSensor;
+import kr.co.contxt.commonapi.entity.Sensor;
 import kr.co.contxt.commonapi.exception.DeviceSensorNotFoundException;
 import kr.co.contxt.commonapi.repository.DeviceSensorRepository;
 import org.junit.jupiter.api.Test;
@@ -29,6 +30,7 @@ class DeviceSensorServiceTest {
         Float onValue = 25F;
         Float offValue = 22F;
         DeviceSensor deviceSensor = DeviceSensor.builder()
+                .sensor(Sensor.builder().sensorName("test").build())
                 .onValue(onValue)
                 .offValue(offValue)
                 .build();
@@ -52,6 +54,7 @@ class DeviceSensorServiceTest {
         Float onValue = 25F;
         Float offValue = 22F;
         DeviceSensor deviceSensor = DeviceSensor.builder()
+                .sensor(Sensor.builder().sensorName("test").build())
                 .onValue(onValue)
                 .offValue(offValue)
                 .build();
