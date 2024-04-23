@@ -14,6 +14,12 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+/**
+ * Notification RestController class
+ *
+ * @author jongsikk
+ * @version 1.0.0
+ */
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/common/notification")
@@ -22,6 +28,12 @@ public class NotificationRestController {
     private final UserAdapter userAdapter;
     private final NotificationService notificationService;
 
+    /**
+     * X-USER-ID의 권한에 맞는 알림 정보 리스트를 가져오는 메서드
+     *
+     * @param id userId
+     * @return List<Notification>
+     */
     @GetMapping
     @Operation(summary = "알림 리스트 조회")
     public ResponseEntity<List<NotificationResponse>> getNotifications(@RequestHeader(value = "X-USER-ID") String id) {
@@ -32,6 +44,12 @@ public class NotificationRestController {
         return ResponseEntity.status(HttpStatus.OK).body(notifications);
     }
 
+    /**
+     * 알림을 저장하는 메서드
+     *
+     * @param notificationRequest the notification request
+     * @return the response entity
+     */
     @PostMapping
     @Operation(summary = "알림 추가")
     public ResponseEntity<Void> addNotification(@RequestBody NotificationRequest notificationRequest) {
