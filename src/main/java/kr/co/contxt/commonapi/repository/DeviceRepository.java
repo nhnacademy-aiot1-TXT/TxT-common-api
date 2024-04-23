@@ -3,6 +3,8 @@ package kr.co.contxt.commonapi.repository;
 import kr.co.contxt.commonapi.entity.Device;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.util.Optional;
+
 /**
  * Device Table 접근을 위한 JpaRepository interface
  *
@@ -10,5 +12,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
  * @version 1.0.0
  */
 public interface DeviceRepository extends JpaRepository<Device, Long> {
-
+    Optional<Device> findByName(String deviceName);
 }
