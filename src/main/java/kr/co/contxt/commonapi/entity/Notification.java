@@ -9,6 +9,12 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
+/**
+ * Notification Entity
+ *
+ * @author jongsikk
+ * @version 1.0.0
+ */
 @Entity
 @Getter
 @Builder
@@ -28,6 +34,11 @@ public class Notification {
     @Column
     private LocalDateTime time;
 
+    /**
+     * To dto notification response.
+     *
+     * @return the notification response
+     */
     public NotificationResponse toDto() {
         return NotificationResponse.builder()
                 .roleId(role.getId())
