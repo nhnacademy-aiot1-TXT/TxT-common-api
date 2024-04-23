@@ -19,6 +19,12 @@ import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.Map;
 
+/**
+ * 날씨 온도 정보를 조회하는 서비스 class
+ *
+ * @author parksangwon
+ * @version 1.0.0
+ */
 @Service
 @RequiredArgsConstructor
 public class WeatherServiceImpl implements WeatherService {
@@ -26,6 +32,12 @@ public class WeatherServiceImpl implements WeatherService {
     private final WeatherAdapter weatherAdapter;
     private final WeatherApiProperties weatherApiProperties;
 
+    /**
+     * 기상청 초단기 예보 정보를 받아와서 날씨와 온도 정보를 파싱 후
+     * dto에 담아서 응답하는 메서드
+     *
+     * @return 날씨 온도 정보
+     */
     @Override
     public WeatherResponseDto getWeather() {
         LocalDateTime dateTime = LocalDateTime.now();
