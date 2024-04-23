@@ -5,6 +5,12 @@ import lombok.*;
 
 import javax.persistence.*;
 
+/**
+ * Sensor Entity
+ *
+ * @author parksangwon
+ * @version 1.0.0
+ */
 @Entity
 @Getter
 @Setter
@@ -20,6 +26,11 @@ public class Sensor {
     @Column(name = "sensor_name")
     private String sensorName;
 
+    /**
+     * 센서 entity를 센서 정보 dto로 변환해주는 메서드
+     *
+     * @return 센서 정보 dto
+     */
     public SensorResponse toDto() {
         return SensorResponse.builder()
                 .sensorId(sensorId)
