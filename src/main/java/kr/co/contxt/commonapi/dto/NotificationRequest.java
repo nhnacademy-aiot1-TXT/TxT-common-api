@@ -8,6 +8,12 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
+/**
+ * Notification 저장을 위한 RequestDTO
+ *
+ * @author jongsikk
+ * @version 1.0.0
+ */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -16,6 +22,11 @@ public class NotificationRequest {
     Long roleId;
     String contents;
 
+    /**
+     * To entity notification.
+     *
+     * @return the notification
+     */
     public Notification toEntity() {
         return Notification.builder()
                 .role(new Role(roleId, null))

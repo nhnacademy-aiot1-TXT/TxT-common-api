@@ -7,6 +7,12 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
+/**
+ * Notification 응답을 위한 ResponseDTO
+ *
+ * @author jongsikk
+ * @version 1.0.0
+ */
 @Data
 @Builder
 @NoArgsConstructor
