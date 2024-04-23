@@ -6,6 +6,12 @@ import lombok.*;
 import javax.persistence.*;
 import java.time.LocalTime;
 
+/**
+ * Device Entity
+ *
+ * @author jongsikk
+ * @version 1.0.0
+ */
 @Entity
 @Getter
 @Setter
@@ -23,6 +29,11 @@ public class Device {
     @Column
     LocalTime cycle;
 
+    /**
+     * To dto device response.
+     *
+     * @return the device response
+     */
     public DeviceResponse toDto() {
         return DeviceResponse.builder()
                 .deviceId(id)
