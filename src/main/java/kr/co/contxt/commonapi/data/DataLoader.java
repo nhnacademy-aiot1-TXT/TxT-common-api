@@ -10,6 +10,12 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 
+/**
+ * 데이터 세팅 class
+ *
+ * @author parksangwon
+ * @version 1.0.0
+ */
 @Component
 @RequiredArgsConstructor
 public class DataLoader implements CommandLineRunner {
@@ -19,7 +25,7 @@ public class DataLoader implements CommandLineRunner {
     private final SensorRepository sensorRepository;
 
     @Override
-    public void run(String... args) throws Exception {
+    public void run(String... args) {
         sensorList.stream()
                 .filter(sensor -> !sensorRepository.existsBySensorName(sensor.getSensorName()))
                 .forEach(sensorRepository::save);
