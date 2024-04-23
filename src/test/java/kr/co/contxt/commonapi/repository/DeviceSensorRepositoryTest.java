@@ -66,6 +66,46 @@ class DeviceSensorRepositoryTest {
     }
 
     @Test
+    void findByDevice_Name() {
+        String deviceName = "test device";
+        String sensorName = "test sensor";
+        Float onValue = 25F;
+        Float offValue = 22F;
+
+        Device device = Device.builder()
+                .name(deviceName)
+                .cycle(LocalTime.of(0, 10))
+                .build();
+        Sensor sensor = Sensor.builder()
+                .sensorName(sensorName)
+                .build();
+        DeviceSensor deviceSensor = DeviceSensor.builder()
+                .device(device)
+                .sensor(sensor)
+                .onValue(onValue)
+                .offValue(offValue)
+                .build();
+
+        entityManager.persist(device);
+        entityManager.persist(sensor);
+        entityManager.persist(deviceSensor);
+
+        Long deviceSensorId = deviceSensor.getDeviceSensorId();
+
+        List<DeviceSensor> deviceSensors = deviceSensorRepository.findByDevice_Name(deviceName);
+
+        assertAll(
+                () -> assertNotNull(deviceSensors),
+                () -> assertFalse(deviceSensors.isEmpty()),
+                () -> assertEquals(deviceSensorId, deviceSensors.get(0).getDeviceSensorId()),
+                () -> assertEquals(device, deviceSensors.get(0).getDevice()),
+                () -> assertEquals(sensor, deviceSensors.get(0).getSensor()),
+                () -> assertEquals(onValue, deviceSensors.get(0).getOnValue()),
+                () -> assertEquals(offValue, deviceSensors.get(0).getOffValue())
+        );
+    }
+
+    @Test
     void findByDevice_IdAndSensor_SensorId() {
         String deviceName = "test device";
         String sensorName = "test sensor";
@@ -95,6 +135,46 @@ class DeviceSensorRepositoryTest {
         Long deviceSensorId = deviceSensor.getDeviceSensorId();
 
         Optional<DeviceSensor> deviceSensorOptional = deviceSensorRepository.findByDevice_IdAndSensor_SensorId(deviceId, sensorId);
+        DeviceSensor deviceSensorResult = deviceSensorOptional.orElseThrow(DeviceSensorNotFoundException::new);
+
+        assertAll(
+                () -> assertNotNull(deviceSensorResult),
+                () -> assertEquals(deviceSensorId, deviceSensorResult.getDeviceSensorId()),
+                () -> assertEquals(device, deviceSensorResult.getDevice()),
+                () -> assertEquals(sensor, deviceSensorResult.getSensor()),
+                () -> assertEquals(onValue, deviceSensorResult.getOnValue()),
+                () -> assertEquals(offValue, deviceSensorResult.getOffValue())
+        );
+    }
+
+    @Test
+    void findByDevice_NameAndSensor_SensorName() {
+        String deviceName = "test device";
+        String sensorName = "test sensor";
+        Float onValue = 25F;
+        Float offValue = 22F;
+
+        Device device = Device.builder()
+                .name(deviceName)
+                .cycle(LocalTime.of(0, 10))
+                .build();
+        Sensor sensor = Sensor.builder()
+                .sensorName(sensorName)
+                .build();
+        DeviceSensor deviceSensor = DeviceSensor.builder()
+                .device(device)
+                .sensor(sensor)
+                .onValue(onValue)
+                .offValue(offValue)
+                .build();
+
+        entityManager.persist(device);
+        entityManager.persist(sensor);
+        entityManager.persist(deviceSensor);
+
+        Long deviceSensorId = deviceSensor.getDeviceSensorId();
+
+        Optional<DeviceSensor> deviceSensorOptional = deviceSensorRepository.findByDevice_NameAndSensor_SensorName(deviceName, sensorName);
         DeviceSensor deviceSensorResult = deviceSensorOptional.orElseThrow(DeviceSensorNotFoundException::new);
 
         assertAll(
