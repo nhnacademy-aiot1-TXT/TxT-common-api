@@ -13,6 +13,12 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+/**
+ * 센서 정보 조회 api class
+ *
+ * @author parksangwon
+ * @version 1.0.0
+ */
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/common/sensor")
@@ -20,6 +26,11 @@ import java.util.List;
 public class SensorRestController {
     private final SensorService sensorService;
 
+    /**
+     * 센서 정보 리스트 조회 메서드
+     *
+     * @return 센서 정보 리스트
+     */
     @GetMapping
     @Operation(summary = "센서 정보 리스트 조회")
     public ResponseEntity<List<SensorResponse>> getSensorList() {
@@ -28,6 +39,12 @@ public class SensorRestController {
         return ResponseEntity.ok(sensors);
     }
 
+    /**
+     * 센서 정보 단일 조회 메서드
+     *
+     * @param sensorId 센서 아이디
+     * @return 센서 정보
+     */
     @GetMapping("/{sensorId}")
     @Operation(summary = "센서 정보 단일 조회")
     public ResponseEntity<SensorResponse> getSensor(@PathVariable Long sensorId) {
@@ -36,6 +53,12 @@ public class SensorRestController {
         return ResponseEntity.ok(sensor);
     }
 
+    /**
+     * 센서 정보 추가 메서드
+     *
+     * @param sensorRequest 센서 추가 요청 dto
+     * @return 추가된 센서 정보
+     */
     @PostMapping
     @Operation(summary = "센서 정보 추가")
     public ResponseEntity<SensorResponse> addSensor(@RequestBody SensorRequest sensorRequest) {
@@ -45,6 +68,13 @@ public class SensorRestController {
                 .body(responseSensor.toDto());
     }
 
+    /**
+     * 센서 정보 수정 메서드
+     *
+     * @param sensorId      센서 아이디
+     * @param sensorRequest 센서 수정 요청 dto
+     * @return 수정된 센서 정보
+     */
     @PutMapping("/{sensorId}")
     @Operation(summary = "센서 정보 수정")
     public ResponseEntity<SensorResponse> updateSensor(@PathVariable Long sensorId, @RequestBody SensorRequest sensorRequest) {

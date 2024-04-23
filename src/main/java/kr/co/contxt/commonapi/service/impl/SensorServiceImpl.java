@@ -13,11 +13,22 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * Sensor service 구현 클래스
+ *
+ * @author parksangwon
+ * @version 1.0.0
+ */
 @Service
 @RequiredArgsConstructor
 public class SensorServiceImpl implements SensorService {
     private final SensorRepository sensorRepository;
 
+    /**
+     * 모든 센서 조회 메서드
+     *
+     * @return sensor list
+     */
     @Override
     @Transactional(readOnly = true)
     public List<SensorResponse> getAllSensors() {
@@ -27,6 +38,12 @@ public class SensorServiceImpl implements SensorService {
                 .collect(Collectors.toList());
     }
 
+    /**
+     * 단일 센서 조회 메서드
+     *
+     * @param sensorId 센서 아이디
+     * @return sensor
+     */
     @Override
     @Transactional(readOnly = true)
     public SensorResponse getSensor(Long sensorId) {
@@ -35,12 +52,25 @@ public class SensorServiceImpl implements SensorService {
                 .toDto();
     }
 
+    /**
+     * 센서 저장 메서드
+     *
+     * @param sensor 센서
+     * @return 저장된 센서
+     */
     @Override
     @Transactional
     public Sensor saveSensor(Sensor sensor) {
         return sensorRepository.save(sensor);
     }
 
+    /**
+     * 센서 수정 메서드
+     *
+     * @param sensorId      센서 아이디
+     * @param sensorRequest 센서 수정 요청 dto
+     * @return 수정된 센서
+     */
     @Override
     @Transactional
     public Sensor updateSensor(Long sensorId, SensorRequest sensorRequest) {
