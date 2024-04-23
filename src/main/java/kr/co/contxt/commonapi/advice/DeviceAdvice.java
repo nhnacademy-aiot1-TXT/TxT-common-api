@@ -10,8 +10,20 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import java.time.LocalDateTime;
 
+/**
+ * DeviceRestController Advice 클래스
+ *
+ * @author jongsikk
+ * @version 1.0.0
+ */
 @RestControllerAdvice(basePackageClasses = {DeviceRestController.class})
 public class DeviceAdvice {
+    /**
+     * DeviceNotFoundException Handler 메서드
+     *
+     * @param exception the exception
+     * @return the response entity
+     */
     @ExceptionHandler(value = DeviceNotFoundException.class)
     public ResponseEntity<ApiExceptionDto> deviceNotFoundExceptionHandler(DeviceNotFoundException exception) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND)
