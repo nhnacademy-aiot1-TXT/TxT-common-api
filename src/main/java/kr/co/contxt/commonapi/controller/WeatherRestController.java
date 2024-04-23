@@ -10,6 +10,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+/**
+ * 기상청 초단기 예보 api class
+ *
+ * @author parksangwon
+ * @version 1.0.0
+ */
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/common/weather")
@@ -17,6 +23,11 @@ import org.springframework.web.bind.annotation.RestController;
 public class WeatherRestController {
     private final WeatherService weatherService;
 
+    /**
+     * 날씨 온도 조회 메서드
+     *
+     * @return 날씨 온도 응답
+     */
     @GetMapping
     @Operation(summary = "날씨,온도 조회 API")
     public ResponseEntity<WeatherResponseDto> getWeather() {

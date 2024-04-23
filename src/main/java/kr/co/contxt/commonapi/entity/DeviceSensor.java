@@ -32,6 +32,7 @@ public class DeviceSensor {
 
     public DeviceSensorResponse toDto() {
         return DeviceSensorResponse.builder()
+                .sensorName(sensor.getSensorName())
                 .onValue(onValue)
                 .offValue(offValue)
                 .build();
