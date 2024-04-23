@@ -46,8 +46,22 @@ public class DeviceServiceImpl implements DeviceService {
      */
     @Override
     @Transactional(readOnly = true)
-    public DeviceResponse getDevice(Long deviceId) {
+    public DeviceResponse getDeviceById(Long deviceId) {
         return deviceRepository.findById(deviceId)
+                .orElseThrow(() -> new DeviceNotFoundException("Device를 찾을 수 없습니다."))
+                .toDto();
+    }
+
+    /**
+     * 단일 Device 조회 메서드
+     *
+     * @param deviceName
+     * @return device
+     */
+    @Override
+    @Transactional(readOnly = true)
+    public DeviceResponse getDeviceByName(String deviceName) {
+        return deviceRepository.findByName(deviceName)
                 .orElseThrow(() -> new DeviceNotFoundException("Device를 찾을 수 없습니다."))
                 .toDto();
     }

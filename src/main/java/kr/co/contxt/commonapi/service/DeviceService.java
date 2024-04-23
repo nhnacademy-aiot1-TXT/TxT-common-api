@@ -20,12 +20,20 @@ public interface DeviceService {
     List<DeviceResponse> getDeviceList();
 
     /**
-     * Device 단일 조회 메서드
+     * Device Id로 단일 조회 메서드
      *
      * @param deviceId the device id
      * @return the device
      */
-    DeviceResponse getDevice(Long deviceId);
+    DeviceResponse getDeviceById(Long deviceId);
+
+    /**
+     * Device 이름으로 단일 조회 메서드
+     *
+     * @param deviceName the device name
+     * @return the device
+     */
+    DeviceResponse getDeviceByName(String deviceName);
 
     /**
      * Device 추가 메서드

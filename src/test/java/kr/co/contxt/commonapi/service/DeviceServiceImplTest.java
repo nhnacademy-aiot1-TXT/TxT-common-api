@@ -20,8 +20,7 @@ import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.BDDMockito.given;
 
 @ExtendWith(MockitoExtension.class)
@@ -47,12 +46,12 @@ class DeviceServiceImplTest {
     }
 
     @Test
-    void getDevice() {
+    void getDeviceById() {
         Device device = new Device(1L, "test1", LocalTime.of(0, 10, 0));
 
         given(deviceRepository.findById(anyLong())).willReturn(Optional.of(device));
 
-        DeviceResponse result = deviceService.getDevice(1L);
+        DeviceResponse result = deviceService.getDeviceById(1L);
 
         assertEquals(device.getId(), result.getDeviceId());
         assertEquals(device.getName(), result.getDeviceName());
@@ -60,10 +59,30 @@ class DeviceServiceImplTest {
     }
 
     @Test
-    void getDeviceException() {
+    void getDeviceByName() {
+        Device device = new Device(1L, "test1", LocalTime.of(0, 10, 0));
+
+        given(deviceRepository.findByName(anyString())).willReturn(Optional.of(device));
+
+        DeviceResponse result = deviceService.getDeviceByName("test1");
+
+        assertEquals(device.getId(), result.getDeviceId());
+        assertEquals(device.getName(), result.getDeviceName());
+        assertEquals(device.getCycle(), result.getCycle());
+    }
+
+    @Test
+    void getDeviceByIdException() {
         given(deviceRepository.findById(anyLong())).willThrow(DeviceNotFoundException.class);
 
-        assertThrows(DeviceNotFoundException.class, () -> deviceService.getDevice(1L));
+        assertThrows(DeviceNotFoundException.class, () -> deviceService.getDeviceById(1L));
+    }
+
+    @Test
+    void getDeviceByNameException() {
+        given(deviceRepository.findByName(anyString())).willThrow(DeviceNotFoundException.class);
+
+        assertThrows(DeviceNotFoundException.class, () -> deviceService.getDeviceByName("test"));
     }
 
     @Test

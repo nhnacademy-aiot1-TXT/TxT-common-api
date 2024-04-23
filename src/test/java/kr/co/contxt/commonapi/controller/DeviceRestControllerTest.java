@@ -17,8 +17,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.BDDMockito.given;
 
 @ExtendWith(MockitoExtension.class)
@@ -41,22 +40,41 @@ class DeviceRestControllerTest {
     }
 
     @Test
-    void getDevice() {
+    void getDeviceById() {
         DeviceResponse device = new DeviceResponse(1L, "test", LocalTime.of(0, 30, 0));
 
-        given(deviceService.getDevice(anyLong())).willReturn(device);
+        given(deviceService.getDeviceById(anyLong())).willReturn(device);
 
-        ResponseEntity<DeviceResponse> responseEntity = deviceRestController.getDevice(1L);
+        ResponseEntity<DeviceResponse> responseEntity = deviceRestController.getDeviceById(1L);
 
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
         assertEquals(device, responseEntity.getBody());
     }
 
     @Test
-    void getDeviceException() {
-        given(deviceService.getDevice(anyLong())).willThrow(DeviceNotFoundException.class);
+    void getDeviceByName() {
+        DeviceResponse device = new DeviceResponse(1L, "test", LocalTime.of(0, 30, 0));
 
-        assertThrows(DeviceNotFoundException.class, () -> deviceRestController.getDevice(1L));
+        given(deviceService.getDeviceByName(anyString())).willReturn(device);
+
+        ResponseEntity<DeviceResponse> responseEntity = deviceRestController.getDeviceByName("test");
+
+        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+        assertEquals(device, responseEntity.getBody());
+    }
+
+    @Test
+    void getDeviceByIdException() {
+        given(deviceService.getDeviceById(anyLong())).willThrow(DeviceNotFoundException.class);
+
+        assertThrows(DeviceNotFoundException.class, () -> deviceRestController.getDeviceById(1L));
+    }
+
+    @Test
+    void getDeviceByNameException() {
+        given(deviceService.getDeviceByName(anyString())).willThrow(DeviceNotFoundException.class);
+
+        assertThrows(DeviceNotFoundException.class, () -> deviceRestController.getDeviceByName("airconditioner"));
     }
 
     @Test

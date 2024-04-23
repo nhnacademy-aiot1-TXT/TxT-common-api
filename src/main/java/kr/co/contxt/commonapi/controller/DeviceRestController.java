@@ -30,22 +30,34 @@ public class DeviceRestController {
      *
      * @return the device list
      */
-    @GetMapping
+    @GetMapping("/devices")
     @Operation(summary = "장비 정보 리스트 조회")
     public ResponseEntity<List<DeviceResponse>> getDeviceList() {
         return ResponseEntity.ok(deviceService.getDeviceList());
     }
 
     /**
-     * 장비 정보 단일 조회 api
+     * 장비 정보 ID로 단일 조회 api
      *
      * @param deviceId the device id
      * @return the device
      */
     @GetMapping("/{deviceId}")
-    @Operation(summary = "장비 정보 단일 조회")
-    public ResponseEntity<DeviceResponse> getDevice(@PathVariable Long deviceId) {
-        return ResponseEntity.ok(deviceService.getDevice(deviceId));
+    @Operation(summary = "장비 정보 ID로 단일 조회")
+    public ResponseEntity<DeviceResponse> getDeviceById(@PathVariable Long deviceId) {
+        return ResponseEntity.ok(deviceService.getDeviceById(deviceId));
+    }
+
+    /**
+     * 장비 정보 이름으로 단일 조회 api
+     *
+     * @param name the device id
+     * @return the device
+     */
+    @GetMapping
+    @Operation(summary = "장비 정보 이름으로 단일 조회")
+    public ResponseEntity<DeviceResponse> getDeviceByName(@RequestParam String name) {
+        return ResponseEntity.ok(deviceService.getDeviceByName(name));
     }
 
     /**
