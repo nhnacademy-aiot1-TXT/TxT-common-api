@@ -29,7 +29,7 @@ public class WeatherRestController {
      * @return 날씨 온도 응답
      */
     @GetMapping
-    @Operation(summary = "날씨,온도 조회 API")
+    @Operation(summary = "날씨, 온도 조회 API")
     public ResponseEntity<WeatherResponseDto> getWeather() {
         WeatherResponseDto weather = weatherService.getWeather();
 
