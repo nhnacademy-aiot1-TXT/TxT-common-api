@@ -46,6 +46,7 @@ public class DeviceSensorRestController {
      * @return the deviceSensor list
      */
     @GetMapping("/sensors")
+    @Operation(summary = "장비별 센서 정보 리스트 조회")
     public ResponseEntity<List<DeviceSensorResponse>> getSensorListByDeviceName(@ModelAttribute DeviceNameDto deviceNameDto) {
         List<DeviceSensorResponse> deviceSensors = deviceSensorService.getSensorListByDevice(deviceNameDto);
 
@@ -74,6 +75,7 @@ public class DeviceSensorRestController {
      * @return the deviceSensor
      */
     @GetMapping("/sensor")
+    @Operation(summary = "장비별 센서 정보 단일 조회")
     public ResponseEntity<DeviceSensorResponse> getSensorByDeviceNameAndSensorName(@ModelAttribute DeviceAndSensorNameDto deviceAndSensorNameDto) {
         DeviceSensorResponse deviceSensor = deviceSensorService.getSensorByDeviceAndSensor(deviceAndSensorNameDto);
 
