@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 import java.time.LocalTime;
 
 /**
- * TimeInterval 응답을 위한 ResponseDTO
+ * TimeInterval 응답 DTO 클래스
  *
  * @author parksangwon
  * @version 1.0.0
