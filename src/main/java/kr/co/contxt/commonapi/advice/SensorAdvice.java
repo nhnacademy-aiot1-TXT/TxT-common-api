@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import java.time.LocalDateTime;
 
 /**
- * Sensor 정보 조회 api의 예외처리를 위한 class
+ * Sensor 조회 예외처리 클래스
  *
  * @author parksangwon
  * @version 1.0.0
@@ -19,7 +19,7 @@ import java.time.LocalDateTime;
 @RestControllerAdvice(basePackageClasses = {SensorRestController.class})
 public class SensorAdvice {
     /**
-     * Sensor 정보 조회 중 발생하는 예외를 처리하기 위한 메서드
+     * SensorNotFoundException Handler 메서드
      *
      * @param exception 발생 예외
      * @return api 예외 응답

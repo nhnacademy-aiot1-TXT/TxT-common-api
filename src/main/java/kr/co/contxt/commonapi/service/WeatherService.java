@@ -3,7 +3,7 @@ package kr.co.contxt.commonapi.service;
 import kr.co.contxt.commonapi.dto.WeatherResponseDto;
 
 /**
- * 날씨 온도 서비스 interface
+ * Weather interface
  *
  * @author parksangwon
  * @version 1.0.0

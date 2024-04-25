@@ -11,7 +11,10 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import java.time.LocalDateTime;
 
 /**
- * DeviceSensorRestController Advice 클래스
+ * DeviceSensor 조회 예외처리 클래스
+ *
+ * @author parksangwon
+ * @version 1.0.0
  */
 @RestControllerAdvice(basePackageClasses = {DeviceSensorRestController.class})
 public class DeviceSensorAdvice {

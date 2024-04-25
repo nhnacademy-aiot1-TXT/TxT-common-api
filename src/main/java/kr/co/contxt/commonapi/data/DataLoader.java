@@ -30,7 +30,7 @@ public class DataLoader implements CommandLineRunner {
                 .filter(sensor -> !sensorRepository.existsBySensorName(sensor.getSensorName()))
                 .forEach(sensorRepository::save);
         deviceList.stream()
-                .filter(device -> !deviceRepository.existsById(device.getId()))
+                .filter(device -> !deviceRepository.existsById(device.getDeviceId()))
                 .forEach(deviceRepository::save);
     }
 }

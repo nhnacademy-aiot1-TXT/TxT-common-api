@@ -4,7 +4,7 @@ import lombok.Builder;
 import lombok.Getter;
 
 /**
- * 센서 정보 응답 dto class
+ * Sensor 정보 응답 DTO 클래스
  *
  * @author parksangwon
  * @version 1.0.0

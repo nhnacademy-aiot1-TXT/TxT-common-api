@@ -24,7 +24,7 @@ public class NotificationServiceImpl implements NotificationService {
     private final NotificationRepository notificationRepository;
 
     /**
-     * 모든 알림 조회 메서드
+     * Notification 리스트 조회 메서드
      *
      * @return notification list
      */
@@ -38,7 +38,7 @@ public class NotificationServiceImpl implements NotificationService {
     }
 
     /**
-     * roleId에 맞는 알림 조회 메서드
+     * 권한별 Notification 조회 메서드
      *
      * @param roleId the role id
      * @return roleId에 맞는 notification list
@@ -46,7 +46,7 @@ public class NotificationServiceImpl implements NotificationService {
     @Override
     @Transactional(readOnly = true)
     public List<NotificationResponse> getUserNotifications(Long roleId) {
-        return notificationRepository.findByRole_Id(roleId)
+        return notificationRepository.findByRole_RoleId(roleId)
                 .stream()
                 .map(Notification::toDto)
                 .collect(Collectors.toList());

@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Device 초기 정보를 생성하는 클래스
+ * Device 정보 초기 데이터 설정 클래스
  *
  * @author jongsikk
  * @version 1.0.0

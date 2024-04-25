@@ -57,11 +57,11 @@ class NotificationServiceImplTest {
         notifications.add(new Notification(1L, role, "Notification 2", null));
         notifications.add(new Notification(1L, role, "Notification 3", null));
 
-        given(notificationRepository.findByRole_Id(roleId)).willReturn(notifications);
+        given(notificationRepository.findByRole_RoleId(roleId)).willReturn(notifications);
 
         List<NotificationResponse> result = notificationService.getUserNotifications(roleId);
 
-        verify(notificationRepository).findByRole_Id(roleId);
+        verify(notificationRepository).findByRole_RoleId(roleId);
 
         assertEquals(notifications.size(), result.size());
         assertEquals(notifications.stream().map(Notification::toDto).collect(Collectors.toList()), result);

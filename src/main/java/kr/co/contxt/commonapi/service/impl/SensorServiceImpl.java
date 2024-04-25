@@ -25,7 +25,7 @@ public class SensorServiceImpl implements SensorService {
     private final SensorRepository sensorRepository;
 
     /**
-     * 모든 센서 조회 메서드
+     * Sensor 리스트 조회 메서드
      *
      * @return sensor list
      */
@@ -39,7 +39,7 @@ public class SensorServiceImpl implements SensorService {
     }
 
     /**
-     * 단일 센서 조회 메서드
+     * Sensor 단일 조회 메서드
      *
      * @param sensorId 센서 아이디
      * @return sensor
@@ -53,7 +53,7 @@ public class SensorServiceImpl implements SensorService {
     }
 
     /**
-     * 센서 저장 메서드
+     * Sensor 저장 메서드
      *
      * @param sensor 센서
      * @return 저장된 센서
@@ -65,7 +65,7 @@ public class SensorServiceImpl implements SensorService {
     }
 
     /**
-     * 센서 수정 메서드
+     * Sensor 수정 메서드
      *
      * @param sensorId      센서 아이디
      * @param sensorRequest 센서 수정 요청 dto

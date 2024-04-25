@@ -23,9 +23,9 @@ public class Device {
     @Id
     @Column(name = "device_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long deviceId;
     @Column(name = "device_name")
-    private String name;
+    private String deviceName;
     @Column
     LocalTime cycle;
 
@@ -36,8 +36,8 @@ public class Device {
      */
     public DeviceResponse toDto() {
         return DeviceResponse.builder()
-                .deviceId(id)
-                .deviceName(name)
+                .deviceId(deviceId)
+                .deviceName(deviceName)
                 .cycle(cycle)
                 .build();
     }

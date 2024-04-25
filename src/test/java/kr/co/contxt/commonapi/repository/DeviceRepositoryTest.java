@@ -22,18 +22,18 @@ class DeviceRepositoryTest {
     @Test
     void findByName() {
         Device device = Device.builder()
-                .id(1L)
-                .name("test")
+                .deviceId(1L)
+                .deviceName("test")
                 .cycle(LocalTime.of(0, 10))
                 .build();
 
-        given(deviceRepository.findByName(anyString())).willReturn(Optional.of(device));
+        given(deviceRepository.findByDeviceName(anyString())).willReturn(Optional.of(device));
 
-        Device result = deviceRepository.findByName("test").get();
+        Device result = deviceRepository.findByDeviceName("test").get();
 
         assertAll(() -> {
-            assertEquals(device.getId(), result.getId());
-            assertEquals(device.getName(), result.getName());
+            assertEquals(device.getDeviceId(), result.getDeviceId());
+            assertEquals(device.getDeviceName(), result.getDeviceName());
             assertEquals(device.getCycle(), result.getCycle());
         });
     }

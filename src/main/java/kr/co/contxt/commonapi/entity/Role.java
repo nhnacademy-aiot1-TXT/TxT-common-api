@@ -17,13 +17,13 @@ import javax.persistence.Table;
 public class Role {
     @Id
     @Column(name = "role_id")
-    private Long id;
+    private Long roleId;
     @Column(name = "role_name")
-    private String name;
+    private String roleName;
 
     @Builder
-    public Role(Long id, String name) {
-        this.id = id;
-        this.name = name;
+    public Role(Long roleId, String roleName) {
+        this.roleId = roleId;
+        this.roleName = roleName;
     }
 }

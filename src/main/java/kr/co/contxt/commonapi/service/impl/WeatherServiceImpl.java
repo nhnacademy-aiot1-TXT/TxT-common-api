@@ -20,7 +20,7 @@ import java.util.Arrays;
 import java.util.Map;
 
 /**
- * 날씨 온도 정보를 조회하는 서비스 class
+ * 날씨 온도 정보 조회 service 구현 클래스
  *
  * @author parksangwon
  * @version 1.0.0

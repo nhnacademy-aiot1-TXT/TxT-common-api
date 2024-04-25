@@ -41,7 +41,7 @@ public class Notification {
      */
     public NotificationResponse toDto() {
         return NotificationResponse.builder()
-                .roleId(role.getId())
+                .roleId(role.getRoleId())
                 .time(time)
                 .contents(contents)
                 .build();

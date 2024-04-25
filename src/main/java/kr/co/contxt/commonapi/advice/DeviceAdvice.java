@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import java.time.LocalDateTime;
 
 /**
- * DeviceRestController Advice 클래스
+ * Device 조회 예외처리 클래스
  *
  * @author jongsikk
  * @version 1.0.0

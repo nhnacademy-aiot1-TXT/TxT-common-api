@@ -38,7 +38,7 @@ class DeviceSensorServiceTest {
                 .offValue(offValue)
                 .build();
 
-        given(deviceSensorRepository.findByDevice_Id(anyLong())).willReturn(List.of(deviceSensor));
+        given(deviceSensorRepository.findByDevice_DeviceId(anyLong())).willReturn(List.of(deviceSensor));
 
         List<DeviceSensorResponse> deviceSensors = deviceSensorService.getSensorListByDevice(deviceId);
 
@@ -62,7 +62,7 @@ class DeviceSensorServiceTest {
                 .offValue(offValue)
                 .build();
 
-        given(deviceSensorRepository.findByDevice_Name(anyString())).willReturn(List.of(deviceSensor));
+        given(deviceSensorRepository.findByDevice_DeviceName(anyString())).willReturn(List.of(deviceSensor));
 
         List<DeviceSensorResponse> deviceSensors = deviceSensorService.getSensorListByDevice(deviceNameDto);
 
@@ -86,7 +86,7 @@ class DeviceSensorServiceTest {
                 .offValue(offValue)
                 .build();
 
-        given(deviceSensorRepository.findByDevice_IdAndSensor_SensorId(anyLong(), anyLong()))
+        given(deviceSensorRepository.findByDevice_DeviceIdAndSensor_SensorId(anyLong(), anyLong()))
                 .willReturn(Optional.of(deviceSensor));
 
         DeviceSensorResponse deviceSensorResponse = deviceSensorService.getSensorByDeviceAndSensor(deviceId, sensorId);
@@ -103,7 +103,7 @@ class DeviceSensorServiceTest {
         Long deviceId = 1L;
         Long sensorId = 1L;
 
-        given(deviceSensorRepository.findByDevice_IdAndSensor_SensorId(anyLong(), anyLong()))
+        given(deviceSensorRepository.findByDevice_DeviceIdAndSensor_SensorId(anyLong(), anyLong()))
                 .willReturn(Optional.empty());
 
         Throwable throwable = assertThrows(DeviceSensorNotFoundException.class, () -> deviceSensorService.getSensorByDeviceAndSensor(deviceId, sensorId));
@@ -126,7 +126,7 @@ class DeviceSensorServiceTest {
                 .offValue(offValue)
                 .build();
 
-        given(deviceSensorRepository.findByDevice_NameAndSensor_SensorName(anyString(), anyString()))
+        given(deviceSensorRepository.findByDevice_DeviceNameAndSensor_SensorName(anyString(), anyString()))
                 .willReturn(Optional.of(deviceSensor));
 
         DeviceSensorResponse deviceSensorResponse = deviceSensorService.getSensorByDeviceAndSensor(deviceAndSensorNameDto);
@@ -144,7 +144,7 @@ class DeviceSensorServiceTest {
         String sensorName = "test sensor";
         DeviceAndSensorNameDto deviceAndSensorNameDto = new DeviceAndSensorNameDto(deviceName, sensorName);
 
-        given(deviceSensorRepository.findByDevice_NameAndSensor_SensorName(anyString(), anyString()))
+        given(deviceSensorRepository.findByDevice_DeviceNameAndSensor_SensorName(anyString(), anyString()))
                 .willReturn(Optional.empty());
 
         Throwable throwable = assertThrows(DeviceSensorNotFoundException.class, () -> deviceSensorService.getSensorByDeviceAndSensor(deviceAndSensorNameDto));

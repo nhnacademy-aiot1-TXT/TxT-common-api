@@ -12,5 +12,11 @@ import java.util.Optional;
  * @version 1.0.0
  */
 public interface DeviceRepository extends JpaRepository<Device, Long> {
-    Optional<Device> findByName(String deviceName);
+    /**
+     * device name으로 Device 조회
+     *
+     * @param deviceName device name
+     * @return device
+     */
+    Optional<Device> findByDeviceName(String deviceName);
 }

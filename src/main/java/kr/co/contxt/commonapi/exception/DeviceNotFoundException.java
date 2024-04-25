@@ -1,7 +1,7 @@
 package kr.co.contxt.commonapi.exception;
 
 /**
- * Device 정보가 없을때 발생하는 Exception
+ * Device 정보가 없을 때 발생하는 Exception 클래스
  *
  * @author jongsikk
  * @version 1.0.0
