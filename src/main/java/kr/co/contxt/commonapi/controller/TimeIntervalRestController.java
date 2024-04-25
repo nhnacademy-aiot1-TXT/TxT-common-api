@@ -12,7 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 /**
- * TimeInterval Rest Controller
+ * TimeInterval Rest Controller 클래스
  *
  * @author parksangwon
  * @version 1.0.0
@@ -25,7 +25,7 @@ public class TimeIntervalRestController {
     private final TimeIntervalService timeIntervalService;
 
     /**
-     * 센서 ID로 탐지 시간 조회 api
+     * 탐지 시간 센서 ID로 조회 api
      *
      * @param sensorId the sensor id
      * @return the time interval by sensor
@@ -39,7 +39,7 @@ public class TimeIntervalRestController {
     }
 
     /**
-     * 센서 이름으로 탐지 시간 조회 api
+     * 탐지 시간 센서 이름으로 조회 api
      *
      * @param sensorNameDto the sensor name dto
      * @return the time interval by sensor name
