@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import java.time.LocalDateTime;
 
 /**
- * 날씨 조회 api의 예외처리를 위한 class
+ * Weather 조회 예외처리 클래스
  *
  * @author parksangwon
  * @version 1.0.0
@@ -20,7 +20,7 @@ import java.time.LocalDateTime;
 @RestControllerAdvice(basePackageClasses = WeatherRestController.class)
 public class WeatherAdvice {
     /**
-     * 날씨 데이터와 온도 데이터 조회 중 발생하는 예외를 처리하기 위한 메서드
+     * TemperatureInfoNotFoundException, SkyInfoNotFoundException Handler 메서드
      *
      * @param exception 발생 예외
      * @return api 예외 응답

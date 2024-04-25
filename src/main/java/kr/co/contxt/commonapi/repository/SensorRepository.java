@@ -4,7 +4,7 @@ import kr.co.contxt.commonapi.entity.Sensor;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 /**
- * 센서 테이블 접근을 위한 JpaRepository interface
+ * Sensor Table 접근을 위한 JpaRepository interface
  *
  * @author parksangwon
  * @version 1.0.0

@@ -25,7 +25,7 @@ public class DeviceServiceImpl implements DeviceService {
     private final DeviceRepository deviceRepository;
 
     /**
-     * 모든 Device 조회 메서드
+     * Device 리스트 조회 메서드
      *
      * @return device list
      */
@@ -39,7 +39,7 @@ public class DeviceServiceImpl implements DeviceService {
     }
 
     /**
-     * 단일 Device 조회 메서드
+     * Device 단일 조회 메서드
      *
      * @param deviceId
      * @return device
@@ -53,7 +53,7 @@ public class DeviceServiceImpl implements DeviceService {
     }
 
     /**
-     * 단일 Device 조회 메서드
+     * Device 단일 조회 메서드
      *
      * @param deviceName
      * @return device
@@ -61,7 +61,7 @@ public class DeviceServiceImpl implements DeviceService {
     @Override
     @Transactional(readOnly = true)
     public DeviceResponse getDeviceByName(String deviceName) {
-        return deviceRepository.findByName(deviceName)
+        return deviceRepository.findByDeviceName(deviceName)
                 .orElseThrow(() -> new DeviceNotFoundException("Device를 찾을 수 없습니다."))
                 .toDto();
     }
@@ -91,7 +91,7 @@ public class DeviceServiceImpl implements DeviceService {
         Device device = deviceRepository.findById(deviceId)
                 .orElseThrow(() -> new DeviceNotFoundException("Device를 찾을 수 없습니다."));
 
-        device.setName(deviceRequest.getDeviceName());
+        device.setDeviceName(deviceRequest.getDeviceName());
         device.setCycle(deviceRequest.getCycle());
 
         return deviceRepository.save(device).toDto();

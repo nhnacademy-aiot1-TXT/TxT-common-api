@@ -34,7 +34,7 @@ public class DeviceSensorServiceImpl implements DeviceSensorService {
     @Override
     @Transactional(readOnly = true)
     public List<DeviceSensorResponse> getSensorListByDevice(Long deviceId) {
-        return deviceSensorRepository.findByDevice_Id(deviceId)
+        return deviceSensorRepository.findByDevice_DeviceId(deviceId)
                 .stream()
                 .map(DeviceSensor::toDto)
                 .collect(Collectors.toList());
@@ -49,7 +49,7 @@ public class DeviceSensorServiceImpl implements DeviceSensorService {
     @Override
     @Transactional(readOnly = true)
     public List<DeviceSensorResponse> getSensorListByDevice(DeviceNameDto deviceNameDto) {
-        return deviceSensorRepository.findByDevice_Name(deviceNameDto.getDeviceName())
+        return deviceSensorRepository.findByDevice_DeviceName(deviceNameDto.getDeviceName())
                 .stream()
                 .map(DeviceSensor::toDto)
                 .collect(Collectors.toList());
@@ -65,9 +65,9 @@ public class DeviceSensorServiceImpl implements DeviceSensorService {
     @Override
     @Transactional(readOnly = true)
     public DeviceSensorResponse getSensorByDeviceAndSensor(Long deviceId, Long sensorId) {
-        return deviceSensorRepository.findByDevice_IdAndSensor_SensorId(deviceId, sensorId)
-                .map(DeviceSensor::toDto)
-                .orElseThrow(() -> new DeviceSensorNotFoundException("장비별 센서 데이터를 찾을 수 없습니다."));
+        return deviceSensorRepository.findByDevice_DeviceIdAndSensor_SensorId(deviceId, sensorId)
+                .orElseThrow(() -> new DeviceSensorNotFoundException("장비별 센서 데이터를 찾을 수 없습니다."))
+                .toDto();
     }
 
     /**
@@ -78,8 +78,8 @@ public class DeviceSensorServiceImpl implements DeviceSensorService {
      */
     @Override
     public DeviceSensorResponse getSensorByDeviceAndSensor(DeviceAndSensorNameDto deviceAndSensorNameDto) {
-        return deviceSensorRepository.findByDevice_NameAndSensor_SensorName(deviceAndSensorNameDto.getDeviceName(), deviceAndSensorNameDto.getSensorName())
-                .map(DeviceSensor::toDto)
-                .orElseThrow(() -> new DeviceSensorNotFoundException("장비별 센서 데이터를 찾을 수 없습니다."));
+        return deviceSensorRepository.findByDevice_DeviceNameAndSensor_SensorName(deviceAndSensorNameDto.getDeviceName(), deviceAndSensorNameDto.getSensorName())
+                .orElseThrow(() -> new DeviceSensorNotFoundException("장비별 센서 데이터를 찾을 수 없습니다."))
+                .toDto();
     }
 }

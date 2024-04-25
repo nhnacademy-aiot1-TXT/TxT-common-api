@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import java.time.LocalDateTime;
 
 /**
- * TimeIntervalRestController Advice 클래스
+ * TimeIntervalRestController 조회 예외처리 클래스
  *
  * @author parksangwon
  * @version 1.0.0
@@ -19,7 +19,7 @@ import java.time.LocalDateTime;
 @RestControllerAdvice(basePackageClasses = TimeIntervalRestController.class)
 public class TimeIntervalAdvice {
     /**
-     * Time interval not found exception handler response entity.
+     * TimeIntervalNotFoundException Handler 메서드
      *
      * @param exception the exception
      * @return the response entity

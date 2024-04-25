@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- * 기상청 초단기 예보 api class
+ * Weather Rest Controller 클래스
  *
  * @author parksangwon
  * @version 1.0.0
@@ -24,7 +24,7 @@ public class WeatherRestController {
     private final WeatherService weatherService;
 
     /**
-     * 날씨 온도 조회 메서드
+     * 날씨 온도 조회 api
      *
      * @return 날씨 온도 응답
      */

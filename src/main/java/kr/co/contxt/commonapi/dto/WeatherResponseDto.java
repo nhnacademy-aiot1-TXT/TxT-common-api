@@ -6,7 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 /**
- * 날씨 온도 응답 Dto
+ * Weather 응답 Dto 클래스
  *
  * @author parksangwon
  * @version 1.0.0

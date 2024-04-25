@@ -27,7 +27,7 @@ public class DeviceRequest {
      */
     public Device toEntity() {
         return Device.builder()
-                .name(deviceName)
+                .deviceName(deviceName)
                 .cycle(cycle)
                 .build();
     }

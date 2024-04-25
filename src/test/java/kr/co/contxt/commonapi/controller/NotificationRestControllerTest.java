@@ -31,7 +31,7 @@ class NotificationRestControllerTest {
     @Test
     void getNotifications() {
         RoleResponse roleResponse = new RoleResponse();
-        roleResponse.setId(1L);
+        roleResponse.setRoleId(1L);
         List<NotificationResponse> notificationList = List.of(new NotificationResponse());
 
         given(userAdapter.getRoleData(anyString())).willReturn(roleResponse);

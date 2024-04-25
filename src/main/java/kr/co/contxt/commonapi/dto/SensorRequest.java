@@ -6,7 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * 센서 정보 요청 dto class
+ * Sensor 정보 요청 DTO 클래스
  *
  * @author parksangwon
  * @version 1.0.0

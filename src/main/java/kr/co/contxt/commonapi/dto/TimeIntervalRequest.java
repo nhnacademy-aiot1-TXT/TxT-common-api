@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 import java.time.LocalTime;
 
 /**
- * TimeInterval 저장을 위한 RequestDTO
+ * TimeInterval 요청 DTO 클래스
  *
  * @author parksangwon
  * @version 1.0.0

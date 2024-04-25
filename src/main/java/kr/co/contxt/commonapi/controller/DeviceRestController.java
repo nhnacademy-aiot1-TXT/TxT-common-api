@@ -43,7 +43,7 @@ public class DeviceRestController {
      * @return the device
      */
     @GetMapping("/{deviceId}")
-    @Operation(summary = "장비 정보 ID로 단일 조회")
+    @Operation(summary = "장비 정보 단일 조회")
     public ResponseEntity<DeviceResponse> getDeviceById(@PathVariable Long deviceId) {
         return ResponseEntity.ok(deviceService.getDeviceById(deviceId));
     }
@@ -55,7 +55,7 @@ public class DeviceRestController {
      * @return the device
      */
     @GetMapping
-    @Operation(summary = "장비 정보 이름으로 단일 조회")
+    @Operation(summary = "장비 정보 단일 조회")
     public ResponseEntity<DeviceResponse> getDeviceByName(@RequestParam String name) {
         return ResponseEntity.ok(deviceService.getDeviceByName(name));
     }

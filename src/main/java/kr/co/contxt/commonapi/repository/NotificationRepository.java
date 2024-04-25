@@ -12,13 +12,11 @@ import java.util.List;
  * @version 1.0.0
  */
 public interface NotificationRepository extends JpaRepository<Notification, Long> {
-    List<Notification> findAll();
-
     /**
      * Find by role id list.
      *
      * @param roleId the role id
      * @return notification list
      */
-    List<Notification> findByRole_Id(Long roleId);
+    List<Notification> findByRole_RoleId(Long roleId);
 }

@@ -1,16 +1,19 @@
 package kr.co.contxt.commonapi.dto;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * Role 응답 DTO 클래스
+ *
+ * @author jongsikk
+ * @version 1.0.0
+ */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class RoleResponse {
-    @JsonProperty("roleId")
-    Long id;
-    @JsonProperty("roleName")
-    String name;
+    Long roleId;
+    String roleName;
 }

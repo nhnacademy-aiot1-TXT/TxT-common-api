@@ -39,9 +39,9 @@ class NotificationRepositoryTest {
         notifications.add(new Notification());
         notifications.add(new Notification());
 
-        given(notificationRepository.findByRole_Id(roleId)).willReturn(notifications);
+        given(notificationRepository.findByRole_RoleId(roleId)).willReturn(notifications);
 
-        List<Notification> result = notificationRepository.findByRole_Id(roleId);
+        List<Notification> result = notificationRepository.findByRole_RoleId(roleId);
 
         // Assertions
         assertEquals(3, result.size());

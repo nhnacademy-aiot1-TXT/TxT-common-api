@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 /**
- * 센서 정보 조회 api class
+ * Sensor Rest Controller 클래스
  *
  * @author parksangwon
  * @version 1.0.0

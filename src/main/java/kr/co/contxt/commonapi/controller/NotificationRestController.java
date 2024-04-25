@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 /**
- * Notification RestController class
+ * Notification Rest Controller 클래스
  *
  * @author jongsikk
  * @version 1.0.0
@@ -29,7 +29,7 @@ public class NotificationRestController {
     private final NotificationService notificationService;
 
     /**
-     * X-USER-ID의 권한에 맞는 알림 정보 리스트를 가져오는 메서드
+     * 권한별 알림 리스트 조회 api
      *
      * @param id userId
      * @return List<Notification>
@@ -39,13 +39,13 @@ public class NotificationRestController {
     public ResponseEntity<List<NotificationResponse>> getNotifications(@RequestHeader(value = "X-USER-ID") String id) {
         RoleResponse role = userAdapter.getRoleData(id);
         List<NotificationResponse> notifications =
-                role.getId() == 1L ? notificationService.getAllNotifications() : notificationService.getUserNotifications(role.getId());
+                role.getRoleId() == 1L ? notificationService.getAllNotifications() : notificationService.getUserNotifications(role.getRoleId());
 
         return ResponseEntity.status(HttpStatus.OK).body(notifications);
     }
 
     /**
-     * 알림을 저장하는 메서드
+     * 알림 추가 api
      *
      * @param notificationRequest the notification request
      * @return the response entity

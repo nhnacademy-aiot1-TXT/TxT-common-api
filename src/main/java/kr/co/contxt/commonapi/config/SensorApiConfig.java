@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * sensor 정보 초기 데이터 설정 class
+ * Sensor 정보 초기 데이터 설정 클래스
  *
  * @author parksangwon
  * @version 1.0.0
@@ -16,7 +16,7 @@ import java.util.List;
 @Configuration
 public class SensorApiConfig {
     /**
-     * 센서 객체가 들어있는 list bean
+     * Sensor 리스트를 반환하는 Bean
      *
      * @return the sensor list
      */

@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDateTime;
 
 /**
- * Notification 응답을 위한 ResponseDTO
+ * Notification 응답 DTO 클래스
  *
  * @author jongsikk
  * @version 1.0.0

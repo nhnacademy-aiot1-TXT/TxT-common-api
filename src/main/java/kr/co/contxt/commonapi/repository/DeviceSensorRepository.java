@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * DeviceSensor 접근을 위한 JpaRepository interface
+ * DeviceSensor Table 접근을 위한 JpaRepository interface
  *
  * @author parksangwon
  * @version 1.0.0
@@ -19,7 +19,7 @@ public interface DeviceSensorRepository extends JpaRepository<DeviceSensor, Long
      * @param deviceId the device id
      * @return deviceSensor list
      */
-    List<DeviceSensor> findByDevice_Id(Long deviceId);
+    List<DeviceSensor> findByDevice_DeviceId(Long deviceId);
 
     /**
      * device name으로 장비별 센서 리스트 조회
@@ -27,7 +27,7 @@ public interface DeviceSensorRepository extends JpaRepository<DeviceSensor, Long
      * @param deviceName the device name
      * @return deviceSensor list
      */
-    List<DeviceSensor> findByDevice_Name(String deviceName);
+    List<DeviceSensor> findByDevice_DeviceName(String deviceName);
 
     /**
      * device id, sensor id로 장비별 센서 단일 조회
@@ -36,7 +36,7 @@ public interface DeviceSensorRepository extends JpaRepository<DeviceSensor, Long
      * @param sensorId the sensor id
      * @return deviceSensor
      */
-    Optional<DeviceSensor> findByDevice_IdAndSensor_SensorId(Long deviceId, Long sensorId);
+    Optional<DeviceSensor> findByDevice_DeviceIdAndSensor_SensorId(Long deviceId, Long sensorId);
 
     /**
      * device name, sensor name으로 장비별 센서 단일 조회
@@ -45,5 +45,5 @@ public interface DeviceSensorRepository extends JpaRepository<DeviceSensor, Long
      * @param sensorName the sensor name
      * @return deviceSensor
      */
-    Optional<DeviceSensor> findByDevice_NameAndSensor_SensorName(String deviceName, String sensorName);
+    Optional<DeviceSensor> findByDevice_DeviceNameAndSensor_SensorName(String deviceName, String sensorName);
 }

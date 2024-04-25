@@ -53,8 +53,8 @@ class DeviceServiceImplTest {
 
         DeviceResponse result = deviceService.getDeviceById(1L);
 
-        assertEquals(device.getId(), result.getDeviceId());
-        assertEquals(device.getName(), result.getDeviceName());
+        assertEquals(device.getDeviceId(), result.getDeviceId());
+        assertEquals(device.getDeviceName(), result.getDeviceName());
         assertEquals(device.getCycle(), result.getCycle());
     }
 
@@ -62,12 +62,12 @@ class DeviceServiceImplTest {
     void getDeviceByName() {
         Device device = new Device(1L, "test1", LocalTime.of(0, 10, 0));
 
-        given(deviceRepository.findByName(anyString())).willReturn(Optional.of(device));
+        given(deviceRepository.findByDeviceName(anyString())).willReturn(Optional.of(device));
 
         DeviceResponse result = deviceService.getDeviceByName("test1");
 
-        assertEquals(device.getId(), result.getDeviceId());
-        assertEquals(device.getName(), result.getDeviceName());
+        assertEquals(device.getDeviceId(), result.getDeviceId());
+        assertEquals(device.getDeviceName(), result.getDeviceName());
         assertEquals(device.getCycle(), result.getCycle());
     }
 
@@ -80,7 +80,7 @@ class DeviceServiceImplTest {
 
     @Test
     void getDeviceByNameException() {
-        given(deviceRepository.findByName(anyString())).willThrow(DeviceNotFoundException.class);
+        given(deviceRepository.findByDeviceName(anyString())).willThrow(DeviceNotFoundException.class);
 
         assertThrows(DeviceNotFoundException.class, () -> deviceService.getDeviceByName("test"));
     }
@@ -93,8 +93,8 @@ class DeviceServiceImplTest {
 
         DeviceResponse result = deviceService.addDevice(new DeviceRequest());
 
-        assertEquals(device.getId(), result.getDeviceId());
-        assertEquals(device.getName(), result.getDeviceName());
+        assertEquals(device.getDeviceId(), result.getDeviceId());
+        assertEquals(device.getDeviceName(), result.getDeviceName());
         assertEquals(device.getCycle(), result.getCycle());
     }
 
@@ -107,8 +107,8 @@ class DeviceServiceImplTest {
 
         DeviceResponse result = deviceService.updateDevice(1L, new DeviceRequest());
 
-        assertEquals(device.getId(), result.getDeviceId());
-        assertEquals(device.getName(), result.getDeviceName());
+        assertEquals(device.getDeviceId(), result.getDeviceId());
+        assertEquals(device.getDeviceName(), result.getDeviceName());
         assertEquals(device.getCycle(), result.getCycle());
     }
 

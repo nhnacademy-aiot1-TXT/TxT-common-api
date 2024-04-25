@@ -7,7 +7,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * 날씨 정보 초기 데이터 설정 class
+ * Weather 정보 초기 데이터 설정 클래스
  *
  * @author parksangwon
  * @version 1.0.0

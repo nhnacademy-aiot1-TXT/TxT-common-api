@@ -8,6 +8,9 @@ import java.util.List;
 
 /**
  * DeviceSensor Service interface
+ *
+ * @author parksangwon
+ * @version 1.0.0
  */
 public interface DeviceSensorService {
     /**
