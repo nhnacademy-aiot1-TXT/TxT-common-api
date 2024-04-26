@@ -38,7 +38,7 @@ public class RedisConfig {
                 .serializeKeysWith(RedisSerializationContext.SerializationPair.fromSerializer(new StringRedisSerializer()))
                 .serializeValuesWith(RedisSerializationContext.SerializationPair.fromSerializer(new GenericJackson2JsonRedisSerializer(objectMapper)))
                 .disableCachingNullValues()
-                .entryTtl(Duration.ofMinutes(30L));
+                .entryTtl(Duration.ofMinutes(1L));
 
         builder.cacheDefaults(configuration);
 
