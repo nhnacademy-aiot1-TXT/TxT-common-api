@@ -9,7 +9,7 @@ import kr.co.contxt.commonapi.exception.TimeIntervalNotFoundException;
 import kr.co.contxt.commonapi.repository.TimeIntervalRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
 import java.time.LocalTime;
@@ -21,7 +21,8 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK)
+//@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK)
+@WebMvcTest(TimeIntervalService.class)
 class TimeIntervalServiceTest {
     @Autowired
     private TimeIntervalService timeIntervalService;
