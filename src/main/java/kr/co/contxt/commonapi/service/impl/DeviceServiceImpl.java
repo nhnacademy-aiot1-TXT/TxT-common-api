@@ -34,7 +34,7 @@ public class DeviceServiceImpl implements DeviceService {
      */
     @Override
     @Transactional(readOnly = true)
-    @Cacheable(value = "getDeviceList", key = "'all'")
+    @Cacheable(value = "getDeviceList", key = "'all'", unless = "#result == null")
     public List<DeviceResponse> getDeviceList() {
         return deviceRepository.findAll()
                 .stream()
@@ -50,7 +50,7 @@ public class DeviceServiceImpl implements DeviceService {
      */
     @Override
     @Transactional(readOnly = true)
-    @Cacheable(value = "getDeviceById", key = "#deviceId")
+    @Cacheable(value = "getDeviceById", key = "#deviceId", unless = "#result == null")
     public DeviceResponse getDeviceById(Long deviceId) {
         return deviceRepository.findById(deviceId)
                 .orElseThrow(() -> new DeviceNotFoundException("Device를 찾을 수 없습니다."))
@@ -65,7 +65,7 @@ public class DeviceServiceImpl implements DeviceService {
      */
     @Override
     @Transactional(readOnly = true)
-    @Cacheable(value = "getDeviceByName", key = "#deviceName")
+    @Cacheable(value = "getDeviceByName", key = "#deviceName", unless = "#result == null")
     public DeviceResponse getDeviceByName(String deviceName) {
         return deviceRepository.findByDeviceName(deviceName)
                 .orElseThrow(() -> new DeviceNotFoundException("Device를 찾을 수 없습니다."))

@@ -33,7 +33,7 @@ public class NotificationServiceImpl implements NotificationService {
      */
     @Override
     @Transactional(readOnly = true)
-    @Cacheable(value = "getAllNotifications", key = "'admin'")
+    @Cacheable(value = "getAllNotifications", key = "'admin'", unless = "#result == null")
     public List<NotificationResponse> getAllNotifications() {
         return notificationRepository.findAll()
                 .stream()
@@ -48,7 +48,7 @@ public class NotificationServiceImpl implements NotificationService {
      */
     @Override
     @Transactional(readOnly = true)
-    @Cacheable(value = "getUserNotifications", key = "'user'")
+    @Cacheable(value = "getUserNotifications", key = "'user'", unless = "#result == null")
     public List<NotificationResponse> getUserNotifications() {
         return notificationRepository.findByRole_RoleId(2L)
                 .stream()
