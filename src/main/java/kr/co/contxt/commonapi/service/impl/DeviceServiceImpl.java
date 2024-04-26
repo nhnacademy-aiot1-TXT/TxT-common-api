@@ -7,6 +7,8 @@ import kr.co.contxt.commonapi.exception.DeviceNotFoundException;
 import kr.co.contxt.commonapi.repository.DeviceRepository;
 import kr.co.contxt.commonapi.service.DeviceService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -31,6 +33,7 @@ public class DeviceServiceImpl implements DeviceService {
      */
     @Override
     @Transactional(readOnly = true)
+    @Cacheable(value = "getDeviceList", key = "'all'")
     public List<DeviceResponse> getDeviceList() {
         return deviceRepository.findAll()
                 .stream()
@@ -46,6 +49,7 @@ public class DeviceServiceImpl implements DeviceService {
      */
     @Override
     @Transactional(readOnly = true)
+    @Cacheable(value = "getDeviceById", key = "#deviceId")
     public DeviceResponse getDeviceById(Long deviceId) {
         return deviceRepository.findById(deviceId)
                 .orElseThrow(() -> new DeviceNotFoundException("Device를 찾을 수 없습니다."))
@@ -60,6 +64,7 @@ public class DeviceServiceImpl implements DeviceService {
      */
     @Override
     @Transactional(readOnly = true)
+    @Cacheable(value = "getDeviceByName", key = "#deviceName")
     public DeviceResponse getDeviceByName(String deviceName) {
         return deviceRepository.findByDeviceName(deviceName)
                 .orElseThrow(() -> new DeviceNotFoundException("Device를 찾을 수 없습니다."))
@@ -74,6 +79,7 @@ public class DeviceServiceImpl implements DeviceService {
      */
     @Override
     @Transactional
+    @CacheEvict(value = "getDeviceList", key = "'all'")
     public DeviceResponse addDevice(DeviceRequest deviceRequest) {
         return deviceRepository.save(deviceRequest.toEntity()).toDto();
     }
@@ -87,6 +93,7 @@ public class DeviceServiceImpl implements DeviceService {
      */
     @Override
     @Transactional
+    @CacheEvict(value = "getDeviceList", key = "'all'")
     public DeviceResponse updateDevice(Long deviceId, DeviceRequest deviceRequest) {
         Device device = deviceRepository.findById(deviceId)
                 .orElseThrow(() -> new DeviceNotFoundException("Device를 찾을 수 없습니다."));
