@@ -9,7 +9,7 @@ import kr.co.contxt.commonapi.exception.DeviceSensorNotFoundException;
 import kr.co.contxt.commonapi.repository.DeviceSensorRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
 import java.util.List;
@@ -20,7 +20,8 @@ import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
 
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK)
+//@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK)
+@WebMvcTest(DeviceSensorService.class)
 class DeviceSensorServiceTest {
     @Autowired
     private DeviceSensorService deviceSensorService;
@@ -146,7 +147,6 @@ class DeviceSensorServiceTest {
 
         given(deviceSensorRepository.findByDevice_DeviceNameAndSensor_SensorName(anyString(), anyString()))
                 .willReturn(Optional.empty());
-
         Throwable throwable = assertThrows(DeviceSensorNotFoundException.class, () -> deviceSensorService.getSensorByDeviceAndSensor(deviceAndSensorNameDto));
 
         assertAll(

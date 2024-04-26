@@ -7,6 +7,9 @@ import kr.co.contxt.commonapi.exception.SensorNotFoundException;
 import kr.co.contxt.commonapi.repository.SensorRepository;
 import kr.co.contxt.commonapi.service.SensorService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.Caching;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -31,6 +34,7 @@ public class SensorServiceImpl implements SensorService {
      */
     @Override
     @Transactional(readOnly = true)
+    @Cacheable(value = "getAllSensors", key = "'all'", unless = "#result == null")
     public List<SensorResponse> getAllSensors() {
         return sensorRepository.findAll()
                 .stream()
@@ -46,6 +50,7 @@ public class SensorServiceImpl implements SensorService {
      */
     @Override
     @Transactional(readOnly = true)
+    @Cacheable(value = "getSensor", key = "#sensorId", unless = "#result == null")
     public SensorResponse getSensor(Long sensorId) {
         return sensorRepository.findById(sensorId)
                 .orElseThrow(() -> new SensorNotFoundException("Sensor를 찾을 수 없습니다."))
@@ -60,6 +65,7 @@ public class SensorServiceImpl implements SensorService {
      */
     @Override
     @Transactional
+    @CacheEvict(value = "getAllSensors", key = "'all'")
     public Sensor saveSensor(Sensor sensor) {
         return sensorRepository.save(sensor);
     }
@@ -73,6 +79,10 @@ public class SensorServiceImpl implements SensorService {
      */
     @Override
     @Transactional
+    @Caching(evict = {
+            @CacheEvict(value = "getAllSensors", key = "'all'"),
+            @CacheEvict(value = "getSensor", key = "#sensorId")
+    })
     public Sensor updateSensor(Long sensorId, SensorRequest sensorRequest) {
         Sensor sensor = sensorRepository.findById(sensorId)
                 .orElseThrow(() -> new SensorNotFoundException("Sensor를 찾을 수 없습니다."));

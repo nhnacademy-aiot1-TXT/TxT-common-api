@@ -6,6 +6,9 @@ import kr.co.contxt.commonapi.entity.Notification;
 import kr.co.contxt.commonapi.repository.NotificationRepository;
 import kr.co.contxt.commonapi.service.NotificationService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.Caching;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -30,6 +33,7 @@ public class NotificationServiceImpl implements NotificationService {
      */
     @Override
     @Transactional(readOnly = true)
+    @Cacheable(value = "getAllNotifications", key = "'admin'", unless = "#result == null")
     public List<NotificationResponse> getAllNotifications() {
         return notificationRepository.findAll()
                 .stream()
@@ -40,13 +44,13 @@ public class NotificationServiceImpl implements NotificationService {
     /**
      * 권한별 Notification 조회 메서드
      *
-     * @param roleId the role id
      * @return roleId에 맞는 notification list
      */
     @Override
     @Transactional(readOnly = true)
-    public List<NotificationResponse> getUserNotifications(Long roleId) {
-        return notificationRepository.findByRole_RoleId(roleId)
+    @Cacheable(value = "getUserNotifications", key = "'user'", unless = "#result == null")
+    public List<NotificationResponse> getUserNotifications() {
+        return notificationRepository.findByRole_RoleId(2L)
                 .stream()
                 .map(Notification::toDto)
                 .collect(Collectors.toList());
@@ -59,6 +63,10 @@ public class NotificationServiceImpl implements NotificationService {
      */
     @Override
     @Transactional
+    @Caching(evict = {
+            @CacheEvict(value = "getAllNotifications", key = "'admin'"),
+            @CacheEvict(value = "getUserNotifications", key = "'user'")
+    })
     public void createNotification(NotificationRequest notificationRequest) {
         Notification notification = notificationRequest.toEntity();
         notificationRepository.save(notification);

@@ -8,7 +8,10 @@ import kr.co.contxt.commonapi.exception.TimeIntervalNotFoundException;
 import kr.co.contxt.commonapi.repository.TimeIntervalRepository;
 import kr.co.contxt.commonapi.service.TimeIntervalService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * TimeInterval service 구현 클래스
@@ -28,6 +31,8 @@ public class TimeIntervalServiceImpl implements TimeIntervalService {
      * @return 탐지 시간
      */
     @Override
+    @Transactional(readOnly = true)
+    @Cacheable(value = "getTimeInterval", key = "#sensorId", unless = "#result == null")
     public TimeIntervalResponse getTimeInterval(Long sensorId) {
         return timeIntervalRepository.findBySensor_SensorId(sensorId)
                 .orElseThrow(() -> new TimeIntervalNotFoundException("탐지 시간을 찾을 수 없습니다."))
@@ -41,6 +46,8 @@ public class TimeIntervalServiceImpl implements TimeIntervalService {
      * @return 탐지 시간
      */
     @Override
+    @Transactional(readOnly = true)
+    @Cacheable(value = "getTimeIntervalByName", key = "#sensorNameDto.sensorName", unless = "#result == null")
     public TimeIntervalResponse getTimeInterval(SensorNameDto sensorNameDto) {
         return timeIntervalRepository.findBySensor_SensorName(sensorNameDto.getSensorName())
                 .orElseThrow(() -> new TimeIntervalNotFoundException("탐지 시간을 찾을 수 없습니다."))
@@ -53,6 +60,7 @@ public class TimeIntervalServiceImpl implements TimeIntervalService {
      * @param timeIntervalRequest 탐지 시간 dto
      */
     @Override
+    @Transactional
     public void createTimeInterval(TimeIntervalRequest timeIntervalRequest) {
         timeIntervalRepository.save(timeIntervalRequest.toEntity());
     }
@@ -65,6 +73,8 @@ public class TimeIntervalServiceImpl implements TimeIntervalService {
      * @return 탐지 시간
      */
     @Override
+    @Transactional
+    @CacheEvict(value = "getTimeInterval", key = "#timeIntervalRequest.sensorId")
     public TimeIntervalResponse updateTimeInterval(Long timeIntervalId, TimeIntervalRequest timeIntervalRequest) {
         TimeInterval timeInterval = timeIntervalRepository.findById(timeIntervalId)
                 .orElseThrow(() -> new TimeIntervalNotFoundException("탐지 시간을 찾을 수 없습니다."));

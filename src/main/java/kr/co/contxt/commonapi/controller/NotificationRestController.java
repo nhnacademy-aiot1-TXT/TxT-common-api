@@ -39,7 +39,7 @@ public class NotificationRestController {
     public ResponseEntity<List<NotificationResponse>> getNotifications(@RequestHeader(value = "X-USER-ID") String id) {
         RoleResponse role = userAdapter.getRoleData(id);
         List<NotificationResponse> notifications =
-                role.getRoleId() == 1L ? notificationService.getAllNotifications() : notificationService.getUserNotifications(role.getRoleId());
+                role.getRoleId() == 1L ? notificationService.getAllNotifications() : notificationService.getUserNotifications();
 
         return ResponseEntity.status(HttpStatus.OK).body(notifications);
     }

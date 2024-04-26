@@ -50,16 +50,16 @@ class NotificationServiceImplTest {
 
     @Test
     void getUserNotifications() {
-        Long roleId = 1L;
+        Long roleId = 2L;
         List<Notification> notifications = new ArrayList<>();
-        Role role = new Role(1L, null);
-        notifications.add(new Notification(1L, role, "Notification 1", null));
-        notifications.add(new Notification(1L, role, "Notification 2", null));
-        notifications.add(new Notification(1L, role, "Notification 3", null));
+        Role role = new Role(2L, null);
+        notifications.add(new Notification(2L, role, "Notification 1", null));
+        notifications.add(new Notification(2L, role, "Notification 2", null));
+        notifications.add(new Notification(2L, role, "Notification 3", null));
 
-        given(notificationRepository.findByRole_RoleId(roleId)).willReturn(notifications);
+        given(notificationRepository.findByRole_RoleId(2L)).willReturn(notifications);
 
-        List<NotificationResponse> result = notificationService.getUserNotifications(roleId);
+        List<NotificationResponse> result = notificationService.getUserNotifications();
 
         verify(notificationRepository).findByRole_RoleId(roleId);
 
