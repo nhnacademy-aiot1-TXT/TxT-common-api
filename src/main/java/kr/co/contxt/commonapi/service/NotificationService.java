@@ -22,10 +22,9 @@ public interface NotificationService {
     /**
      * roleId에 해당하는 알림만 가져오는 메서드
      *
-     * @param roleId the role id
      * @return roleId와 일치하는 notifications
      */
-    List<NotificationResponse> getUserNotifications(Long roleId);
+    List<NotificationResponse> getUserNotifications();
 
     /**
      * Create notification.

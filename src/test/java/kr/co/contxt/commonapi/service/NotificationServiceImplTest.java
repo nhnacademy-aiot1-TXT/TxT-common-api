@@ -59,7 +59,7 @@ class NotificationServiceImplTest {
 
         given(notificationRepository.findByRole_RoleId(roleId)).willReturn(notifications);
 
-        List<NotificationResponse> result = notificationService.getUserNotifications(roleId);
+        List<NotificationResponse> result = notificationService.getUserNotifications();
 
         verify(notificationRepository).findByRole_RoleId(roleId);
 
