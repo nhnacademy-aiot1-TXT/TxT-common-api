@@ -1,0 +1,51 @@
+weather:
+  api:
+    data-type: JSON
+    nx: '55'
+    ny: '127'
+    num-of-rows: '1000'
+    service-key: msxn0cepOugUhr1G3K5olmFo3beWmjwBgSRJ8DOBpMCksKe%2B32QkFEXo8rgGWDPeVHswh6bDuT7sfdz31DIzDw%3D%3D
+    page-no: '1'
+springdoc:
+  default-produces-media-type: application/json
+  swagger-ui:
+    disable-swagger-default-url: 'true'
+    display-request-duration: 'true'
+    groups-order: desc
+    operations-sorter: alpha
+    tags-sorter: alpha
+  api-docs:
+    path: /api-docs
+  paths-to-match: /api/**
+  show-actuator: 'true'
+spring:
+  redis:
+    host: 133.186.244.96
+    password: '*N2vya7H@muDTwdNMR!'
+    database: '12'
+    port: '6379'
+  jpa:
+    hibernate:
+      naming:
+        implicit-strategy: org.springframework.boot.orm.jpa.hibernate.SpringImplicitNamingStrategy
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+    properties:
+      hibernate:
+        format_sql: 'true'
+        use_sql_comments: 'true'
+        show_sql: 'true'
+    open-in-view: 'false'
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  application:
+    name: common-api
+  profiles:
+    active: prod
+server:
+  port: '8400'
+  tomcat:
+    connection-timeout: '20000'
+  servlet:
+    encoding:
+      force: 'true'
+      charset: UTF-8
