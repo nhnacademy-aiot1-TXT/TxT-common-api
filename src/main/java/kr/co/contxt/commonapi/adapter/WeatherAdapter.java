@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestParam;
  * @author parksangwon
  * @version 1.0.0
  */
-@FeignClient(name = "weather-api", url = "http://apis.data.go.kr", path = "/1360000/VilageFcstInfoService_2.0/getUltraSrtFcst")
+@FeignClient(name = "weather-api", url = "http://apis.data.go.kr", path = "/1360000/VilageFcstInfoService_2.0")
 public interface WeatherAdapter {
     /**
      * 초단기 예보 조회 메서드
@@ -25,7 +25,7 @@ public interface WeatherAdapter {
      * @param ny         위도
      * @return 초단기 예보 정보 json String
      */
-    @GetMapping
+    @GetMapping("/getUltraSrtFcst")
     String getWeatherInfo(
             @RequestParam("serviceKey") String serviceKey,
             @RequestParam("pageNo") String pageNo,

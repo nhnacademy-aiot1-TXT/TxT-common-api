@@ -34,7 +34,11 @@ public class DeviceSensorServiceImpl implements DeviceSensorService {
      */
     @Override
     @Transactional(readOnly = true)
-    @Cacheable(value = "getSensorListByDevice", key = "#deviceId", unless = "#result == null")
+    @Cacheable(
+            value = "getSensorListByDevice",
+            key = "#deviceId",
+            unless = "#result == null"
+    )
     public List<DeviceSensorResponse> getSensorListByDevice(Long deviceId) {
         return deviceSensorRepository.findByDevice_DeviceId(deviceId)
                 .stream()
@@ -50,7 +54,11 @@ public class DeviceSensorServiceImpl implements DeviceSensorService {
      */
     @Override
     @Transactional(readOnly = true)
-    @Cacheable(value = "getSensorListByDevice", key = "#deviceNameDto", unless = "#result == null")
+    @Cacheable(
+            value = "getSensorListByDevice",
+            key = "#deviceNameDto",
+            unless = "#result == null"
+    )
     public List<DeviceSensorResponse> getSensorListByDevice(DeviceNameDto deviceNameDto) {
         return deviceSensorRepository.findByDevice_DeviceName(deviceNameDto.getDeviceName())
                 .stream()
@@ -70,7 +78,8 @@ public class DeviceSensorServiceImpl implements DeviceSensorService {
     @Cacheable(
             value = "getSensorByDeviceAndSensor",
             key = "#deviceId.toString().concat(#sensorId)",
-            unless = "#result == null")
+            unless = "#result == null"
+    )
     public DeviceSensorResponse getSensorByDeviceAndSensor(Long deviceId, Long sensorId) {
         return deviceSensorRepository.findByDevice_DeviceIdAndSensor_SensorId(deviceId, sensorId)
                 .orElseThrow(() -> new DeviceSensorNotFoundException("장비별 센서 데이터를 찾을 수 없습니다."))
@@ -88,7 +97,8 @@ public class DeviceSensorServiceImpl implements DeviceSensorService {
     @Cacheable(
             value = "getSensorByDeviceAndSensor",
             key = "#deviceAndSensorNameDto",
-            unless = "#result == null")
+            unless = "#result == null"
+    )
     public DeviceSensorResponse getSensorByDeviceAndSensor(DeviceAndSensorNameDto deviceAndSensorNameDto) {
         return deviceSensorRepository.findByDevice_DeviceNameAndSensor_SensorName(deviceAndSensorNameDto.getDeviceName(), deviceAndSensorNameDto.getSensorName())
                 .orElseThrow(() -> new DeviceSensorNotFoundException("장비별 센서 데이터를 찾을 수 없습니다."))

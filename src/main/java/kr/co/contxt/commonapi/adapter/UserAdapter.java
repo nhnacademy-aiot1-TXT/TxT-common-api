@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestHeader;
  * @author jongsikk
  * @version 1.0.0
  */
-@FeignClient(value = "user-management")
+@FeignClient(value = "user-management", path = "/api/user")
 public interface UserAdapter {
     /**
      * RoleId를 가져오는 메서드
@@ -19,6 +19,6 @@ public interface UserAdapter {
      * @param id userId
      * @return role data
      */
-    @GetMapping("/api/user/role")
+    @GetMapping("/role")
     RoleResponse getRoleData(@RequestHeader("X-USER-ID") String id);
 }

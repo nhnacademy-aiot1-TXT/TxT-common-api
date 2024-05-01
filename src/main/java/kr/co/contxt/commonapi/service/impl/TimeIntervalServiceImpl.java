@@ -32,7 +32,11 @@ public class TimeIntervalServiceImpl implements TimeIntervalService {
      */
     @Override
     @Transactional(readOnly = true)
-    @Cacheable(value = "getTimeInterval", key = "#sensorId", unless = "#result == null")
+    @Cacheable(
+            value = "getTimeInterval",
+            key = "#sensorId",
+            unless = "#result == null"
+    )
     public TimeIntervalResponse getTimeInterval(Long sensorId) {
         return timeIntervalRepository.findBySensor_SensorId(sensorId)
                 .orElseThrow(() -> new TimeIntervalNotFoundException("탐지 시간을 찾을 수 없습니다."))
@@ -47,7 +51,11 @@ public class TimeIntervalServiceImpl implements TimeIntervalService {
      */
     @Override
     @Transactional(readOnly = true)
-    @Cacheable(value = "getTimeIntervalByName", key = "#sensorNameDto.sensorName", unless = "#result == null")
+    @Cacheable(
+            value = "getTimeIntervalByName",
+            key = "#sensorNameDto.sensorName",
+            unless = "#result == null"
+    )
     public TimeIntervalResponse getTimeInterval(SensorNameDto sensorNameDto) {
         return timeIntervalRepository.findBySensor_SensorName(sensorNameDto.getSensorName())
                 .orElseThrow(() -> new TimeIntervalNotFoundException("탐지 시간을 찾을 수 없습니다."))
