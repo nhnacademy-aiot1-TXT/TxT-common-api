@@ -33,7 +33,11 @@ public class NotificationServiceImpl implements NotificationService {
      */
     @Override
     @Transactional(readOnly = true)
-    @Cacheable(value = "getAllNotifications", key = "'admin'", unless = "#result == null")
+    @Cacheable(
+            value = "getAllNotifications",
+            key = "'admin'",
+            unless = "#result == null"
+    )
     public List<NotificationResponse> getAllNotifications() {
         return notificationRepository.findAll()
                 .stream()
@@ -48,7 +52,11 @@ public class NotificationServiceImpl implements NotificationService {
      */
     @Override
     @Transactional(readOnly = true)
-    @Cacheable(value = "getUserNotifications", key = "'user'", unless = "#result == null")
+    @Cacheable(
+            value = "getUserNotifications",
+            key = "'user'",
+            unless = "#result == null"
+    )
     public List<NotificationResponse> getUserNotifications() {
         return notificationRepository.findByRole_RoleId(2L)
                 .stream()
@@ -64,8 +72,14 @@ public class NotificationServiceImpl implements NotificationService {
     @Override
     @Transactional
     @Caching(evict = {
-            @CacheEvict(value = "getAllNotifications", key = "'admin'"),
-            @CacheEvict(value = "getUserNotifications", key = "'user'")
+            @CacheEvict(
+                    value = "getAllNotifications",
+                    key = "'admin'"
+            ),
+            @CacheEvict(
+                    value = "getUserNotifications",
+                    key = "'user'"
+            )
     })
     public void createNotification(NotificationRequest notificationRequest) {
         Notification notification = notificationRequest.toEntity();
