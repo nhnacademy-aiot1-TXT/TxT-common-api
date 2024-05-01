@@ -1,0 +1,11 @@
+### 장비별 단일 센서 on/off 조회
+GET http://localhost:8400/api/common/device-sensor/1/1
+
+### 장비 이름, 센서 이름별 단일 센서 on/off 조회
+GET http://localhost:8400/api/common/device-sensor/sensor?deviceName=airconditioner&sensorName=temperature
+
+### 장비별 모든 센서 on/off 조회
+GET http://localhost:8400/api/common/device-sensor/1
+
+### 장비 이름별 모든 센서 on/off 조회
+GET http://localhost:8400/api/common/device-sensor/sensors?deviceName=airconditioner

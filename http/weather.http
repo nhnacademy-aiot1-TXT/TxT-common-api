@@ -1,0 +1,2 @@
+### 날씨 조회
+GET http://localhost:8400/api/common/weather

@@ -1,0 +1,25 @@
+### 센서 ID로 탐지 시간 조회
+GET http://localhost:8400/api/common/time-interval/7
+
+### 센서 이름으로 탐지 시간 조회
+GET http://localhost:8400/api/common/time-interval?sensorName=occupancy
+
+### 탐지 시간 등록
+POST http://localhost:8400/api/common/time-interval
+Content-Type: application/json
+
+{
+  "sensorId": 7,
+  "begin": "00:00:00",
+  "end": "08:00:00"
+}
+
+### 탐지 시간 수정
+PUT http://localhost:8400/api/common/time-interval/3
+Content-Type: application/json
+
+{
+  "sensorId": 7,
+  "begin": "01:00:00",
+  "end": "07:00:00"
+}
