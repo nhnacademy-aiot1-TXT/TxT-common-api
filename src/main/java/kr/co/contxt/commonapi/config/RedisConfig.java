@@ -17,9 +17,23 @@ import org.springframework.data.redis.serializer.StringRedisSerializer;
 
 import java.time.Duration;
 
+/**
+ * RedisConfig 클래스
+ * redis와 cache를 사용하기 위해 설정
+ *
+ * @author parksangwon
+ * @version 1.0.0
+ */
 @Configuration
 @EnableCaching
 public class RedisConfig {
+    /**
+     * cache를 사용할 때 시간이나 ttl 등을 설정
+     *
+     * @param redisConnectionFactory the redis connection factory
+     * @param javaTimeModule         the java time module
+     * @return the cache manager
+     */
     @Bean
     public CacheManager cacheManager(RedisConnectionFactory redisConnectionFactory, JavaTimeModule javaTimeModule) {
         PolymorphicTypeValidator typeValidator = BasicPolymorphicTypeValidator
