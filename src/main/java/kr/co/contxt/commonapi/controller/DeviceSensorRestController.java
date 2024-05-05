@@ -4,6 +4,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import kr.co.contxt.commonapi.dto.DeviceAndSensorNameDto;
 import kr.co.contxt.commonapi.dto.DeviceNameDto;
+import kr.co.contxt.commonapi.dto.DeviceSensorRequest;
 import kr.co.contxt.commonapi.dto.DeviceSensorResponse;
 import kr.co.contxt.commonapi.service.DeviceSensorService;
 import lombok.RequiredArgsConstructor;
@@ -78,6 +79,21 @@ public class DeviceSensorRestController {
     @Operation(summary = "장비별 센서 정보 단일 조회")
     public ResponseEntity<DeviceSensorResponse> getSensorByDeviceNameAndSensorName(@ModelAttribute DeviceAndSensorNameDto deviceAndSensorNameDto) {
         DeviceSensorResponse deviceSensor = deviceSensorService.getSensorByDeviceAndSensor(deviceAndSensorNameDto);
+
+        return ResponseEntity.ok(deviceSensor);
+    }
+
+    /**
+     * 장비 정보 ID, 센서 정보 ID로 업데이트 api
+     *
+     * @param deviceId            장비 정보 ID
+     * @param sensorId            센서 정보 ID
+     * @param deviceSensorRequest 장비별 센서 on/off dto
+     * @return 업데이트된 장비별 센서 dto
+     */
+    @PutMapping("/{deviceId}/{sensorId}")
+    public ResponseEntity<DeviceSensorResponse> updateSensorByDeviceAndSensor(@PathVariable Long deviceId, @PathVariable Long sensorId, @RequestBody DeviceSensorRequest deviceSensorRequest) {
+        DeviceSensorResponse deviceSensor = deviceSensorService.updateSensorByDeviceAndSensor(deviceId, sensorId, deviceSensorRequest);
 
         return ResponseEntity.ok(deviceSensor);
     }
