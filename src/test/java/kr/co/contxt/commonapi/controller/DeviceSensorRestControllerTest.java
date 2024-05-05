@@ -3,6 +3,7 @@ package kr.co.contxt.commonapi.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import kr.co.contxt.commonapi.dto.DeviceAndSensorNameDto;
 import kr.co.contxt.commonapi.dto.DeviceNameDto;
+import kr.co.contxt.commonapi.dto.DeviceSensorRequest;
 import kr.co.contxt.commonapi.dto.DeviceSensorResponse;
 import kr.co.contxt.commonapi.exception.DeviceSensorNotFoundException;
 import kr.co.contxt.commonapi.service.DeviceSensorService;
@@ -11,17 +12,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.List;
 
 import static org.hamcrest.Matchers.equalTo;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @AutoConfigureMockMvc
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK)
@@ -66,7 +69,6 @@ class DeviceSensorRestControllerTest {
 
         given(deviceSensorService.getSensorListByDevice(deviceNameDto)).willReturn(List.of(deviceSensorResponse));
 
-        ObjectMapper objectMapper = new ObjectMapper();
         mockMvc.perform(get("/api/common/device-sensor/sensors")
                         .param("deviceName", deviceName))
                 .andDo(print())
@@ -125,7 +127,6 @@ class DeviceSensorRestControllerTest {
 
         given(deviceSensorService.getSensorByDeviceAndSensor(deviceAndSensorNameDto)).willReturn(deviceSensorResponse);
 
-        ObjectMapper objectMapper = new ObjectMapper();
         mockMvc.perform(get("/api/common/device-sensor/sensor")
                         .param("deviceName", deviceName)
                         .param("sensorName", sensorName))
@@ -144,10 +145,59 @@ class DeviceSensorRestControllerTest {
         given(deviceSensorService.getSensorByDeviceAndSensor(deviceAndSensorNameDto))
                 .willThrow(new DeviceSensorNotFoundException("장비별 센서 데이터를 찾을 수 없습니다."));
 
-        ObjectMapper objectMapper = new ObjectMapper();
         mockMvc.perform(get("/api/common/device-sensor/sensor")
                         .param("deviceName", deviceName)
                         .param("sensorName", sensorName))
+                .andDo(print())
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$.message", equalTo("장비별 센서 데이터를 찾을 수 없습니다.")));
+    }
+
+    @Test
+    void updateSensorByDeviceAndSensor() throws Exception {
+        long deviceId = 1L;
+        long sensorId = 1L;
+        Float onValue = 29f;
+        Float offValue = 20f;
+        DeviceSensorRequest deviceSensorRequest = new DeviceSensorRequest(onValue, offValue);
+        DeviceSensorResponse deviceSensorResponse = DeviceSensorResponse.builder()
+                .onValue(onValue)
+                .offValue(offValue)
+                .build();
+
+        given(deviceSensorService.updateSensorByDeviceAndSensor(anyLong(), anyLong(), any()))
+                .willReturn(deviceSensorResponse);
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        mockMvc.perform(put("/api/common/device-sensor/" + deviceId + "/" + sensorId)
+                        .content(objectMapper.writeValueAsString(deviceSensorRequest))
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.onValue", equalTo(onValue.doubleValue())))
+                .andExpect(jsonPath("$.offValue", equalTo(offValue.doubleValue())));
+    }
+
+    @Test
+    void updateSensorByDeviceAndSensorException() throws Exception {
+        long deviceId = 1L;
+        long sensorId = 1L;
+        Float onValue = 29f;
+        Float offValue = 20f;
+        DeviceSensorRequest deviceSensorRequest = new DeviceSensorRequest(onValue, offValue);
+        DeviceSensorResponse deviceSensorResponse = DeviceSensorResponse.builder()
+                .onValue(onValue)
+                .offValue(offValue)
+                .build();
+
+        given(deviceSensorService.updateSensorByDeviceAndSensor(anyLong(), anyLong(), any()))
+                .willThrow(new DeviceSensorNotFoundException("장비별 센서 데이터를 찾을 수 없습니다."));
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        mockMvc.perform(put("/api/common/device-sensor/" + deviceId + "/" + sensorId)
+                        .content(objectMapper.writeValueAsString(deviceSensorRequest))
+                        .contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isNotFound())
                 .andExpect(jsonPath("$.message", equalTo("장비별 센서 데이터를 찾을 수 없습니다.")));
