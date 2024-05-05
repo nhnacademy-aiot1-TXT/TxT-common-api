@@ -2,6 +2,7 @@ package kr.co.contxt.commonapi.service;
 
 import kr.co.contxt.commonapi.dto.DeviceAndSensorNameDto;
 import kr.co.contxt.commonapi.dto.DeviceNameDto;
+import kr.co.contxt.commonapi.dto.DeviceSensorRequest;
 import kr.co.contxt.commonapi.dto.DeviceSensorResponse;
 
 import java.util.List;
@@ -45,4 +46,14 @@ public interface DeviceSensorService {
      * @return the deviceSensor
      */
     DeviceSensorResponse getSensorByDeviceAndSensor(DeviceAndSensorNameDto deviceAndSensorNameDto);
+
+    /**
+     * Device id, Sensor id로 업데이트 메서드
+     *
+     * @param deviceId            the device id
+     * @param sensorId            the sensor id
+     * @param deviceSensorRequest 장비별 센서 on/off dto
+     * @return the deviceSensor
+     */
+    DeviceSensorResponse updateSensorByDeviceAndSensor(Long deviceId, Long sensorId, DeviceSensorRequest deviceSensorRequest);
 }

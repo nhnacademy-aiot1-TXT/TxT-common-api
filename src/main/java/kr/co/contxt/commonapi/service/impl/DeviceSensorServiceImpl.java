@@ -2,6 +2,7 @@ package kr.co.contxt.commonapi.service.impl;
 
 import kr.co.contxt.commonapi.dto.DeviceAndSensorNameDto;
 import kr.co.contxt.commonapi.dto.DeviceNameDto;
+import kr.co.contxt.commonapi.dto.DeviceSensorRequest;
 import kr.co.contxt.commonapi.dto.DeviceSensorResponse;
 import kr.co.contxt.commonapi.entity.DeviceSensor;
 import kr.co.contxt.commonapi.exception.DeviceSensorNotFoundException;
@@ -103,5 +104,26 @@ public class DeviceSensorServiceImpl implements DeviceSensorService {
         return deviceSensorRepository.findByDevice_DeviceNameAndSensor_SensorName(deviceAndSensorNameDto.getDeviceName(), deviceAndSensorNameDto.getSensorName())
                 .orElseThrow(() -> new DeviceSensorNotFoundException("장비별 센서 데이터를 찾을 수 없습니다."))
                 .toDto();
+    }
+
+    /**
+     * DeviceSensor 업데이트 메서드
+     *
+     * @param deviceId            the device id
+     * @param sensorId            the sensor id
+     * @param deviceSensorRequest 장비별 센서 on/off dto
+     * @return deviceSensor
+     */
+    @Override
+    public DeviceSensorResponse updateSensorByDeviceAndSensor(Long deviceId, Long sensorId, DeviceSensorRequest deviceSensorRequest) {
+        DeviceSensor deviceSensor = deviceSensorRepository.findByDevice_DeviceIdAndSensor_SensorId(deviceId, sensorId)
+                .orElseThrow(() -> new DeviceSensorNotFoundException("장비별 센서 데이터를 찾을 수 없습니다."));
+
+        DeviceSensor build = deviceSensor.toBuilder()
+                .onValue(deviceSensorRequest.getOnValue())
+                .offValue(deviceSensorRequest.getOffValue())
+                .build();
+
+        return deviceSensorRepository.save(build).toDto();
     }
 }
