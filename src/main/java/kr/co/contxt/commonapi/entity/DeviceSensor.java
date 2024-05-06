@@ -16,7 +16,7 @@ import javax.persistence.*;
  */
 @Entity
 @Getter
-@Builder
+@Builder(toBuilder = true)
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "device_sensor")
