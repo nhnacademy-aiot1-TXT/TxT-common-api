@@ -156,13 +156,13 @@ class DeviceSensorServiceTest {
 
     @Test
     void updateSensorByDeviceAndSensor() {
-        Long deviceId = 1L;
-        Long sensorId = 1L;
+        String deviceName = "test device";
+        String sensorName = "test sensor";
         Float beforeOnValue = 25F;
         Float beforeOffValue = 22F;
         Float afterOnValue = 25F;
         Float afterOffValue = 22F;
-        DeviceSensorRequest deviceSensorRequest = new DeviceSensorRequest(afterOnValue, afterOffValue);
+        DeviceSensorRequest deviceSensorRequest = new DeviceSensorRequest(deviceName, sensorName, afterOnValue, afterOffValue);
         DeviceSensor beforeDeviceSensor = DeviceSensor.builder()
                 .sensor(Sensor.builder().sensorName("test").build())
                 .onValue(beforeOnValue)
@@ -174,12 +174,12 @@ class DeviceSensorServiceTest {
                 .offValue(afterOffValue)
                 .build();
 
-        given(deviceSensorRepository.findByDevice_DeviceIdAndSensor_SensorId(deviceId, sensorId))
+        given(deviceSensorRepository.findByDevice_DeviceNameAndSensor_SensorName(anyString(), anyString()))
                 .willReturn(Optional.of(beforeDeviceSensor));
         given(deviceSensorRepository.save(any()))
                 .willReturn(afterDeviceSensor);
 
-        DeviceSensorResponse deviceSensorResponse = deviceSensorService.updateSensorByDeviceAndSensor(deviceId, sensorId, deviceSensorRequest);
+        DeviceSensorResponse deviceSensorResponse = deviceSensorService.updateSensorByDeviceAndSensor(deviceSensorRequest);
 
         assertAll(
                 () -> assertNotNull(deviceSensorResponse),
@@ -191,15 +191,15 @@ class DeviceSensorServiceTest {
 
     @Test
     void updateSensorByDeviceAndSensorException() {
-        Long deviceId = 1L;
-        Long sensorId = 1L;
+        String deviceName = "test device";
+        String sensorName = "test sensor";
         Float onValue = 22f;
         Float offValue = 15f;
-        DeviceSensorRequest deviceSensorRequest = new DeviceSensorRequest(onValue, offValue);
-        given(deviceSensorRepository.findByDevice_DeviceIdAndSensor_SensorId(anyLong(), anyLong()))
+        DeviceSensorRequest deviceSensorRequest = new DeviceSensorRequest(deviceName, sensorName, onValue, offValue);
+        given(deviceSensorRepository.findByDevice_DeviceNameAndSensor_SensorName(anyString(), anyString()))
                 .willReturn(Optional.empty());
 
-        Throwable throwable = assertThrows(DeviceSensorNotFoundException.class, () -> deviceSensorService.updateSensorByDeviceAndSensor(deviceId, sensorId, deviceSensorRequest));
+        Throwable throwable = assertThrows(DeviceSensorNotFoundException.class, () -> deviceSensorService.updateSensorByDeviceAndSensor(deviceSensorRequest));
 
         assertAll(
                 () -> assertEquals("장비별 센서 데이터를 찾을 수 없습니다.", throwable.getMessage())
