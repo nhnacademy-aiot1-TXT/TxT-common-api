@@ -2,10 +2,10 @@
 GET http://localhost:8400/api/common/device/devices
 
 ### device 단일 조회 by id
-GET http://localhost:8400/api/common/device/1
+GET http://localhost:8400/api/common/device/4
 
 ### device 단일 조회 by name
-GET http://localhost:8400/api/common/device?name=aircleaner
+GET http://localhost:8400/api/common/device?name=change-test
 
 
 ### device 추가
