@@ -14,6 +14,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class DeviceSensorRequest {
+    private String deviceName;
+    private String sensorName;
     private Float onValue;
     private Float offValue;
 }
