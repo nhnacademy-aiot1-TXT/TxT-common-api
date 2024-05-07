@@ -86,12 +86,14 @@ public class DeviceSensorRestController {
     /**
      * 장비 정보 이름, 센서 정보 이름으로 업데이트 api
      *
+     * @param deviceId            the device id
+     * @param sensorId            the sensor id
      * @param deviceSensorRequest 장비별 센서 on/off dto
      * @return 업데이트된 장비별 센서 dto
      */
-    @PutMapping
-    public ResponseEntity<DeviceSensorResponse> updateSensorByDeviceAndSensor(@RequestBody DeviceSensorRequest deviceSensorRequest) {
-        DeviceSensorResponse deviceSensor = deviceSensorService.updateSensorByDeviceAndSensor(deviceSensorRequest);
+    @PutMapping("/{deviceId}/{sensorId}")
+    public ResponseEntity<DeviceSensorResponse> updateSensorByDeviceAndSensor(@PathVariable Long deviceId, @PathVariable Long sensorId, @RequestBody DeviceSensorRequest deviceSensorRequest) {
+        DeviceSensorResponse deviceSensor = deviceSensorService.updateSensorByDeviceAndSensor(deviceId, sensorId, deviceSensorRequest);
 
         return ResponseEntity.ok(deviceSensor);
     }
