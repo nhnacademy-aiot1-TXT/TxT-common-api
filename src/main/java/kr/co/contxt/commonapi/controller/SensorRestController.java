@@ -4,7 +4,6 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import kr.co.contxt.commonapi.dto.SensorRequest;
 import kr.co.contxt.commonapi.dto.SensorResponse;
-import kr.co.contxt.commonapi.entity.Sensor;
 import kr.co.contxt.commonapi.service.SensorService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -62,10 +61,10 @@ public class SensorRestController {
     @PostMapping
     @Operation(summary = "센서 정보 추가")
     public ResponseEntity<SensorResponse> addSensor(@RequestBody SensorRequest sensorRequest) {
-        Sensor responseSensor = sensorService.saveSensor(sensorRequest.toEntity());
+        SensorResponse responseSensor = sensorService.saveSensor(sensorRequest.toEntity());
 
         return ResponseEntity.status(HttpStatus.CREATED)
-                .body(responseSensor.toDto());
+                .body(responseSensor);
     }
 
     /**
@@ -78,8 +77,8 @@ public class SensorRestController {
     @PutMapping("/{sensorId}")
     @Operation(summary = "센서 정보 수정")
     public ResponseEntity<SensorResponse> updateSensor(@PathVariable Long sensorId, @RequestBody SensorRequest sensorRequest) {
-        Sensor responseSensor = sensorService.updateSensor(sensorId, sensorRequest);
+        SensorResponse responseSensor = sensorService.updateSensor(sensorId, sensorRequest);
 
-        return ResponseEntity.ok(responseSensor.toDto());
+        return ResponseEntity.ok(responseSensor);
     }
 }
