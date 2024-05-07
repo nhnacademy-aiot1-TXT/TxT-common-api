@@ -15,8 +15,8 @@ PUT http://localhost:8400/api/common/device-sensor
 Content-Type: application/json
 
 {
-  "deviceName": "test device",
-  "sensorName": "test sensor",
+  "deviceName": "airconditioner",
+  "sensorName": "temperature",
   "onValue": 29,
   "offValue": 20
 }
