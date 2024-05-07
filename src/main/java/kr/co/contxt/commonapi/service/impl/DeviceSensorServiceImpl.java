@@ -9,7 +9,10 @@ import kr.co.contxt.commonapi.exception.DeviceSensorNotFoundException;
 import kr.co.contxt.commonapi.repository.DeviceSensorRepository;
 import kr.co.contxt.commonapi.service.DeviceSensorService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.Caching;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -35,11 +38,6 @@ public class DeviceSensorServiceImpl implements DeviceSensorService {
      */
     @Override
     @Transactional(readOnly = true)
-    @Cacheable(
-            value = "getSensorListByDevice",
-            key = "#deviceId",
-            unless = "#result == null"
-    )
     public List<DeviceSensorResponse> getSensorListByDevice(Long deviceId) {
         return deviceSensorRepository.findByDevice_DeviceId(deviceId)
                 .stream()
@@ -57,7 +55,7 @@ public class DeviceSensorServiceImpl implements DeviceSensorService {
     @Transactional(readOnly = true)
     @Cacheable(
             value = "getSensorListByDevice",
-            key = "#deviceNameDto",
+            key = "#deviceNameDto.getDeviceName()",
             unless = "#result == null"
     )
     public List<DeviceSensorResponse> getSensorListByDevice(DeviceNameDto deviceNameDto) {
@@ -76,11 +74,6 @@ public class DeviceSensorServiceImpl implements DeviceSensorService {
      */
     @Override
     @Transactional(readOnly = true)
-    @Cacheable(
-            value = "getSensorByDeviceAndSensor",
-            key = "#deviceId.toString().concat(#sensorId)",
-            unless = "#result == null"
-    )
     public DeviceSensorResponse getSensorByDeviceAndSensor(Long deviceId, Long sensorId) {
         return deviceSensorRepository.findByDevice_DeviceIdAndSensor_SensorId(deviceId, sensorId)
                 .orElseThrow(() -> new DeviceSensorNotFoundException("장비별 센서 데이터를 찾을 수 없습니다."))
@@ -97,7 +90,7 @@ public class DeviceSensorServiceImpl implements DeviceSensorService {
     @Transactional(readOnly = true)
     @Cacheable(
             value = "getSensorByDeviceAndSensor",
-            key = "#deviceAndSensorNameDto",
+            key = "#deviceAndSensorNameDto.getDeviceName().concat(':').concat(#deviceAndSensorNameDto.getSensorName())",
             unless = "#result == null"
     )
     public DeviceSensorResponse getSensorByDeviceAndSensor(DeviceAndSensorNameDto deviceAndSensorNameDto) {
@@ -109,14 +102,29 @@ public class DeviceSensorServiceImpl implements DeviceSensorService {
     /**
      * DeviceSensor 업데이트 메서드
      *
-     * @param deviceId            the device id
-     * @param sensorId            the sensor id
      * @param deviceSensorRequest 장비별 센서 on/off dto
      * @return deviceSensor
      */
     @Override
-    public DeviceSensorResponse updateSensorByDeviceAndSensor(Long deviceId, Long sensorId, DeviceSensorRequest deviceSensorRequest) {
-        DeviceSensor deviceSensor = deviceSensorRepository.findByDevice_DeviceIdAndSensor_SensorId(deviceId, sensorId)
+    @Transactional
+    @Caching(
+            evict = {
+                    @CacheEvict(
+                            value = "getSensorListByDevice",
+                            key = "#deviceSensorRequest.getDeviceName()",
+                            allEntries = true
+                    )
+            },
+            put = {
+                    @CachePut(
+                            value = "getSensorByDeviceAndSensor",
+                            key = "#deviceSensorRequest.getDeviceName().concat(':').concat(#deviceSensorRequest.getSensorName())",
+                            unless = "#result == null"
+                    )
+            }
+    )
+    public DeviceSensorResponse updateSensorByDeviceAndSensor(DeviceSensorRequest deviceSensorRequest) {
+        DeviceSensor deviceSensor = deviceSensorRepository.findByDevice_DeviceNameAndSensor_SensorName(deviceSensorRequest.getDeviceName(), deviceSensorRequest.getSensorName())
                 .orElseThrow(() -> new DeviceSensorNotFoundException("장비별 센서 데이터를 찾을 수 없습니다."));
 
         DeviceSensor build = deviceSensor.toBuilder()
