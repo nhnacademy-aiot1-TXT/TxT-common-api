@@ -8,6 +8,7 @@ import kr.co.contxt.commonapi.repository.SensorRepository;
 import kr.co.contxt.commonapi.service.SensorService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cache.annotation.Caching;
 import org.springframework.stereotype.Service;
@@ -77,8 +78,9 @@ public class SensorServiceImpl implements SensorService {
             value = "getAllSensors",
             key = "'all'"
     )
-    public Sensor saveSensor(Sensor sensor) {
-        return sensorRepository.save(sensor);
+    public SensorResponse saveSensor(Sensor sensor) {
+        return sensorRepository.save(sensor)
+                .toDto();
     }
 
     /**
@@ -90,22 +92,28 @@ public class SensorServiceImpl implements SensorService {
      */
     @Override
     @Transactional
-    @Caching(evict = {
-            @CacheEvict(
-                    value = "getAllSensors",
-                    key = "'all'"
-            ),
-            @CacheEvict(
-                    value = "getSensor",
-                    key = "#sensorId"
-            )
-    })
-    public Sensor updateSensor(Long sensorId, SensorRequest sensorRequest) {
+    @Caching(
+            evict = {
+                    @CacheEvict(
+                            value = "getAllSensors",
+                            key = "'all'"
+                    )
+            },
+            put = {
+                    @CachePut(
+                            value = "getSensor",
+                            key = "#sensorId",
+                            unless = "#result == null"
+                    )
+            }
+    )
+    public SensorResponse updateSensor(Long sensorId, SensorRequest sensorRequest) {
         Sensor sensor = sensorRepository.findById(sensorId)
                 .orElseThrow(() -> new SensorNotFoundException("Sensor를 찾을 수 없습니다."));
 
         sensor.setSensorName(sensorRequest.getSensorName());
 
-        return sensorRepository.save(sensor);
+        return sensorRepository.save(sensor)
+                .toDto();
     }
 }

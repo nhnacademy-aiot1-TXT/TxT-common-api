@@ -34,7 +34,7 @@ public interface SensorService {
      * @param sensor 센서
      * @return 저장된 센서
      */
-    Sensor saveSensor(Sensor sensor);
+    SensorResponse saveSensor(Sensor sensor);
 
     /**
      * 센서 수정 메서드
@@ -43,5 +43,5 @@ public interface SensorService {
      * @param sensorRequest 센서 수정 요청 dto
      * @return 수정된 센서
      */
-    Sensor updateSensor(Long sensorId, SensorRequest sensorRequest);
+    SensorResponse updateSensor(Long sensorId, SensorRequest sensorRequest);
 }
