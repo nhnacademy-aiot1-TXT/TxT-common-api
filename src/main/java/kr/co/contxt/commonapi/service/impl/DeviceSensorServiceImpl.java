@@ -115,8 +115,8 @@ public class DeviceSensorServiceImpl implements DeviceSensorService {
      * @return deviceSensor
      */
     @Override
-    public DeviceSensorResponse updateSensorByDeviceAndSensor(Long deviceId, Long sensorId, DeviceSensorRequest deviceSensorRequest) {
-        DeviceSensor deviceSensor = deviceSensorRepository.findByDevice_DeviceIdAndSensor_SensorId(deviceId, sensorId)
+    public DeviceSensorResponse updateSensorByDeviceAndSensor(DeviceSensorRequest deviceSensorRequest) {
+        DeviceSensor deviceSensor = deviceSensorRepository.findByDevice_DeviceNameAndSensor_SensorName(deviceSensorRequest.getDeviceName(), deviceSensorRequest.getSensorName())
                 .orElseThrow(() -> new DeviceSensorNotFoundException("장비별 센서 데이터를 찾을 수 없습니다."));
 
         DeviceSensor build = deviceSensor.toBuilder()
