@@ -8,8 +8,9 @@ import kr.co.contxt.commonapi.exception.TimeIntervalNotFoundException;
 import kr.co.contxt.commonapi.repository.TimeIntervalRepository;
 import kr.co.contxt.commonapi.service.TimeIntervalService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.Caching;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,6 +24,7 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class TimeIntervalServiceImpl implements TimeIntervalService {
     private final TimeIntervalRepository timeIntervalRepository;
+    private static final String TIME_INTERVAL_NOT_FOUND_MESSAGE = "탐지 시간을 찾을 수 없습니다.";
 
     /**
      * 센서 아이디로 탐지 시간 조회 메서드
@@ -39,7 +41,7 @@ public class TimeIntervalServiceImpl implements TimeIntervalService {
     )
     public TimeIntervalResponse getTimeInterval(Long sensorId) {
         return timeIntervalRepository.findBySensor_SensorId(sensorId)
-                .orElseThrow(() -> new TimeIntervalNotFoundException("탐지 시간을 찾을 수 없습니다."))
+                .orElseThrow(() -> new TimeIntervalNotFoundException(TIME_INTERVAL_NOT_FOUND_MESSAGE))
                 .toDto();
     }
 
@@ -52,13 +54,13 @@ public class TimeIntervalServiceImpl implements TimeIntervalService {
     @Override
     @Transactional(readOnly = true)
     @Cacheable(
-            value = "getTimeIntervalByName",
-            key = "#sensorNameDto.sensorName",
+            value = "getTimeInterval",
+            key = "#sensorNameDto.getSensorName()",
             unless = "#result == null"
     )
     public TimeIntervalResponse getTimeInterval(SensorNameDto sensorNameDto) {
         return timeIntervalRepository.findBySensor_SensorName(sensorNameDto.getSensorName())
-                .orElseThrow(() -> new TimeIntervalNotFoundException("탐지 시간을 찾을 수 없습니다."))
+                .orElseThrow(() -> new TimeIntervalNotFoundException(TIME_INTERVAL_NOT_FOUND_MESSAGE))
                 .toDto();
     }
 
@@ -82,10 +84,22 @@ public class TimeIntervalServiceImpl implements TimeIntervalService {
      */
     @Override
     @Transactional
-    @CacheEvict(value = "getTimeInterval", key = "#timeIntervalRequest.sensorId")
+    @Caching(
+            put = {
+                    @CachePut(
+                            value = "getTimeInterval",
+                            key = "#timeIntervalRequest.getSensorId()",
+                            unless = "#result == null"
+                    ),
+                    @CachePut(
+                            value = "getTimeInterval",
+                            key = "#timeIntervalRequest.getSensorName()"
+                    )
+            }
+    )
     public TimeIntervalResponse updateTimeInterval(Long timeIntervalId, TimeIntervalRequest timeIntervalRequest) {
         TimeInterval timeInterval = timeIntervalRepository.findById(timeIntervalId)
-                .orElseThrow(() -> new TimeIntervalNotFoundException("탐지 시간을 찾을 수 없습니다."));
+                .orElseThrow(() -> new TimeIntervalNotFoundException(TIME_INTERVAL_NOT_FOUND_MESSAGE));
 
         timeInterval.setBegin(timeIntervalRequest.getBegin());
         timeInterval.setEnd(timeIntervalRequest.getEnd());
