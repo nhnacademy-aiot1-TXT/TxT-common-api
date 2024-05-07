@@ -93,9 +93,10 @@ class TimeIntervalServiceTest {
     @Test
     void createTimeInterval() {
         Long sensorId = 1L;
+        String sensorName = "test sensor";
         LocalTime begin = LocalTime.of(0, 0, 0);
         LocalTime end = LocalTime.of(7, 0, 0);
-        TimeIntervalRequest timeIntervalRequest = new TimeIntervalRequest(sensorId, begin, end);
+        TimeIntervalRequest timeIntervalRequest = new TimeIntervalRequest(sensorId, sensorName, begin, end);
 
         timeIntervalService.createTimeInterval(timeIntervalRequest);
 
@@ -109,7 +110,7 @@ class TimeIntervalServiceTest {
         LocalTime begin = LocalTime.of(0, 0, 0);
         LocalTime end = LocalTime.of(7, 0, 0);
         String sensorName = "test sensor";
-        TimeIntervalRequest timeIntervalRequest = new TimeIntervalRequest(sensorId, begin, end);
+        TimeIntervalRequest timeIntervalRequest = new TimeIntervalRequest(sensorId, sensorName, begin, end);
         TimeInterval timeInterval = TimeInterval.builder()
                 .timeIntervalId(timeIntervalId)
                 .sensor(new Sensor(sensorId, sensorName))
@@ -133,9 +134,10 @@ class TimeIntervalServiceTest {
     @Test
     void updateTimeIntervalException() {
         Long sensorId = 1L;
+        String sensorName = "test sensor";
         LocalTime begin = LocalTime.of(0, 0, 0);
         LocalTime end = LocalTime.of(7, 0, 0);
-        TimeIntervalRequest timeIntervalRequest = new TimeIntervalRequest(sensorId, begin, end);
+        TimeIntervalRequest timeIntervalRequest = new TimeIntervalRequest(sensorId, sensorName, begin, end);
 
         given(timeIntervalRepository.findById(anyLong())).willReturn(Optional.empty());
 

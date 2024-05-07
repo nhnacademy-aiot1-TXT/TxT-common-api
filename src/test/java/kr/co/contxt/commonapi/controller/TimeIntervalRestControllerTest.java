@@ -122,9 +122,10 @@ class TimeIntervalRestControllerTest {
     @Test
     void addTimeInterval() throws Exception {
         Long sensorId = 1L;
+        String sensorName = "test sensor";
         LocalTime begin = LocalTime.of(0, 0, 0);
         LocalTime end = LocalTime.of(7, 0, 0);
-        TimeIntervalRequest timeIntervalRequest = new TimeIntervalRequest(sensorId, begin, end);
+        TimeIntervalRequest timeIntervalRequest = new TimeIntervalRequest(sensorId, sensorName, begin, end);
 
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.registerModule(new JavaTimeModule());
@@ -147,7 +148,7 @@ class TimeIntervalRestControllerTest {
         LocalTime end = LocalTime.of(7, 0, 0);
         String beginAsString = begin.format(formatter);
         String endAsString = end.format(formatter);
-        TimeIntervalRequest timeIntervalRequest = new TimeIntervalRequest(sensorId, begin, end);
+        TimeIntervalRequest timeIntervalRequest = new TimeIntervalRequest(sensorId, sensorName, begin, end);
         TimeIntervalResponse timeIntervalResponse = TimeIntervalResponse.builder()
                 .sensorName(sensorName)
                 .begin(begin)
@@ -173,9 +174,10 @@ class TimeIntervalRestControllerTest {
     void updateTimeIntervalException() throws Exception {
         long timeIntervalId = 1L;
         Long sensorId = 1L;
+        String sensorName = "test sensor";
         LocalTime begin = LocalTime.of(0, 0, 0);
         LocalTime end = LocalTime.of(7, 0, 0);
-        TimeIntervalRequest timeIntervalRequest = new TimeIntervalRequest(sensorId, begin, end);
+        TimeIntervalRequest timeIntervalRequest = new TimeIntervalRequest(sensorId, sensorName, begin, end);
 
         given(timeIntervalService.updateTimeInterval(anyLong(), any())).willThrow(new SensorNotFoundException("탐지 시간을 찾을 수 없습니다."));
 

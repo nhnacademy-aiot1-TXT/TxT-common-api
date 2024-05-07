@@ -94,7 +94,7 @@ class SensorRestControllerTest {
         // given
         Long sensorId = 1L;
         String sensorName = "test sensor";
-        Sensor sensor = Sensor.builder()
+        SensorResponse sensor = SensorResponse.builder()
                 .sensorId(sensorId)
                 .sensorName(sensorName)
                 .build();
@@ -119,7 +119,7 @@ class SensorRestControllerTest {
         // given
         Long sensorId = 1L;
         String sensorName = "test sensor";
-        Sensor sensor = Sensor.builder()
+        SensorResponse sensor = SensorResponse.builder()
                 .sensorId(sensorId)
                 .sensorName(sensorName)
                 .build();
