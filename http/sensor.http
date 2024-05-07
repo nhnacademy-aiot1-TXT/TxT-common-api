@@ -17,7 +17,7 @@ PUT http://localhost:8400/api/common/sensor/9
 Content-Type: application/json
 
 {
-  "sensorName": "update test sensor"
+  "sensorName": "test sensor1"
 }
 
 ### 센서 단일 조회 exception

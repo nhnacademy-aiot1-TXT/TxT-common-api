@@ -71,16 +71,18 @@ public class NotificationServiceImpl implements NotificationService {
      */
     @Override
     @Transactional
-    @Caching(evict = {
-            @CacheEvict(
-                    value = "getAllNotifications",
-                    key = "'admin'"
-            ),
-            @CacheEvict(
-                    value = "getUserNotifications",
-                    key = "'user'"
-            )
-    })
+    @Caching(
+            evict = {
+                    @CacheEvict(
+                            value = "getAllNotifications",
+                            key = "'admin'"
+                    ),
+                    @CacheEvict(
+                            value = "getUserNotifications",
+                            key = "'user'"
+                    )
+            }
+    )
     public void createNotification(NotificationRequest notificationRequest) {
         Notification notification = notificationRequest.toEntity();
         notificationRepository.save(notification);

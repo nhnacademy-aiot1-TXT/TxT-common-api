@@ -8,6 +8,7 @@ import kr.co.contxt.commonapi.repository.DeviceRepository;
 import kr.co.contxt.commonapi.service.DeviceService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cache.annotation.Caching;
 import org.springframework.stereotype.Service;
@@ -26,6 +27,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class DeviceServiceImpl implements DeviceService {
     private final DeviceRepository deviceRepository;
+    private static final String DEVICE_NOT_FOUND_MESSAGE = "Device를 찾을 수 없습니다.";
 
     /**
      * Device 리스트 조회 메서드
@@ -49,7 +51,7 @@ public class DeviceServiceImpl implements DeviceService {
     /**
      * Device 단일 조회 메서드
      *
-     * @param deviceId
+     * @param deviceId the device id
      * @return device
      */
     @Override
@@ -61,14 +63,14 @@ public class DeviceServiceImpl implements DeviceService {
     )
     public DeviceResponse getDeviceById(Long deviceId) {
         return deviceRepository.findById(deviceId)
-                .orElseThrow(() -> new DeviceNotFoundException("Device를 찾을 수 없습니다."))
+                .orElseThrow(() -> new DeviceNotFoundException(DEVICE_NOT_FOUND_MESSAGE))
                 .toDto();
     }
 
     /**
      * Device 단일 조회 메서드
      *
-     * @param deviceName
+     * @param deviceName the device name
      * @return device
      */
     @Override
@@ -80,14 +82,14 @@ public class DeviceServiceImpl implements DeviceService {
     )
     public DeviceResponse getDeviceByName(String deviceName) {
         return deviceRepository.findByDeviceName(deviceName)
-                .orElseThrow(() -> new DeviceNotFoundException("Device를 찾을 수 없습니다."))
+                .orElseThrow(() -> new DeviceNotFoundException(DEVICE_NOT_FOUND_MESSAGE))
                 .toDto();
     }
 
     /**
      * Device 추가 메서드
      *
-     * @param deviceRequest
+     * @param deviceRequest the device name and device cycle
      * @return device response
      */
     @Override
@@ -103,25 +105,33 @@ public class DeviceServiceImpl implements DeviceService {
     /**
      * Device 수정 메서드
      *
-     * @param deviceId
-     * @param deviceRequest
+     * @param deviceId      the device id
+     * @param deviceRequest the device name and device cycle
      * @return device response
      */
     @Override
     @Transactional
-    @Caching(evict = {
-            @CacheEvict(
-                    value = "getDeviceList",
-                    key = "'all'"
-            ),
-            @CacheEvict(
-                    value = "getDeviceById",
-                    key = "#deviceId"
-            )
-    })
+    @Caching(
+            evict = {
+                    @CacheEvict(
+                            value = "getDeviceList",
+                            key = "'all'"
+                    )
+            },
+            put = {
+                    @CachePut(
+                            value = "getDeviceById",
+                            key = "#deviceId"
+                    ),
+                    @CachePut(
+                            value = "getDeviceByName",
+                            key = "#deviceRequest.getDeviceName()"
+                    )
+            }
+    )
     public DeviceResponse updateDevice(Long deviceId, DeviceRequest deviceRequest) {
         Device device = deviceRepository.findById(deviceId)
-                .orElseThrow(() -> new DeviceNotFoundException("Device를 찾을 수 없습니다."));
+                .orElseThrow(() -> new DeviceNotFoundException(DEVICE_NOT_FOUND_MESSAGE));
 
         device.setDeviceName(deviceRequest.getDeviceName());
         device.setCycle(deviceRequest.getCycle());

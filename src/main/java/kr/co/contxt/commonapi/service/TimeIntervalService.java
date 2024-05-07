@@ -37,7 +37,7 @@ public interface TimeIntervalService {
     /**
      * 탐지 시간 수정 메서드
      *
-     * @param timeIntervalId      탐지 시간 아이디
+     * @param timeIntervalId      센서 아이디
      * @param timeIntervalRequest 탐지 시간 dto
      * @return 탐지 시간
      */

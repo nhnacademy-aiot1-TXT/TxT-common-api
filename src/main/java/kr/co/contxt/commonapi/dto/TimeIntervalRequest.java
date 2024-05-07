@@ -19,6 +19,7 @@ import java.time.LocalTime;
 @AllArgsConstructor
 public class TimeIntervalRequest {
     private Long sensorId;
+    private String sensorName;
     private LocalTime begin;
     private LocalTime end;
 
@@ -29,7 +30,7 @@ public class TimeIntervalRequest {
      */
     public TimeInterval toEntity() {
         return TimeInterval.builder()
-                .sensor(new Sensor(sensorId, null))
+                .sensor(new Sensor(sensorId, sensorName))
                 .begin(begin)
                 .end(end)
                 .build();

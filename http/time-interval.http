@@ -20,6 +20,7 @@ Content-Type: application/json
 
 {
   "sensorId": 7,
+  "sensorName": "occupancy",
   "begin": "01:00:00",
-  "end": "07:00:00"
+  "end": "08:00:00"
 }

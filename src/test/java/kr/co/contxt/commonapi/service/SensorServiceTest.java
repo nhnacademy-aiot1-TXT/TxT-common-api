@@ -92,7 +92,7 @@ class SensorServiceTest {
         given(sensorRepository.save(sensor)).willReturn(sensor);
 
         // when
-        Sensor saveSensor = sensorService.saveSensor(sensor);
+        SensorResponse saveSensor = sensorService.saveSensor(sensor);
 
         // then
         assertAll(
@@ -118,7 +118,7 @@ class SensorServiceTest {
         given(sensorRepository.save(sensor)).willReturn(sensor);
 
         // when
-        Sensor updateSensor = sensorService.updateSensor(sensorId, sensorRequest);
+        SensorResponse updateSensor = sensorService.updateSensor(sensorId, sensorRequest);
 
         // then
         assertAll(
@@ -130,8 +130,10 @@ class SensorServiceTest {
 
     @Test
     void updateSensorException() {
+        SensorRequest sensorRequest = new SensorRequest();
+
         given(sensorRepository.findById(1L)).willThrow(SensorNotFoundException.class);
 
-        assertThrows(SensorNotFoundException.class, () -> sensorService.updateSensor(1L, new SensorRequest()));
+        assertThrows(SensorNotFoundException.class, () -> sensorService.updateSensor(1L, sensorRequest));
     }
 }

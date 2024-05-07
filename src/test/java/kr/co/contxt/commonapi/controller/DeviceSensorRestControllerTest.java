@@ -36,11 +36,13 @@ class DeviceSensorRestControllerTest {
 
     @Test
     void getSensorListByDevice() throws Exception {
-        // given
-        long deviceId = 1L;
+        Long deviceId = 1L;
+        Long sensorId = 1L;
         Float onValue = 25F;
         Float offValue = 22F;
         DeviceSensorResponse deviceSensorResponse = DeviceSensorResponse.builder()
+                .deviceId(deviceId)
+                .sensorId(sensorId)
                 .onValue(onValue)
                 .offValue(offValue)
                 .build();
@@ -58,11 +60,15 @@ class DeviceSensorRestControllerTest {
 
     @Test
     void getSensorListByDeviceName() throws Exception {
+        Long deviceId = 1L;
+        Long sensorId = 1L;
         String deviceName = "test device";
         Float onValue = 25F;
         Float offValue = 22F;
         DeviceNameDto deviceNameDto = new DeviceNameDto(deviceName);
         DeviceSensorResponse deviceSensorResponse = DeviceSensorResponse.builder()
+                .deviceId(deviceId)
+                .sensorId(sensorId)
                 .onValue(onValue)
                 .offValue(offValue)
                 .build();
@@ -79,12 +85,13 @@ class DeviceSensorRestControllerTest {
 
     @Test
     void getSensorByDeviceAndSensor() throws Exception {
-        // given
-        long deviceId = 1L;
-        long sensorId = 1L;
+        Long deviceId = 1L;
+        Long sensorId = 1L;
         Float onValue = 25F;
         Float offValue = 22F;
         DeviceSensorResponse deviceSensorResponse = DeviceSensorResponse.builder()
+                .deviceId(deviceId)
+                .sensorId(sensorId)
                 .onValue(onValue)
                 .offValue(offValue)
                 .build();
@@ -94,6 +101,8 @@ class DeviceSensorRestControllerTest {
         mockMvc.perform(get("/api/common/device-sensor/" + deviceId + "/" + sensorId))
                 .andDo(print())
                 .andExpect(status().isOk())
+                .andExpect(jsonPath("$.deviceId", equalTo(deviceId.intValue())))
+                .andExpect(jsonPath("$.sensorId", equalTo(sensorId.intValue())))
                 .andExpect(jsonPath("$.onValue", equalTo(onValue.doubleValue())))
                 .andExpect(jsonPath("$.offValue", equalTo(offValue.doubleValue())));
     }
@@ -114,13 +123,16 @@ class DeviceSensorRestControllerTest {
 
     @Test
     void getSensorByDeviceNameAndSensorName() throws Exception {
-        // given
+        Long deviceId = 1L;
+        Long sensorId = 1L;
         String deviceName = "test device";
         String sensorName = "test sensor";
         Float onValue = 25F;
         Float offValue = 22F;
         DeviceAndSensorNameDto deviceAndSensorNameDto = new DeviceAndSensorNameDto(deviceName, sensorName);
         DeviceSensorResponse deviceSensorResponse = DeviceSensorResponse.builder()
+                .deviceId(deviceId)
+                .sensorId(sensorId)
                 .onValue(onValue)
                 .offValue(offValue)
                 .build();
@@ -132,6 +144,8 @@ class DeviceSensorRestControllerTest {
                         .param("sensorName", sensorName))
                 .andDo(print())
                 .andExpect(status().isOk())
+                .andExpect(jsonPath("$.deviceId", equalTo(deviceId.intValue())))
+                .andExpect(jsonPath("$.sensorId", equalTo(sensorId.intValue())))
                 .andExpect(jsonPath("$.onValue", equalTo(onValue.doubleValue())))
                 .andExpect(jsonPath("$.offValue", equalTo(offValue.doubleValue())));
     }
@@ -155,47 +169,51 @@ class DeviceSensorRestControllerTest {
 
     @Test
     void updateSensorByDeviceAndSensor() throws Exception {
+        Long deviceId = 1L;
+        Long sensorId = 1L;
         String deviceName = "test device";
         String sensorName = "test sensor";
         Float onValue = 29f;
         Float offValue = 20f;
         DeviceSensorRequest deviceSensorRequest = new DeviceSensorRequest(deviceName, sensorName, onValue, offValue);
         DeviceSensorResponse deviceSensorResponse = DeviceSensorResponse.builder()
+                .deviceId(deviceId)
+                .sensorId(sensorId)
                 .onValue(onValue)
                 .offValue(offValue)
                 .build();
 
-        given(deviceSensorService.updateSensorByDeviceAndSensor(any()))
+        given(deviceSensorService.updateSensorByDeviceAndSensor(anyLong(), anyLong(), any()))
                 .willReturn(deviceSensorResponse);
 
         ObjectMapper objectMapper = new ObjectMapper();
-        mockMvc.perform(put("/api/common/device-sensor")
+        mockMvc.perform(put("/api/common/device-sensor/" + deviceId + "/" + sensorId)
                         .content(objectMapper.writeValueAsString(deviceSensorRequest))
                         .contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.deviceId", equalTo(deviceId.intValue())))
+                .andExpect(jsonPath("$.sensorId", equalTo(sensorId.intValue())))
                 .andExpect(jsonPath("$.onValue", equalTo(onValue.doubleValue())))
                 .andExpect(jsonPath("$.offValue", equalTo(offValue.doubleValue())));
     }
 
     @Test
     void updateSensorByDeviceAndSensorException() throws Exception {
+        long deviceId = 1L;
+        long sensorId = 1L;
         String deviceName = "test device";
         String sensorName = "test sensor";
         Float onValue = 29f;
         Float offValue = 20f;
         DeviceSensorRequest deviceSensorRequest = new DeviceSensorRequest(deviceName, sensorName, onValue, offValue);
-        DeviceSensorResponse deviceSensorResponse = DeviceSensorResponse.builder()
-                .onValue(onValue)
-                .offValue(offValue)
-                .build();
 
-        given(deviceSensorService.updateSensorByDeviceAndSensor(any()))
+        given(deviceSensorService.updateSensorByDeviceAndSensor(anyLong(), anyLong(), any()))
                 .willThrow(new DeviceSensorNotFoundException("장비별 센서 데이터를 찾을 수 없습니다."));
 
         ObjectMapper objectMapper = new ObjectMapper();
-        mockMvc.perform(put("/api/common/device-sensor")
+        mockMvc.perform(put("/api/common/device-sensor/" + deviceId + "/" + sensorId)
                         .content(objectMapper.writeValueAsString(deviceSensorRequest))
                         .contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())

@@ -18,6 +18,7 @@ import java.time.LocalTime;
 @NoArgsConstructor
 @AllArgsConstructor
 public class TimeIntervalResponse {
+    private Long sensorId;
     private String sensorName;
     private LocalTime begin;
     private LocalTime end;
