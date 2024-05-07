@@ -27,6 +27,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class SensorServiceImpl implements SensorService {
     private final SensorRepository sensorRepository;
+    private static final String SENSOR_NOT_FOUND_MESSAGE = "Sensor를 찾을 수 없습니다.";
 
     /**
      * Sensor 리스트 조회 메서드
@@ -62,7 +63,7 @@ public class SensorServiceImpl implements SensorService {
     )
     public SensorResponse getSensor(Long sensorId) {
         return sensorRepository.findById(sensorId)
-                .orElseThrow(() -> new SensorNotFoundException("Sensor를 찾을 수 없습니다."))
+                .orElseThrow(() -> new SensorNotFoundException(SENSOR_NOT_FOUND_MESSAGE))
                 .toDto();
     }
 
@@ -109,7 +110,7 @@ public class SensorServiceImpl implements SensorService {
     )
     public SensorResponse updateSensor(Long sensorId, SensorRequest sensorRequest) {
         Sensor sensor = sensorRepository.findById(sensorId)
-                .orElseThrow(() -> new SensorNotFoundException("Sensor를 찾을 수 없습니다."));
+                .orElseThrow(() -> new SensorNotFoundException(SENSOR_NOT_FOUND_MESSAGE));
 
         sensor.setSensorName(sensorRequest.getSensorName());
 
