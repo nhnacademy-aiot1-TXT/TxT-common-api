@@ -26,10 +26,10 @@ public class TimeIntervalDtoTest {
     @Test
     void timeIntervalRequestValidation() {
         TimeIntervalRequest request = new TimeIntervalRequest(1L, "test", LocalTime.now(), LocalTime.now());
-        TimeIntervalRequest requestwithNull = new TimeIntervalRequest(null, "", null, null);
+        TimeIntervalRequest requestWithNull = new TimeIntervalRequest(null, "", null, null);
 
         Set<ConstraintViolation<TimeIntervalRequest>> validate = validator.validate(request);
-        Set<ConstraintViolation<TimeIntervalRequest>> validateNull = validator.validate(requestwithNull);
+        Set<ConstraintViolation<TimeIntervalRequest>> validateNull = validator.validate(requestWithNull);
 
         assertTrue(validate.isEmpty());
         assertFalse(validateNull.isEmpty());
