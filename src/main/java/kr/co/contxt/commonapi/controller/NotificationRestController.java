@@ -12,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 /**
@@ -52,7 +53,7 @@ public class NotificationRestController {
      */
     @PostMapping
     @Operation(summary = "알림 추가")
-    public ResponseEntity<Void> addNotification(@RequestBody NotificationRequest notificationRequest) {
+    public ResponseEntity<Void> addNotification(@RequestBody @Valid NotificationRequest notificationRequest) {
         notificationService.createNotification(notificationRequest);
 
         return ResponseEntity.status(HttpStatus.OK).build();
