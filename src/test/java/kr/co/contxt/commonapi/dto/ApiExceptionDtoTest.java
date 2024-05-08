@@ -10,8 +10,7 @@ import javax.validation.ValidatorFactory;
 import java.time.LocalDateTime;
 import java.util.Set;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 class ApiExceptionDtoTest {
     private static Validator validator;
@@ -31,7 +30,9 @@ class ApiExceptionDtoTest {
         Set<ConstraintViolation<ApiExceptionDto>> validate = validator.validate(apiExceptionDto);
         Set<ConstraintViolation<ApiExceptionDto>> validateNull = validator.validate(apiExceptionDtoWithNull);
 
-        assertTrue(validate.isEmpty());
-        assertFalse(validateNull.isEmpty());
+        assertAll(
+                () -> assertTrue(validate.isEmpty()),
+                () -> assertFalse(validateNull.isEmpty())
+        );
     }
 }

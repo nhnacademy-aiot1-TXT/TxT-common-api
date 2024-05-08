@@ -10,8 +10,7 @@ import javax.validation.ValidatorFactory;
 import java.time.LocalTime;
 import java.util.Set;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class DeviceDtoTest {
     private static Validator validator;
@@ -31,8 +30,10 @@ public class DeviceDtoTest {
         Set<ConstraintViolation<DeviceRequest>> validate = validator.validate(request);
         Set<ConstraintViolation<DeviceRequest>> validateNull = validator.validate(requestWithNull);
 
-        assertTrue(validate.isEmpty());
-        assertFalse(validateNull.isEmpty());
+        assertAll(
+                () -> assertTrue(validate.isEmpty()),
+                () -> assertFalse(validateNull.isEmpty())
+        );
     }
 
     @Test
@@ -43,7 +44,9 @@ public class DeviceDtoTest {
         Set<ConstraintViolation<DeviceResponse>> validate = validator.validate(response);
         Set<ConstraintViolation<DeviceResponse>> validateNull = validator.validate(responseWithNull);
 
-        assertTrue(validate.isEmpty());
-        assertFalse(validateNull.isEmpty());
+        assertAll(
+                () -> assertTrue(validate.isEmpty()),
+                () -> assertFalse(validateNull.isEmpty())
+        );
     }
 }

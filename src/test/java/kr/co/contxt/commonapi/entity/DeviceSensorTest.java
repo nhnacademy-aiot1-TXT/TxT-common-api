@@ -5,8 +5,7 @@ import org.junit.jupiter.api.Test;
 
 import java.time.LocalTime;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 class DeviceSensorTest {
     @Test
@@ -20,12 +19,14 @@ class DeviceSensorTest {
                 .build();
 
         DeviceSensorResponse deviceSensorResponse = deviceSensor.toDto();
-
-        assertNotNull(deviceSensorResponse);
-        assertEquals(deviceSensor.getDevice().getDeviceId(), deviceSensorResponse.getDeviceId());
-        assertEquals(deviceSensor.getSensor().getSensorId(), deviceSensorResponse.getSensorId());
-        assertEquals(deviceSensor.getSensor().getSensorName(), deviceSensorResponse.getSensorName());
-        assertEquals(deviceSensor.getOnValue(), deviceSensorResponse.getOnValue());
-        assertEquals(deviceSensor.getOffValue(), deviceSensorResponse.getOffValue());
+        
+        assertAll(
+                () -> assertNotNull(deviceSensorResponse),
+                () -> assertEquals(deviceSensor.getDevice().getDeviceId(), deviceSensorResponse.getDeviceId()),
+                () -> assertEquals(deviceSensor.getSensor().getSensorId(), deviceSensorResponse.getSensorId()),
+                () -> assertEquals(deviceSensor.getSensor().getSensorName(), deviceSensorResponse.getSensorName()),
+                () -> assertEquals(deviceSensor.getOnValue(), deviceSensorResponse.getOnValue()),
+                () -> assertEquals(deviceSensor.getOffValue(), deviceSensorResponse.getOffValue())
+        );
     }
 }

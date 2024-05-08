@@ -9,8 +9,7 @@ import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
 import java.util.Set;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class DeviceSensorDtoTest {
     private static Validator validator;
@@ -30,8 +29,10 @@ public class DeviceSensorDtoTest {
         Set<ConstraintViolation<DeviceAndSensorNameDto>> validate = validator.validate(deviceAndSensorNameDto);
         Set<ConstraintViolation<DeviceAndSensorNameDto>> validateNull = validator.validate(deviceAndSensorNameDtoWithNull);
 
-        assertTrue(validate.isEmpty());
-        assertFalse(validateNull.isEmpty());
+        assertAll(
+                () -> assertTrue(validate.isEmpty()),
+                () -> assertFalse(validateNull.isEmpty())
+        );
     }
 
     @Test
@@ -42,8 +43,10 @@ public class DeviceSensorDtoTest {
         Set<ConstraintViolation<DeviceNameDto>> validate = validator.validate(deviceNameDto);
         Set<ConstraintViolation<DeviceNameDto>> validateNull = validator.validate(deviceNameDtoWithNull);
 
-        assertTrue(validate.isEmpty());
-        assertFalse(validateNull.isEmpty());
+        assertAll(
+                () -> assertTrue(validate.isEmpty()),
+                () -> assertFalse(validateNull.isEmpty())
+        );
     }
 
     @Test
@@ -54,8 +57,10 @@ public class DeviceSensorDtoTest {
         Set<ConstraintViolation<DeviceSensorRequest>> validate = validator.validate(request);
         Set<ConstraintViolation<DeviceSensorRequest>> validateNull = validator.validate(requestWithNull);
 
-        assertTrue(validate.isEmpty());
-        assertFalse(validateNull.isEmpty());
+        assertAll(
+                () -> assertTrue(validate.isEmpty()),
+                () -> assertFalse(validateNull.isEmpty())
+        );
     }
 
     @Test
@@ -66,7 +71,9 @@ public class DeviceSensorDtoTest {
         Set<ConstraintViolation<DeviceSensorResponse>> validate = validator.validate(response);
         Set<ConstraintViolation<DeviceSensorResponse>> validateNull = validator.validate(responseWithNull);
 
-        assertTrue(validate.isEmpty());
-        assertFalse(validateNull.isEmpty());
+        assertAll(
+                () -> assertTrue(validate.isEmpty()),
+                () -> assertFalse(validateNull.isEmpty())
+        );
     }
 }

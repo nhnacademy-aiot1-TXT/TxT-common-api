@@ -5,8 +5,7 @@ import org.junit.jupiter.api.Test;
 
 import java.time.LocalTime;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 class DeviceTest {
     @Test
@@ -18,10 +17,12 @@ class DeviceTest {
                 .build();
 
         DeviceResponse deviceResponse = device.toDto();
-
-        assertNotNull(deviceResponse);
-        assertEquals(device.getDeviceId(), deviceResponse.getDeviceId());
-        assertEquals(device.getDeviceName(), deviceResponse.getDeviceName());
-        assertEquals(device.getCycle(), deviceResponse.getCycle());
+        
+        assertAll(
+                () -> assertNotNull(deviceResponse),
+                () -> assertEquals(device.getDeviceId(), deviceResponse.getDeviceId()),
+                () -> assertEquals(device.getDeviceName(), deviceResponse.getDeviceName()),
+                () -> assertEquals(device.getCycle(), deviceResponse.getCycle())
+        );
     }
 }

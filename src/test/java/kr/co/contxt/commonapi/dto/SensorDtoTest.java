@@ -9,8 +9,7 @@ import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
 import java.util.Set;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class SensorDtoTest {
     private static Validator validator;
@@ -30,8 +29,10 @@ public class SensorDtoTest {
         Set<ConstraintViolation<SensorNameDto>> validate = validator.validate(sensorNameDto);
         Set<ConstraintViolation<SensorNameDto>> validateNull = validator.validate(sensorNameDtoWithNull);
 
-        assertTrue(validate.isEmpty());
-        assertFalse(validateNull.isEmpty());
+        assertAll(
+                () -> assertTrue(validate.isEmpty()),
+                () -> assertFalse(validateNull.isEmpty())
+        );
     }
 
     @Test
@@ -42,8 +43,10 @@ public class SensorDtoTest {
         Set<ConstraintViolation<SensorRequest>> validate = validator.validate(request);
         Set<ConstraintViolation<SensorRequest>> validateNull = validator.validate(requestWithNull);
 
-        assertTrue(validate.isEmpty());
-        assertFalse(validateNull.isEmpty());
+        assertAll(
+                () -> assertTrue(validate.isEmpty()),
+                () -> assertFalse(validateNull.isEmpty())
+        );
     }
 
     @Test
@@ -54,7 +57,9 @@ public class SensorDtoTest {
         Set<ConstraintViolation<SensorResponse>> validate = validator.validate(response);
         Set<ConstraintViolation<SensorResponse>> validateNull = validator.validate(responseWithNull);
 
-        assertTrue(validate.isEmpty());
-        assertFalse(validateNull.isEmpty());
+        assertAll(
+                () -> assertTrue(validate.isEmpty()),
+                () -> assertFalse(validateNull.isEmpty())
+        );
     }
 }

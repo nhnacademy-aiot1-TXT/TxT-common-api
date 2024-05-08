@@ -10,8 +10,7 @@ import javax.validation.ValidatorFactory;
 import java.time.LocalDateTime;
 import java.util.Set;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class NotificationDtoTest {
     private static Validator validator;
@@ -31,8 +30,10 @@ public class NotificationDtoTest {
         Set<ConstraintViolation<NotificationRequest>> validate = validator.validate(request);
         Set<ConstraintViolation<NotificationRequest>> validateNull = validator.validate(requestWithNull);
 
-        assertTrue(validate.isEmpty());
-        assertFalse(validateNull.isEmpty());
+        assertAll(
+                () -> assertTrue(validate.isEmpty()),
+                () -> assertFalse(validateNull.isEmpty())
+        );
     }
 
     @Test
@@ -43,7 +44,9 @@ public class NotificationDtoTest {
         Set<ConstraintViolation<NotificationResponse>> validate = validator.validate(response);
         Set<ConstraintViolation<NotificationResponse>> validateNull = validator.validate(responseWithNull);
 
-        assertTrue(validate.isEmpty());
-        assertFalse(validateNull.isEmpty());
+        assertAll(
+                () -> assertTrue(validate.isEmpty()),
+                () -> assertFalse(validateNull.isEmpty())
+        );
     }
 }

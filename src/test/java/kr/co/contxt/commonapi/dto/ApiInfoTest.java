@@ -9,8 +9,7 @@ import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
 import java.util.Set;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 class ApiInfoTest {
     private static Validator validator;
@@ -30,7 +29,9 @@ class ApiInfoTest {
         Set<ConstraintViolation<ApiInfo>> validate = validator.validate(info);
         Set<ConstraintViolation<ApiInfo>> validateNull = validator.validate(infoWithNull);
 
-        assertTrue(validate.isEmpty());
-        assertFalse(validateNull.isEmpty());
+        assertAll(
+                () -> assertTrue(validate.isEmpty()),
+                () -> assertFalse(validateNull.isEmpty())
+        );
     }
 }

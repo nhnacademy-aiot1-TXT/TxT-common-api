@@ -5,8 +5,7 @@ import org.junit.jupiter.api.Test;
 
 import java.time.LocalTime;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 class TimeIntervalTest {
     @Test
@@ -20,10 +19,12 @@ class TimeIntervalTest {
 
         TimeIntervalResponse timeIntervalResponse = timeInterval.toDto();
 
-        assertNotNull(timeIntervalResponse);
-        assertEquals(timeInterval.getSensor().getSensorId(), timeIntervalResponse.getSensorId());
-        assertEquals(timeInterval.getSensor().getSensorName(), timeIntervalResponse.getSensorName());
-        assertEquals(timeInterval.getBegin(), timeIntervalResponse.getBegin());
-        assertEquals(timeInterval.getEnd(), timeIntervalResponse.getEnd());
+        assertAll(
+                () -> assertNotNull(timeIntervalResponse),
+                () -> assertEquals(timeInterval.getSensor().getSensorId(), timeIntervalResponse.getSensorId()),
+                () -> assertEquals(timeInterval.getSensor().getSensorName(), timeIntervalResponse.getSensorName()),
+                () -> assertEquals(timeInterval.getBegin(), timeIntervalResponse.getBegin()),
+                () -> assertEquals(timeInterval.getEnd(), timeIntervalResponse.getEnd())
+        );
     }
 }

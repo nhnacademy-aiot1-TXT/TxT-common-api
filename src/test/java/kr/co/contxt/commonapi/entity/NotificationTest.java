@@ -5,8 +5,7 @@ import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 class NotificationTest {
     @Test
@@ -20,9 +19,11 @@ class NotificationTest {
 
         NotificationResponse notificationResponse = notification.toDto();
 
-        assertNotNull(notificationResponse);
-        assertEquals(notification.getRole().getRoleId(), notificationResponse.getRoleId());
-        assertEquals(notification.getContents(), notificationResponse.getContents());
-        assertEquals(notification.getTime(), notificationResponse.getTime());
+        assertAll(
+                () -> assertNotNull(notificationResponse),
+                () -> assertEquals(notification.getRole().getRoleId(), notificationResponse.getRoleId()),
+                () -> assertEquals(notification.getContents(), notificationResponse.getContents()),
+                () -> assertEquals(notification.getTime(), notificationResponse.getTime())
+        );
     }
 }

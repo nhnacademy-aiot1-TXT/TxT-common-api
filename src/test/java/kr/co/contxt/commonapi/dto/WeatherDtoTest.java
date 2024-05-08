@@ -9,8 +9,7 @@ import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
 import java.util.Set;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class WeatherDtoTest {
     private static Validator validator;
@@ -30,7 +29,9 @@ public class WeatherDtoTest {
         Set<ConstraintViolation<WeatherResponseDto>> validate = validator.validate(response);
         Set<ConstraintViolation<WeatherResponseDto>> validateNull = validator.validate(responseWithNull);
 
-        assertTrue(validate.isEmpty());
-        assertFalse(validateNull.isEmpty());
+        assertAll(
+                () -> assertTrue(validate.isEmpty()),
+                () -> assertFalse(validateNull.isEmpty())
+        );
     }
 }
