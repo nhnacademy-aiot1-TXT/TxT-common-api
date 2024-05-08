@@ -8,7 +8,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 class SensorTest {
     @Test
-    void deviceEntityTest() {
+    void sensorEntityTest() {
         Sensor sensor = Sensor.builder()
                 .sensorId(1L)
                 .sensorName("test")

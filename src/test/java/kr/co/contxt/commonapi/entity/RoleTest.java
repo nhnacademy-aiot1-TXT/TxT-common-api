@@ -6,7 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class RoleTest {
     @Test
-    void deviceEntityTest() {
+    void roleEntityTest() {
         Role role = Role.builder()
                 .roleId(1L)
                 .roleName("ADMIN")

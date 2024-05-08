@@ -10,7 +10,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 class TimeIntervalTest {
     @Test
-    void deviceEntityTest() {
+    void timeIntervalEntityTest() {
         TimeInterval timeInterval = TimeInterval.builder()
                 .timeIntervalId(1L)
                 .sensor(new Sensor(1L, "test"))
