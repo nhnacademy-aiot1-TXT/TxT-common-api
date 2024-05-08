@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 /**
@@ -68,7 +69,7 @@ public class DeviceRestController {
      */
     @PostMapping
     @Operation(summary = "장비 정보 추가")
-    public ResponseEntity<DeviceResponse> addDevice(@RequestBody DeviceRequest deviceRequest) {
+    public ResponseEntity<DeviceResponse> addDevice(@RequestBody @Valid DeviceRequest deviceRequest) {
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(deviceService.addDevice(deviceRequest));
     }
@@ -82,7 +83,7 @@ public class DeviceRestController {
      */
     @PutMapping("/{deviceId}")
     @Operation(summary = "장비 정보 수정")
-    public ResponseEntity<DeviceResponse> updateDevice(@PathVariable Long deviceId, @RequestBody DeviceRequest deviceRequest) {
+    public ResponseEntity<DeviceResponse> updateDevice(@PathVariable Long deviceId, @RequestBody @Valid DeviceRequest deviceRequest) {
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(deviceService.updateDevice(deviceId, deviceRequest));
     }

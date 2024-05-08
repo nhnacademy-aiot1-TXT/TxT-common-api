@@ -4,6 +4,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+
 /**
  * 장비별 센서 on/off dto
  *
@@ -14,8 +17,12 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class DeviceSensorRequest {
+    @NotBlank
     private String deviceName;
+    @NotBlank
     private String sensorName;
+    @NotNull
     private Float onValue;
+    @NotNull
     private Float offValue;
 }

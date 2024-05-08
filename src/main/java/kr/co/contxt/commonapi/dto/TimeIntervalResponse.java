@@ -5,6 +5,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.time.LocalTime;
 
 /**
@@ -18,8 +20,12 @@ import java.time.LocalTime;
 @NoArgsConstructor
 @AllArgsConstructor
 public class TimeIntervalResponse {
+    @NotNull
     private Long sensorId;
+    @NotBlank
     private String sensorName;
+    @NotNull
     private LocalTime begin;
+    @NotNull
     private LocalTime end;
 }

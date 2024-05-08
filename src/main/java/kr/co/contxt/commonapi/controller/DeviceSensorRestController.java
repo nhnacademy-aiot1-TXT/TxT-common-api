@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 /**
@@ -48,7 +49,7 @@ public class DeviceSensorRestController {
      */
     @GetMapping("/sensors")
     @Operation(summary = "장비별 센서 정보 리스트 조회")
-    public ResponseEntity<List<DeviceSensorResponse>> getSensorListByDeviceName(@ModelAttribute DeviceNameDto deviceNameDto) {
+    public ResponseEntity<List<DeviceSensorResponse>> getSensorListByDeviceName(@ModelAttribute @Valid DeviceNameDto deviceNameDto) {
         List<DeviceSensorResponse> deviceSensors = deviceSensorService.getSensorListByDevice(deviceNameDto);
 
         return ResponseEntity.ok(deviceSensors);
@@ -77,7 +78,7 @@ public class DeviceSensorRestController {
      */
     @GetMapping("/sensor")
     @Operation(summary = "장비별 센서 정보 단일 조회")
-    public ResponseEntity<DeviceSensorResponse> getSensorByDeviceNameAndSensorName(@ModelAttribute DeviceAndSensorNameDto deviceAndSensorNameDto) {
+    public ResponseEntity<DeviceSensorResponse> getSensorByDeviceNameAndSensorName(@ModelAttribute @Valid DeviceAndSensorNameDto deviceAndSensorNameDto) {
         DeviceSensorResponse deviceSensor = deviceSensorService.getSensorByDeviceAndSensor(deviceAndSensorNameDto);
 
         return ResponseEntity.ok(deviceSensor);
@@ -92,7 +93,7 @@ public class DeviceSensorRestController {
      * @return 업데이트된 장비별 센서 dto
      */
     @PutMapping("/{deviceId}/{sensorId}")
-    public ResponseEntity<DeviceSensorResponse> updateSensorByDeviceAndSensor(@PathVariable Long deviceId, @PathVariable Long sensorId, @RequestBody DeviceSensorRequest deviceSensorRequest) {
+    public ResponseEntity<DeviceSensorResponse> updateSensorByDeviceAndSensor(@PathVariable Long deviceId, @PathVariable Long sensorId, @RequestBody @Valid DeviceSensorRequest deviceSensorRequest) {
         DeviceSensorResponse deviceSensor = deviceSensorService.updateSensorByDeviceAndSensor(deviceId, sensorId, deviceSensorRequest);
 
         return ResponseEntity.ok(deviceSensor);

@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 /**
@@ -60,7 +61,7 @@ public class SensorRestController {
      */
     @PostMapping
     @Operation(summary = "센서 정보 추가")
-    public ResponseEntity<SensorResponse> addSensor(@RequestBody SensorRequest sensorRequest) {
+    public ResponseEntity<SensorResponse> addSensor(@RequestBody @Valid SensorRequest sensorRequest) {
         SensorResponse responseSensor = sensorService.saveSensor(sensorRequest.toEntity());
 
         return ResponseEntity.status(HttpStatus.CREATED)
@@ -76,7 +77,7 @@ public class SensorRestController {
      */
     @PutMapping("/{sensorId}")
     @Operation(summary = "센서 정보 수정")
-    public ResponseEntity<SensorResponse> updateSensor(@PathVariable Long sensorId, @RequestBody SensorRequest sensorRequest) {
+    public ResponseEntity<SensorResponse> updateSensor(@PathVariable Long sensorId, @RequestBody @Valid SensorRequest sensorRequest) {
         SensorResponse responseSensor = sensorService.updateSensor(sensorId, sensorRequest);
 
         return ResponseEntity.ok(responseSensor);

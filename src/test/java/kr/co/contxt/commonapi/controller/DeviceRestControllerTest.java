@@ -15,8 +15,7 @@ import org.springframework.http.ResponseEntity;
 import java.time.LocalTime;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.BDDMockito.given;
 
@@ -35,8 +34,10 @@ class DeviceRestControllerTest {
 
         ResponseEntity<List<DeviceResponse>> responseEntity = deviceRestController.getDeviceList();
 
-        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-        assertEquals(deviceList, responseEntity.getBody());
+        assertAll(
+                () -> assertEquals(HttpStatus.OK, responseEntity.getStatusCode()),
+                () -> assertEquals(deviceList, responseEntity.getBody())
+        );
     }
 
     @Test
@@ -47,8 +48,10 @@ class DeviceRestControllerTest {
 
         ResponseEntity<DeviceResponse> responseEntity = deviceRestController.getDeviceById(1L);
 
-        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-        assertEquals(device, responseEntity.getBody());
+        assertAll(
+                () -> assertEquals(HttpStatus.OK, responseEntity.getStatusCode()),
+                () -> assertEquals(device, responseEntity.getBody())
+        );
     }
 
     @Test
@@ -59,22 +62,28 @@ class DeviceRestControllerTest {
 
         ResponseEntity<DeviceResponse> responseEntity = deviceRestController.getDeviceByName("test");
 
-        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-        assertEquals(device, responseEntity.getBody());
+        assertAll(
+                () -> assertEquals(HttpStatus.OK, responseEntity.getStatusCode()),
+                () -> assertEquals(device, responseEntity.getBody())
+        );
     }
 
     @Test
     void getDeviceByIdException() {
         given(deviceService.getDeviceById(anyLong())).willThrow(DeviceNotFoundException.class);
 
-        assertThrows(DeviceNotFoundException.class, () -> deviceRestController.getDeviceById(1L));
+        assertAll(
+                () -> assertThrows(DeviceNotFoundException.class, () -> deviceRestController.getDeviceById(1L))
+        );
     }
 
     @Test
     void getDeviceByNameException() {
         given(deviceService.getDeviceByName(anyString())).willThrow(DeviceNotFoundException.class);
 
-        assertThrows(DeviceNotFoundException.class, () -> deviceRestController.getDeviceByName("airconditioner"));
+        assertAll(
+                () -> assertThrows(DeviceNotFoundException.class, () -> deviceRestController.getDeviceByName("airconditioner"))
+        );
     }
 
     @Test
@@ -84,9 +93,10 @@ class DeviceRestControllerTest {
         given(deviceService.addDevice(any())).willReturn(device);
 
         ResponseEntity<DeviceResponse> responseEntity = deviceRestController.addDevice(new DeviceRequest());
-
-        assertEquals(HttpStatus.CREATED, responseEntity.getStatusCode());
-        assertEquals(device, responseEntity.getBody());
+        assertAll(
+                () -> assertEquals(HttpStatus.CREATED, responseEntity.getStatusCode()),
+                () -> assertEquals(device, responseEntity.getBody())
+        );
     }
 
     @Test
@@ -97,8 +107,10 @@ class DeviceRestControllerTest {
 
         ResponseEntity<DeviceResponse> responseEntity = deviceRestController.updateDevice(1L, new DeviceRequest());
 
-        assertEquals(HttpStatus.CREATED, responseEntity.getStatusCode());
-        assertEquals(device, responseEntity.getBody());
+        assertAll(
+                () -> assertEquals(HttpStatus.CREATED, responseEntity.getStatusCode()),
+                () -> assertEquals(device, responseEntity.getBody())
+        );
     }
 
     @Test
@@ -107,7 +119,9 @@ class DeviceRestControllerTest {
 
         given(deviceService.updateDevice(anyLong(), any())).willThrow(DeviceNotFoundException.class);
 
-        assertThrows(DeviceNotFoundException.class, () -> deviceRestController.updateDevice(1L, deviceRequest));
+        assertAll(
+                () -> assertThrows(DeviceNotFoundException.class, () -> deviceRestController.updateDevice(1L, deviceRequest))
+        );
     }
 
 }

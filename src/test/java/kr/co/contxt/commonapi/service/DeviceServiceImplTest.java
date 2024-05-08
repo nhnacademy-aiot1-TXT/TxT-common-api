@@ -18,8 +18,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.BDDMockito.given;
 
@@ -41,8 +40,10 @@ class DeviceServiceImplTest {
 
         List<DeviceResponse> result = deviceService.getDeviceList();
 
-        assertEquals(deviceList.size(), result.size());
-        assertEquals(deviceList.stream().map(Device::toDto).collect(Collectors.toList()), result);
+        assertAll(
+                () -> assertEquals(deviceList.size(), result.size()),
+                () -> assertEquals(deviceList.stream().map(Device::toDto).collect(Collectors.toList()), result)
+        );
     }
 
     @Test
@@ -53,9 +54,11 @@ class DeviceServiceImplTest {
 
         DeviceResponse result = deviceService.getDeviceById(1L);
 
-        assertEquals(device.getDeviceId(), result.getDeviceId());
-        assertEquals(device.getDeviceName(), result.getDeviceName());
-        assertEquals(device.getCycle(), result.getCycle());
+        assertAll(
+                () -> assertEquals(device.getDeviceId(), result.getDeviceId()),
+                () -> assertEquals(device.getDeviceName(), result.getDeviceName()),
+                () -> assertEquals(device.getCycle(), result.getCycle())
+        );
     }
 
     @Test
@@ -66,23 +69,29 @@ class DeviceServiceImplTest {
 
         DeviceResponse result = deviceService.getDeviceByName("test1");
 
-        assertEquals(device.getDeviceId(), result.getDeviceId());
-        assertEquals(device.getDeviceName(), result.getDeviceName());
-        assertEquals(device.getCycle(), result.getCycle());
+        assertAll(
+                () -> assertEquals(device.getDeviceId(), result.getDeviceId()),
+                () -> assertEquals(device.getDeviceName(), result.getDeviceName()),
+                () -> assertEquals(device.getCycle(), result.getCycle())
+        );
     }
 
     @Test
     void getDeviceByIdException() {
         given(deviceRepository.findById(anyLong())).willThrow(DeviceNotFoundException.class);
 
-        assertThrows(DeviceNotFoundException.class, () -> deviceService.getDeviceById(1L));
+        assertAll(
+                () -> assertThrows(DeviceNotFoundException.class, () -> deviceService.getDeviceById(1L))
+        );
     }
 
     @Test
     void getDeviceByNameException() {
         given(deviceRepository.findByDeviceName(anyString())).willThrow(DeviceNotFoundException.class);
 
-        assertThrows(DeviceNotFoundException.class, () -> deviceService.getDeviceByName("test"));
+        assertAll(
+                () -> assertThrows(DeviceNotFoundException.class, () -> deviceService.getDeviceByName("test"))
+        );
     }
 
     @Test
@@ -93,9 +102,11 @@ class DeviceServiceImplTest {
 
         DeviceResponse result = deviceService.addDevice(new DeviceRequest());
 
-        assertEquals(device.getDeviceId(), result.getDeviceId());
-        assertEquals(device.getDeviceName(), result.getDeviceName());
-        assertEquals(device.getCycle(), result.getCycle());
+        assertAll(
+                () -> assertEquals(device.getDeviceId(), result.getDeviceId()),
+                () -> assertEquals(device.getDeviceName(), result.getDeviceName()),
+                () -> assertEquals(device.getCycle(), result.getCycle())
+        );
     }
 
     @Test
@@ -107,15 +118,19 @@ class DeviceServiceImplTest {
 
         DeviceResponse result = deviceService.updateDevice(1L, new DeviceRequest());
 
-        assertEquals(device.getDeviceId(), result.getDeviceId());
-        assertEquals(device.getDeviceName(), result.getDeviceName());
-        assertEquals(device.getCycle(), result.getCycle());
+        assertAll(
+                () -> assertEquals(device.getDeviceId(), result.getDeviceId()),
+                () -> assertEquals(device.getDeviceName(), result.getDeviceName()),
+                () -> assertEquals(device.getCycle(), result.getCycle())
+        );
     }
 
     @Test
     void updateDeviceException() {
         given(deviceRepository.findById(anyLong())).willThrow(DeviceNotFoundException.class);
 
-        assertThrows(DeviceNotFoundException.class, () -> deviceService.updateDevice(1L, new DeviceRequest()));
+        assertAll(
+                () -> assertThrows(DeviceNotFoundException.class, () -> deviceService.updateDevice(1L, new DeviceRequest()))
+        );
     }
 }

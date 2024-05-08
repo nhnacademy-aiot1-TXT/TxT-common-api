@@ -15,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 
 import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
@@ -39,8 +40,10 @@ class NotificationRestControllerTest {
 
         ResponseEntity<List<NotificationResponse>> responseEntity = notificationRestController.getNotifications("testId");
 
-        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-        assertEquals(notificationList, responseEntity.getBody());
+        assertAll(
+                () -> assertEquals(HttpStatus.OK, responseEntity.getStatusCode()),
+                () -> assertEquals(notificationList, responseEntity.getBody())
+        );
     }
 
     @Test
@@ -49,6 +52,8 @@ class NotificationRestControllerTest {
 
         ResponseEntity<Void> responseEntity = notificationRestController.addNotification(notificationRequest);
 
-        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+        assertAll(
+                () -> assertEquals(HttpStatus.OK, responseEntity.getStatusCode())
+        );
     }
 }

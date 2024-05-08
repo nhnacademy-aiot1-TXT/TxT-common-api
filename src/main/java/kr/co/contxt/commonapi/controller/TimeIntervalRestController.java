@@ -11,6 +11,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
 /**
  * TimeInterval Rest Controller 클래스
  *
@@ -46,7 +48,7 @@ public class TimeIntervalRestController {
      */
     @GetMapping
     @Operation(summary = "센서 이름으로 탐지 시간 조회")
-    public ResponseEntity<TimeIntervalResponse> getTimeIntervalBySensorName(@ModelAttribute SensorNameDto sensorNameDto) {
+    public ResponseEntity<TimeIntervalResponse> getTimeIntervalBySensorName(@ModelAttribute @Valid SensorNameDto sensorNameDto) {
         TimeIntervalResponse timeIntervalResponse = timeIntervalService.getTimeInterval(sensorNameDto);
 
         return ResponseEntity.ok(timeIntervalResponse);
@@ -60,7 +62,7 @@ public class TimeIntervalRestController {
      */
     @PostMapping
     @Operation(summary = "탐지 시간 추가")
-    public ResponseEntity<Void> addTimeInterval(@RequestBody TimeIntervalRequest timeIntervalRequest) {
+    public ResponseEntity<Void> addTimeInterval(@RequestBody @Valid TimeIntervalRequest timeIntervalRequest) {
         timeIntervalService.createTimeInterval(timeIntervalRequest);
 
         return ResponseEntity.status(HttpStatus.OK)
@@ -76,7 +78,7 @@ public class TimeIntervalRestController {
      */
     @PutMapping("/{timeIntervalId}")
     @Operation(summary = "탐지 시간 수정")
-    public ResponseEntity<TimeIntervalResponse> updateTimeInterval(@PathVariable Long timeIntervalId, @RequestBody TimeIntervalRequest timeIntervalRequest) {
+    public ResponseEntity<TimeIntervalResponse> updateTimeInterval(@PathVariable Long timeIntervalId, @RequestBody @Valid TimeIntervalRequest timeIntervalRequest) {
         TimeIntervalResponse timeIntervalResponse = timeIntervalService.updateTimeInterval(timeIntervalId, timeIntervalRequest);
 
         return ResponseEntity.ok(timeIntervalResponse);
