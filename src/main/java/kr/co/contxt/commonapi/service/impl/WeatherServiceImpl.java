@@ -4,7 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import kr.co.contxt.commonapi.adapter.WeatherAdapter;
 import kr.co.contxt.commonapi.dto.ApiInfo;
-import kr.co.contxt.commonapi.dto.WeatherResponseDto;
+import kr.co.contxt.commonapi.dto.WeatherResponse;
 import kr.co.contxt.commonapi.exception.SkyInfoNotFoundException;
 import kr.co.contxt.commonapi.exception.TemperatureInfoNotFoundException;
 import kr.co.contxt.commonapi.properties.WeatherApiProperties;
@@ -39,7 +39,7 @@ public class WeatherServiceImpl implements WeatherService {
      * @return 날씨 온도 정보
      */
     @Override
-    public WeatherResponseDto getWeather() {
+    public WeatherResponse getWeather() {
         LocalDateTime dateTime = LocalDateTime.now();
         if (
                 dateTime.isAfter(
@@ -97,6 +97,6 @@ public class WeatherServiceImpl implements WeatherService {
                 .findFirst()
                 .orElseThrow(() -> new SkyInfoNotFoundException("날씨를 가져올 수 없습니다."));
 
-        return new WeatherResponseDto(Float.valueOf(temperatureInfo.getFcstValue()), skyMap.get(skyInfo.getFcstValue()));
+        return new WeatherResponse(Float.valueOf(temperatureInfo.getFcstValue()), skyMap.get(skyInfo.getFcstValue()));
     }
 }
