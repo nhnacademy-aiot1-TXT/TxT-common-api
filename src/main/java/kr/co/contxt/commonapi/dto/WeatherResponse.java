@@ -5,9 +5,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-
 /**
  * Weather 응답 Dto 클래스
  *
@@ -18,9 +15,7 @@ import javax.validation.constraints.NotNull;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class WeatherResponseDto {
-    @NotNull
+public class WeatherResponse {
     private Float temperature;
-    @NotBlank
     private String sky;
 }
