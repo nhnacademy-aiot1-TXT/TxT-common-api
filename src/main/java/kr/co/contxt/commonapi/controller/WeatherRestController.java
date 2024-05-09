@@ -2,7 +2,7 @@ package kr.co.contxt.commonapi.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import kr.co.contxt.commonapi.dto.WeatherResponseDto;
+import kr.co.contxt.commonapi.dto.WeatherResponse;
 import kr.co.contxt.commonapi.service.WeatherService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -30,8 +30,8 @@ public class WeatherRestController {
      */
     @GetMapping
     @Operation(summary = "날씨, 온도 조회 API")
-    public ResponseEntity<WeatherResponseDto> getWeather() {
-        WeatherResponseDto weather = weatherService.getWeather();
+    public ResponseEntity<WeatherResponse> getWeather() {
+        WeatherResponse weather = weatherService.getWeather();
 
         return ResponseEntity.ok(weather);
     }
