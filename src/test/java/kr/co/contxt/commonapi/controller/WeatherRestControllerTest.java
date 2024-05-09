@@ -1,6 +1,6 @@
 package kr.co.contxt.commonapi.controller;
 
-import kr.co.contxt.commonapi.dto.WeatherResponseDto;
+import kr.co.contxt.commonapi.dto.WeatherResponse;
 import kr.co.contxt.commonapi.exception.SkyInfoNotFoundException;
 import kr.co.contxt.commonapi.exception.TemperatureInfoNotFoundException;
 import kr.co.contxt.commonapi.service.WeatherService;
@@ -32,9 +32,9 @@ class WeatherRestControllerTest {
         // given
         Float temperature = 21.0f;
         String sky = "맑음";
-        WeatherResponseDto weatherResponseDto = new WeatherResponseDto(temperature, sky);
+        WeatherResponse weatherResponse = new WeatherResponse(temperature, sky);
 
-        given(weatherService.getWeather()).willReturn(weatherResponseDto);
+        given(weatherService.getWeather()).willReturn(weatherResponse);
 
         //when
         //then

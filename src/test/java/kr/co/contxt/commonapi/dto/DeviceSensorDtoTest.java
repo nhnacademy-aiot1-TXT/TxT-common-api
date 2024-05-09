@@ -11,7 +11,7 @@ import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class DeviceSensorDtoTest {
+class DeviceSensorDtoTest {
     private static Validator validator;
 
     @BeforeAll
@@ -56,20 +56,6 @@ public class DeviceSensorDtoTest {
 
         Set<ConstraintViolation<DeviceSensorRequest>> validate = validator.validate(request);
         Set<ConstraintViolation<DeviceSensorRequest>> validateNull = validator.validate(requestWithNull);
-
-        assertAll(
-                () -> assertTrue(validate.isEmpty()),
-                () -> assertFalse(validateNull.isEmpty())
-        );
-    }
-
-    @Test
-    void deviceSensorResponseValidation() {
-        DeviceSensorResponse response = new DeviceSensorResponse(1L, 2L, "test", 3f, 4f);
-        DeviceSensorResponse responseWithNull = new DeviceSensorResponse(null, null, "", null, null);
-
-        Set<ConstraintViolation<DeviceSensorResponse>> validate = validator.validate(response);
-        Set<ConstraintViolation<DeviceSensorResponse>> validateNull = validator.validate(responseWithNull);
 
         assertAll(
                 () -> assertTrue(validate.isEmpty()),

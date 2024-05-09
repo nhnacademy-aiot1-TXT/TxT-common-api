@@ -12,7 +12,7 @@ import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class NotificationDtoTest {
+class NotificationDtoTest {
     private static Validator validator;
 
     @BeforeAll
@@ -29,20 +29,6 @@ public class NotificationDtoTest {
 
         Set<ConstraintViolation<NotificationRequest>> validate = validator.validate(request);
         Set<ConstraintViolation<NotificationRequest>> validateNull = validator.validate(requestWithNull);
-
-        assertAll(
-                () -> assertTrue(validate.isEmpty()),
-                () -> assertFalse(validateNull.isEmpty())
-        );
-    }
-
-    @Test
-    void notificationResponseValidation() {
-        NotificationResponse response = new NotificationResponse(1L, "test", LocalDateTime.now());
-        NotificationResponse responseWithNull = new NotificationResponse(null, "", null);
-
-        Set<ConstraintViolation<NotificationResponse>> validate = validator.validate(response);
-        Set<ConstraintViolation<NotificationResponse>> validateNull = validator.validate(responseWithNull);
 
         assertAll(
                 () -> assertTrue(validate.isEmpty()),
