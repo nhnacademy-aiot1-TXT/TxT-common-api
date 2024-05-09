@@ -2,8 +2,6 @@ package kr.co.contxt.commonapi.dto;
 
 import lombok.Data;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
 /**
@@ -14,8 +12,6 @@ import java.time.LocalDateTime;
  */
 @Data
 public class ApiExceptionDto {
-    @NotNull
     private final LocalDateTime time;
-    @NotBlank
     private final String message;
 }
