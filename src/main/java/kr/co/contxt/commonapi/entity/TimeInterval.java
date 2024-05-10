@@ -37,6 +37,7 @@ public class TimeInterval {
      */
     public TimeIntervalResponse toDto() {
         return TimeIntervalResponse.builder()
+                .timeIntervalId(timeIntervalId)
                 .sensorId(sensor.getSensorId())
                 .sensorName(sensor.getSensorName())
                 .begin(begin)
