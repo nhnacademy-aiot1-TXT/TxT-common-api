@@ -49,3 +49,12 @@ server:
     encoding:
       force: 'true'
       charset: UTF-8
+management:
+  endpoints:
+    web:
+      exposure:
+        include: beans, conditions, configprops, env, health, httpexchanges, info, loggers, metrics, mappings, threaddump, shutdown
+      base-path: /common/manage
+  endpoint:
+    health:
+      show-details: always
