@@ -54,7 +54,7 @@ management:
     web:
       exposure:
         include: beans, conditions, configprops, env, health, httpexchanges, info, loggers, metrics, mappings, threaddump, shutdown
-      base-path: /common/manage
+      base-path: /common-api-server/manage
   endpoint:
     health:
       show-details: always
