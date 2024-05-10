@@ -11,7 +11,7 @@ import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class SensorDtoTest {
+class SensorDtoTest {
     private static Validator validator;
 
     @BeforeAll
@@ -42,20 +42,6 @@ public class SensorDtoTest {
 
         Set<ConstraintViolation<SensorRequest>> validate = validator.validate(request);
         Set<ConstraintViolation<SensorRequest>> validateNull = validator.validate(requestWithNull);
-
-        assertAll(
-                () -> assertTrue(validate.isEmpty()),
-                () -> assertFalse(validateNull.isEmpty())
-        );
-    }
-
-    @Test
-    void sensorResponseValidation() {
-        SensorResponse response = new SensorResponse(1L, "test");
-        SensorResponse responseWithNull = new SensorResponse(null, "");
-
-        Set<ConstraintViolation<SensorResponse>> validate = validator.validate(response);
-        Set<ConstraintViolation<SensorResponse>> validateNull = validator.validate(responseWithNull);
 
         assertAll(
                 () -> assertTrue(validate.isEmpty()),

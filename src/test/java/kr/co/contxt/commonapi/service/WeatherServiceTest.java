@@ -1,7 +1,7 @@
 package kr.co.contxt.commonapi.service;
 
 import kr.co.contxt.commonapi.adapter.WeatherAdapter;
-import kr.co.contxt.commonapi.dto.WeatherResponseDto;
+import kr.co.contxt.commonapi.dto.WeatherResponse;
 import kr.co.contxt.commonapi.exception.SkyInfoNotFoundException;
 import kr.co.contxt.commonapi.exception.TemperatureInfoNotFoundException;
 import org.junit.jupiter.api.Test;
@@ -59,7 +59,7 @@ class WeatherServiceTest {
         ).willReturn(mockWeatherInfo);
 
         // 테스트 실행
-        WeatherResponseDto result = weatherService.getWeather();
+        WeatherResponse result = weatherService.getWeather();
 
         // 결과 검증
         assertEquals(25.5f, result.getTemperature());

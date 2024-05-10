@@ -1,6 +1,6 @@
 package kr.co.contxt.commonapi.service;
 
-import kr.co.contxt.commonapi.dto.WeatherResponseDto;
+import kr.co.contxt.commonapi.dto.WeatherResponse;
 
 /**
  * Weather interface
@@ -14,5 +14,5 @@ public interface WeatherService {
      *
      * @return 날씨 온도 정보
      */
-    WeatherResponseDto getWeather();
+    WeatherResponse getWeather();
 }

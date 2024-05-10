@@ -12,7 +12,7 @@ import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class DeviceDtoTest {
+class DeviceDtoTest {
     private static Validator validator;
 
     @BeforeAll
@@ -29,20 +29,6 @@ public class DeviceDtoTest {
 
         Set<ConstraintViolation<DeviceRequest>> validate = validator.validate(request);
         Set<ConstraintViolation<DeviceRequest>> validateNull = validator.validate(requestWithNull);
-
-        assertAll(
-                () -> assertTrue(validate.isEmpty()),
-                () -> assertFalse(validateNull.isEmpty())
-        );
-    }
-
-    @Test
-    void deviceResponseValidation() {
-        DeviceResponse response = new DeviceResponse(1L, "test", LocalTime.now());
-        DeviceResponse responseWithNull = new DeviceResponse(null, "", null);
-
-        Set<ConstraintViolation<DeviceResponse>> validate = validator.validate(response);
-        Set<ConstraintViolation<DeviceResponse>> validateNull = validator.validate(responseWithNull);
 
         assertAll(
                 () -> assertTrue(validate.isEmpty()),

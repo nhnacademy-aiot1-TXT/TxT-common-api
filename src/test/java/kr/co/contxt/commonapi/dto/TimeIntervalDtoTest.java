@@ -12,7 +12,7 @@ import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class TimeIntervalDtoTest {
+class TimeIntervalDtoTest {
     private static Validator validator;
 
     @BeforeAll
@@ -29,20 +29,6 @@ public class TimeIntervalDtoTest {
 
         Set<ConstraintViolation<TimeIntervalRequest>> validate = validator.validate(request);
         Set<ConstraintViolation<TimeIntervalRequest>> validateNull = validator.validate(requestWithNull);
-
-        assertAll(
-                () -> assertTrue(validate.isEmpty()),
-                () -> assertFalse(validateNull.isEmpty())
-        );
-    }
-
-    @Test
-    void timeIntervalResponseValidation() {
-        TimeIntervalResponse response = new TimeIntervalResponse(1L, "test", LocalTime.now(), LocalTime.now());
-        TimeIntervalResponse responseWithNull = new TimeIntervalResponse(null, "", null, null);
-
-        Set<ConstraintViolation<TimeIntervalResponse>> validate = validator.validate(response);
-        Set<ConstraintViolation<TimeIntervalResponse>> validateNull = validator.validate(responseWithNull);
 
         assertAll(
                 () -> assertTrue(validate.isEmpty()),

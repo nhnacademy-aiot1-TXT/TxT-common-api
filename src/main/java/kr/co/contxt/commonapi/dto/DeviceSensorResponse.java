@@ -5,9 +5,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-
 /**
  * DeviceSensor 응답 DTO 클래스
  *
@@ -19,14 +16,9 @@ import javax.validation.constraints.NotNull;
 @NoArgsConstructor
 @AllArgsConstructor
 public class DeviceSensorResponse {
-    @NotNull
     private Long deviceId;
-    @NotNull
     private Long sensorId;
-    @NotBlank
     private String sensorName;
-    @NotNull
     private Float onValue;
-    @NotNull
     private Float offValue;
 }
