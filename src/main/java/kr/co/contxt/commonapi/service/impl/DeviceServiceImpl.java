@@ -49,6 +49,25 @@ public class DeviceServiceImpl implements DeviceService {
     }
 
     /**
+     * 장소별 Device 리스트 조회 메서드
+     *
+     * @return device list
+     */
+    @Override
+    @Transactional(readOnly = true)
+    @Cacheable(
+            value = "getDeviceListByPlace",
+            key = "#placeId",
+            unless = "#result == null"
+    )
+    public List<DeviceResponse> getDeviceListByPlace(Long placeId) {
+        return deviceRepository.findByPlace_PlaceId(placeId)
+                .stream()
+                .map(Device::toDto)
+                .collect(Collectors.toList());
+    }
+
+    /**
      * Device 단일 조회 메서드
      *
      * @param deviceId the device id
@@ -70,18 +89,19 @@ public class DeviceServiceImpl implements DeviceService {
     /**
      * Device 단일 조회 메서드
      *
+     * @param placeName  the place name
      * @param deviceName the device name
      * @return device
      */
     @Override
     @Transactional(readOnly = true)
     @Cacheable(
-            value = "getDeviceByName",
-            key = "#deviceName",
+            value = "getDeviceByPlaceAndName",
+            key = "#placeName.concat('-').concat(#deviceName)",
             unless = "#result == null"
     )
-    public DeviceResponse getDeviceByName(String deviceName) {
-        return deviceRepository.findByDeviceName(deviceName)
+    public DeviceResponse getDeviceByPlaceAndName(String placeName, String deviceName) {
+        return deviceRepository.findByPlace_PlaceNameAndDeviceName(placeName, deviceName)
                 .orElseThrow(() -> new DeviceNotFoundException(DEVICE_NOT_FOUND_MESSAGE))
                 .toDto();
     }
@@ -89,14 +109,22 @@ public class DeviceServiceImpl implements DeviceService {
     /**
      * Device 추가 메서드
      *
-     * @param deviceRequest the device name and device cycle
+     * @param deviceRequest the place name and device name and device cycle
      * @return device response
      */
     @Override
     @Transactional
-    @CacheEvict(
-            value = "getDeviceList",
-            key = "'all'"
+    @Caching(
+            evict = {
+                    @CacheEvict(
+                            value = "getDeviceList",
+                            key = "'all'"
+                    ),
+                    @CacheEvict(
+                            value = "getDeviceListByPlace",
+                            key = "#deviceRequest.placeId"
+                    )
+            }
     )
     public DeviceResponse addDevice(DeviceRequest deviceRequest) {
         return deviceRepository.save(deviceRequest.toEntity()).toDto();
@@ -116,16 +144,16 @@ public class DeviceServiceImpl implements DeviceService {
                     @CacheEvict(
                             value = "getDeviceList",
                             key = "'all'"
+                    ),
+                    @CacheEvict(
+                            value = "getDeviceListByPlace",
+                            key = "#deviceRequest.placeId"
                     )
             },
             put = {
                     @CachePut(
                             value = "getDeviceById",
                             key = "#deviceId"
-                    ),
-                    @CachePut(
-                            value = "getDeviceByName",
-                            key = "#deviceRequest.getDeviceName()"
                     )
             }
     )
