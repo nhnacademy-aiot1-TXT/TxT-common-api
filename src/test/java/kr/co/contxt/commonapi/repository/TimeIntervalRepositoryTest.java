@@ -84,4 +84,30 @@ class TimeIntervalRepositoryTest {
                 () -> assertEquals(end, timeIntervalResult.getEnd())
         );
     }
+
+    @Test
+    void existsBySensor_SensorId() {
+        LocalTime begin = LocalTime.of(0, 0, 0);
+        LocalTime end = LocalTime.of(7, 0, 0);
+        String sensorName = "test sensor";
+        Sensor sensor = Sensor.builder()
+                .sensorName(sensorName)
+                .build();
+        TimeInterval timeInterval = TimeInterval.builder()
+                .sensor(sensor)
+                .begin(begin)
+                .end(end)
+                .build();
+
+        entityManager.persist(sensor);
+        entityManager.persist(timeInterval);
+
+        Long sensorId = sensor.getSensorId();
+
+        boolean existTimeInterval = timeIntervalRepository.existsBySensor_SensorId(sensorId);
+
+        assertAll(
+                () -> assertTrue(existTimeInterval)
+        );
+    }
 }
