@@ -46,10 +46,11 @@ public class CommonApiConfig {
      */
     @Bean
     public List<Device> deviceList() {
+        Place place = new Place(1L, "class_a");
         List<Device> deviceList = new ArrayList<>();
-        deviceList.add(new Device(1L, "airconditioner", LocalTime.of(0, 10, 0)));
-        deviceList.add(new Device(2L, "aircleaner", LocalTime.of(0, 20, 0)));
-        deviceList.add(new Device(3L, "light", LocalTime.of(0, 30, 0)));
+        deviceList.add(new Device(1L, place, "airconditioner", LocalTime.of(0, 10, 0)));
+        deviceList.add(new Device(2L, place, "aircleaner", LocalTime.of(0, 20, 0)));
+        deviceList.add(new Device(3L, place, "light", LocalTime.of(0, 30, 0)));
 
         return deviceList;
     }

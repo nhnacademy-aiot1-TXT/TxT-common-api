@@ -38,6 +38,17 @@ public class DeviceRestController {
     }
 
     /**
+     * 장소별 장비 정보 리스트 조회 api
+     *
+     * @return the device list
+     */
+    @GetMapping("/devices/{placeId}")
+    @Operation(summary = "장소별 장비 정보 리스트 조회")
+    public ResponseEntity<List<DeviceResponse>> getDeviceListByPlace(@PathVariable Long placeId) {
+        return ResponseEntity.ok(deviceService.getDeviceListByPlace(placeId));
+    }
+
+    /**
      * 장비 정보 ID로 단일 조회 api
      *
      * @param deviceId the device id
@@ -52,13 +63,14 @@ public class DeviceRestController {
     /**
      * 장비 정보 이름으로 단일 조회 api
      *
-     * @param name the device id
+     * @param placeName the place name
+     * @param name      the device name
      * @return the device
      */
     @GetMapping
     @Operation(summary = "장비 정보 단일 조회")
-    public ResponseEntity<DeviceResponse> getDeviceByName(@RequestParam String name) {
-        return ResponseEntity.ok(deviceService.getDeviceByName(name));
+    public ResponseEntity<DeviceResponse> getDeviceByName(@RequestParam String placeName, @RequestParam String name) {
+        return ResponseEntity.ok(deviceService.getDeviceByPlaceAndName(placeName, name));
     }
 
     /**

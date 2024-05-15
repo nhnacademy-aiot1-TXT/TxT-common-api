@@ -20,16 +20,16 @@ class DeviceRepositoryTest {
     private DeviceRepository deviceRepository;
 
     @Test
-    void findByName() {
+    void findByPlaceAndName() {
         Device device = Device.builder()
                 .deviceId(1L)
                 .deviceName("test")
                 .cycle(LocalTime.of(0, 10))
                 .build();
 
-        given(deviceRepository.findByDeviceName(anyString())).willReturn(Optional.of(device));
+        given(deviceRepository.findByPlace_PlaceNameAndDeviceName(anyString(), anyString())).willReturn(Optional.of(device));
 
-        Device result = deviceRepository.findByDeviceName("test").get();
+        Device result = deviceRepository.findByPlace_PlaceNameAndDeviceName("test place", "test").get();
 
         assertAll(() -> {
             assertEquals(device.getDeviceId(), result.getDeviceId());

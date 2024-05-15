@@ -10,16 +10,17 @@ import static org.junit.jupiter.api.Assertions.*;
 class DeviceSensorTest {
     @Test
     void deviceSensorEntityTest() {
+        Place place = new Place(1L, "test place");
         DeviceSensor deviceSensor = DeviceSensor.builder()
                 .deviceSensorId(1L)
                 .onValue(25f)
                 .offValue(20f)
-                .device(new Device(1L, "test device", LocalTime.now()))
+                .device(new Device(1L, place, "test device", LocalTime.now()))
                 .sensor(new Sensor(1L, "test sensor"))
                 .build();
 
         DeviceSensorResponse deviceSensorResponse = deviceSensor.toDto();
-        
+
         assertAll(
                 () -> assertNotNull(deviceSensorResponse),
                 () -> assertEquals(deviceSensor.getDevice().getDeviceId(), deviceSensorResponse.getDeviceId()),

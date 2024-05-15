@@ -42,7 +42,7 @@ class DeviceRestControllerTest {
 
     @Test
     void getDeviceById() {
-        DeviceResponse device = new DeviceResponse(1L, "test", LocalTime.of(0, 30, 0));
+        DeviceResponse device = new DeviceResponse(1L, 1L, "test", LocalTime.of(0, 30, 0));
 
         given(deviceService.getDeviceById(anyLong())).willReturn(device);
 
@@ -56,11 +56,11 @@ class DeviceRestControllerTest {
 
     @Test
     void getDeviceByName() {
-        DeviceResponse device = new DeviceResponse(1L, "test", LocalTime.of(0, 30, 0));
+        DeviceResponse device = new DeviceResponse(1L, 1L, "test", LocalTime.of(0, 30, 0));
 
-        given(deviceService.getDeviceByName(anyString())).willReturn(device);
+        given(deviceService.getDeviceByPlaceAndName(anyString(), anyString())).willReturn(device);
 
-        ResponseEntity<DeviceResponse> responseEntity = deviceRestController.getDeviceByName("test");
+        ResponseEntity<DeviceResponse> responseEntity = deviceRestController.getDeviceByName("test place", "test device");
 
         assertAll(
                 () -> assertEquals(HttpStatus.OK, responseEntity.getStatusCode()),
@@ -79,16 +79,16 @@ class DeviceRestControllerTest {
 
     @Test
     void getDeviceByNameException() {
-        given(deviceService.getDeviceByName(anyString())).willThrow(DeviceNotFoundException.class);
+        given(deviceService.getDeviceByPlaceAndName(anyString(), anyString())).willThrow(DeviceNotFoundException.class);
 
         assertAll(
-                () -> assertThrows(DeviceNotFoundException.class, () -> deviceRestController.getDeviceByName("airconditioner"))
+                () -> assertThrows(DeviceNotFoundException.class, () -> deviceRestController.getDeviceByName("test place", "test device"))
         );
     }
 
     @Test
     void addDevice() {
-        DeviceResponse device = new DeviceResponse(1L, "test", LocalTime.of(0, 30, 0));
+        DeviceResponse device = new DeviceResponse(1L, 1L, "test", LocalTime.of(0, 30, 0));
 
         given(deviceService.addDevice(any())).willReturn(device);
 
@@ -101,7 +101,7 @@ class DeviceRestControllerTest {
 
     @Test
     void updateDevice() {
-        DeviceResponse device = new DeviceResponse(1L, "test", LocalTime.of(0, 30, 0));
+        DeviceResponse device = new DeviceResponse(1L, 1L, "test", LocalTime.of(0, 30, 0));
 
         given(deviceService.updateDevice(anyLong(), any())).willReturn(device);
 
