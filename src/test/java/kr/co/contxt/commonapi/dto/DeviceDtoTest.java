@@ -24,8 +24,8 @@ class DeviceDtoTest {
 
     @Test
     void deviceRequestValidation() {
-        DeviceRequest request = new DeviceRequest("test", LocalTime.now());
-        DeviceRequest requestWithNull = new DeviceRequest("", null);
+        DeviceRequest request = new DeviceRequest(1L, "test", LocalTime.now());
+        DeviceRequest requestWithNull = new DeviceRequest(null, "", null);
 
         Set<ConstraintViolation<DeviceRequest>> validate = validator.validate(request);
         Set<ConstraintViolation<DeviceRequest>> validateNull = validator.validate(requestWithNull);

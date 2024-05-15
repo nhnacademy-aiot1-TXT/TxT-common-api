@@ -11,13 +11,14 @@ class DeviceTest {
     @Test
     void deviceEntityTest() {
         Device device = Device.builder()
+                .place(new Place(1L, "test place"))
                 .deviceId(1L)
                 .deviceName("Test Device")
                 .cycle(LocalTime.of(10, 0))
                 .build();
 
         DeviceResponse deviceResponse = device.toDto();
-        
+
         assertAll(
                 () -> assertNotNull(deviceResponse),
                 () -> assertEquals(device.getDeviceId(), deviceResponse.getDeviceId()),

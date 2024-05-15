@@ -3,6 +3,7 @@ package kr.co.contxt.commonapi.service;
 import kr.co.contxt.commonapi.dto.DeviceRequest;
 import kr.co.contxt.commonapi.dto.DeviceResponse;
 import kr.co.contxt.commonapi.entity.Device;
+import kr.co.contxt.commonapi.entity.Place;
 import kr.co.contxt.commonapi.exception.DeviceNotFoundException;
 import kr.co.contxt.commonapi.repository.DeviceRepository;
 import kr.co.contxt.commonapi.service.impl.DeviceServiceImpl;
@@ -31,10 +32,11 @@ class DeviceServiceImplTest {
 
     @Test
     void getDeviceList() {
+        Place place = new Place(1L, "test place");
         List<Device> deviceList = new ArrayList<>();
-        deviceList.add(new Device(1L, "test1", LocalTime.of(0, 10, 0)));
-        deviceList.add(new Device(2L, "test2", LocalTime.of(0, 20, 0)));
-        deviceList.add(new Device(3L, "test3", LocalTime.of(0, 30, 0)));
+        deviceList.add(new Device(1L, place, "test1", LocalTime.of(0, 10, 0)));
+        deviceList.add(new Device(2L, place, "test2", LocalTime.of(0, 20, 0)));
+        deviceList.add(new Device(3L, place, "test3", LocalTime.of(0, 30, 0)));
 
         given(deviceRepository.findAll()).willReturn(deviceList);
 
@@ -48,7 +50,8 @@ class DeviceServiceImplTest {
 
     @Test
     void getDeviceById() {
-        Device device = new Device(1L, "test1", LocalTime.of(0, 10, 0));
+        Place place = new Place(1L, "test place");
+        Device device = new Device(1L, place, "test1", LocalTime.of(0, 10, 0));
 
         given(deviceRepository.findById(anyLong())).willReturn(Optional.of(device));
 
@@ -63,11 +66,12 @@ class DeviceServiceImplTest {
 
     @Test
     void getDeviceByName() {
-        Device device = new Device(1L, "test1", LocalTime.of(0, 10, 0));
+        Place place = new Place(1L, "test place");
+        Device device = new Device(1L, place, "test1", LocalTime.of(0, 10, 0));
 
-        given(deviceRepository.findByDeviceName(anyString())).willReturn(Optional.of(device));
+        given(deviceRepository.findByPlace_PlaceNameAndDeviceName(anyString(), anyString())).willReturn(Optional.of(device));
 
-        DeviceResponse result = deviceService.getDeviceByName("test1");
+        DeviceResponse result = deviceService.getDeviceByPlaceAndName("test place", "test1");
 
         assertAll(
                 () -> assertEquals(device.getDeviceId(), result.getDeviceId()),
@@ -87,16 +91,17 @@ class DeviceServiceImplTest {
 
     @Test
     void getDeviceByNameException() {
-        given(deviceRepository.findByDeviceName(anyString())).willThrow(DeviceNotFoundException.class);
+        given(deviceRepository.findByPlace_PlaceNameAndDeviceName(anyString(), anyString())).willThrow(DeviceNotFoundException.class);
 
         assertAll(
-                () -> assertThrows(DeviceNotFoundException.class, () -> deviceService.getDeviceByName("test"))
+                () -> assertThrows(DeviceNotFoundException.class, () -> deviceService.getDeviceByPlaceAndName("test place", "test"))
         );
     }
 
     @Test
     void addDevice() {
-        Device device = new Device(1L, "test1", LocalTime.of(0, 10, 0));
+        Place place = new Place(1L, "test place");
+        Device device = new Device(1L, place, "test1", LocalTime.of(0, 10, 0));
 
         given(deviceRepository.save(any())).willReturn(device);
 
@@ -111,7 +116,8 @@ class DeviceServiceImplTest {
 
     @Test
     void updateDevice() {
-        Device device = new Device(1L, "test1", LocalTime.of(0, 10, 0));
+        Place place = new Place(1L, "test place");
+        Device device = new Device(1L, place, "test1", LocalTime.of(0, 10, 0));
 
         given(deviceRepository.findById(anyLong())).willReturn(Optional.of(device));
         given(deviceRepository.save(any())).willReturn(device);
