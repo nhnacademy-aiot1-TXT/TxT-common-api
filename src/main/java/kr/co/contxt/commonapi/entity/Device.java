@@ -24,6 +24,9 @@ public class Device {
     @Column(name = "device_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long deviceId;
+    @ManyToOne
+    @JoinColumn(name = "place_id")
+    private Place place;
     @Column(name = "device_name")
     private String deviceName;
     @Column
@@ -36,6 +39,7 @@ public class Device {
      */
     public DeviceResponse toDto() {
         return DeviceResponse.builder()
+                .placeId(place.getPlaceId())
                 .deviceId(deviceId)
                 .deviceName(deviceName)
                 .cycle(cycle)
