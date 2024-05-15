@@ -186,4 +186,39 @@ class DeviceSensorRepositoryTest {
                 () -> assertEquals(offValue, deviceSensorResult.getOffValue())
         );
     }
+
+    @Test
+    void existsByDevice_DeviceIdAndSensor_SensorId() {
+        String deviceName = "test device";
+        String sensorName = "test sensor";
+        Float onValue = 25F;
+        Float offValue = 22F;
+
+        Device device = Device.builder()
+                .deviceName(deviceName)
+                .cycle(LocalTime.of(0, 10))
+                .build();
+        Sensor sensor = Sensor.builder()
+                .sensorName(sensorName)
+                .build();
+        DeviceSensor deviceSensor = DeviceSensor.builder()
+                .device(device)
+                .sensor(sensor)
+                .onValue(onValue)
+                .offValue(offValue)
+                .build();
+
+        entityManager.persist(device);
+        entityManager.persist(sensor);
+        entityManager.persist(deviceSensor);
+
+        Long deviceId = device.getDeviceId();
+        Long sensorId = sensor.getSensorId();
+
+        boolean existDeviceSensor = deviceSensorRepository.existsByDevice_DeviceIdAndSensor_SensorId(deviceId, sensorId);
+
+        assertAll(
+                () -> assertTrue(existDeviceSensor)
+        );
+    }
 }

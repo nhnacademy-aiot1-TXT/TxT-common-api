@@ -1,14 +1,13 @@
 package kr.co.contxt.commonapi.config;
 
-import kr.co.contxt.commonapi.entity.Device;
-import kr.co.contxt.commonapi.entity.Place;
-import kr.co.contxt.commonapi.entity.Sensor;
+import kr.co.contxt.commonapi.entity.*;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicLong;
 
 /**
  * Sensor 정보 초기 데이터 설정 클래스
@@ -18,6 +17,8 @@ import java.util.List;
  */
 @Configuration
 public class CommonApiConfig {
+    private static final Long ID_INITIAL_VALUE = 1L;
+
     /**
      * Sensor 리스트를 반환하는 Bean
      *
@@ -27,30 +28,53 @@ public class CommonApiConfig {
     List<Sensor> sensorList() {
         List<Sensor> sensors = new ArrayList<>();
 
-        sensors.add(Sensor.builder().sensorName("temperature").build());
-        sensors.add(Sensor.builder().sensorName("humidity").build());
-        sensors.add(Sensor.builder().sensorName("co2").build());
-        sensors.add(Sensor.builder().sensorName("illumination").build());
-        sensors.add(Sensor.builder().sensorName("totalCount").build());
-        sensors.add(Sensor.builder().sensorName("voc").build());
-        sensors.add(Sensor.builder().sensorName("occupancy").build());
-        sensors.add(Sensor.builder().sensorName("door").build());
+        AtomicLong id = new AtomicLong(ID_INITIAL_VALUE);
+        sensors.add(Sensor.builder().sensorId(id.getAndIncrement()).sensorName("temperature").build());
+        sensors.add(Sensor.builder().sensorId(id.getAndIncrement()).sensorName("humidity").build());
+        sensors.add(Sensor.builder().sensorId(id.getAndIncrement()).sensorName("co2").build());
+        sensors.add(Sensor.builder().sensorId(id.getAndIncrement()).sensorName("illumination").build());
+        sensors.add(Sensor.builder().sensorId(id.getAndIncrement()).sensorName("totalCount").build());
+        sensors.add(Sensor.builder().sensorId(id.getAndIncrement()).sensorName("voc").build());
+        sensors.add(Sensor.builder().sensorId(id.getAndIncrement()).sensorName("occupancy").build());
+        sensors.add(Sensor.builder().sensorId(id.getAndIncrement()).sensorName("door").build());
 
         return sensors;
     }
 
     /**
-     * Device 리스트를 반환하는 Bean
+     * TimeInterval 리스트를 반환하는 Bean
      *
-     * @return the list
+     * @return the timeInterval list
      */
     @Bean
-    public List<Device> deviceList() {
-        Place place = new Place(1L, "class_a");
+    List<TimeInterval> timeIntervalList() {
+        Sensor sensor = Sensor.builder()
+                .sensorId(7L)
+                .sensorName("occupancy")
+                .build();
+
+        List<TimeInterval> timeIntervalList = new ArrayList<>();
+
+        timeIntervalList.add(TimeInterval.builder().begin(LocalTime.of(2, 0)).end(LocalTime.of(8, 0)).sensor(sensor).build());
+
+        return timeIntervalList;
+    }
+
+    /**
+     * Device 리스트를 반환하는 Bean
+     *
+     * @return the device list
+     */
+    @Bean
+    public List<Device> deviceList(List<Place> placeList) {
         List<Device> deviceList = new ArrayList<>();
-        deviceList.add(new Device(1L, place, "airconditioner", LocalTime.of(0, 10, 0)));
-        deviceList.add(new Device(2L, place, "aircleaner", LocalTime.of(0, 20, 0)));
-        deviceList.add(new Device(3L, place, "light", LocalTime.of(0, 30, 0)));
+
+        AtomicLong id = new AtomicLong(ID_INITIAL_VALUE);
+        placeList.forEach(place -> {
+            deviceList.add(Device.builder().deviceId(id.getAndIncrement()).place(place).deviceName("airConditioner").cycle(LocalTime.of(0, 10, 0)).build());
+            deviceList.add(Device.builder().deviceId(id.getAndIncrement()).place(place).deviceName("aircleaner").cycle(LocalTime.of(0, 20, 0)).build());
+            deviceList.add(Device.builder().deviceId(id.getAndIncrement()).place(place).deviceName("light").cycle(LocalTime.of(0, 30, 0)).build());
+        });
 
         return deviceList;
     }
@@ -58,15 +82,40 @@ public class CommonApiConfig {
     /**
      * Place 리스트를 반환하는 Bean
      *
-     * @return the list
+     * @return the place list
      */
     @Bean
     List<Place> placeList() {
-        List<Place> places = new ArrayList<>();
+        List<Place> placeList = new ArrayList<>();
 
-        places.add(Place.builder().placeName("class_a").build());
-        places.add(Place.builder().placeName("class_b").build());
+        AtomicLong id = new AtomicLong(ID_INITIAL_VALUE);
+        placeList.add(Place.builder().placeId(id.getAndIncrement()).placeName("class_a").build());
+        placeList.add(Place.builder().placeId(id.getAndIncrement()).placeName("class_b").build());
 
-        return places;
+        return placeList;
+    }
+
+    /**
+     * DeviceSensor 리스트를 반환하는 Bean
+     *
+     * @return the deviceSensor list
+     */
+    @Bean
+    List<DeviceSensor> deviceSensorList() {
+        Device airConA = Device.builder().deviceId(1L).build();
+        Device airConB = Device.builder().deviceId(4L).build();
+        Device airCleanA = Device.builder().deviceId(2L).build();
+        Device airCleanB = Device.builder().deviceId(5L).build();
+        Sensor temp = Sensor.builder().sensorId(1L).build();
+        Sensor voc = Sensor.builder().sensorId(6L).build();
+
+        List<DeviceSensor> deviceSensorList = new ArrayList<>();
+
+        deviceSensorList.add(DeviceSensor.builder().offValue(19F).onValue(26F).device(airConA).sensor(temp).build());
+        deviceSensorList.add(DeviceSensor.builder().offValue(200F).onValue(400F).device(airCleanA).sensor(voc).build());
+        deviceSensorList.add(DeviceSensor.builder().offValue(19F).onValue(26F).device(airConB).sensor(temp).build());
+        deviceSensorList.add(DeviceSensor.builder().offValue(200F).onValue(400F).device(airCleanB).sensor(voc).build());
+
+        return deviceSensorList;
     }
 }

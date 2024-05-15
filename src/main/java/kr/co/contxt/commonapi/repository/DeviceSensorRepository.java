@@ -46,4 +46,13 @@ public interface DeviceSensorRepository extends JpaRepository<DeviceSensor, Long
      * @return deviceSensor
      */
     Optional<DeviceSensor> findByDevice_DeviceNameAndSensor_SensorName(String deviceName, String sensorName);
+
+    /**
+     * 장치 아이디와 센서 아이디로 장치별 센서가 존재하는지 체크
+     *
+     * @param deviceId the device id
+     * @param sensorId the sensor id
+     * @return boolean
+     */
+    boolean existsByDevice_DeviceIdAndSensor_SensorId(Long deviceId, Long sensorId);
 }
