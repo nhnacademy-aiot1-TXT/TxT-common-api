@@ -25,7 +25,7 @@ public class SensorAdvice {
      * @return api 예외 응답
      */
     @ExceptionHandler(value = SensorNotFoundException.class)
-    public ResponseEntity<ApiExceptionDto> deviceNotFoundExceptionHandler(SensorNotFoundException exception) {
+    public ResponseEntity<ApiExceptionDto> sensorNotFoundExceptionHandler(SensorNotFoundException exception) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND)
                 .body(new ApiExceptionDto(LocalDateTime.now(), exception.getMessage()));
     }
