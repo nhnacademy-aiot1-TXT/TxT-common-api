@@ -63,7 +63,8 @@ public class DeviceRestController {
     /**
      * 장비 정보 이름으로 단일 조회 api
      *
-     * @param name the device id
+     * @param placeName the place name
+     * @param name      the device name
      * @return the device
      */
     @GetMapping
