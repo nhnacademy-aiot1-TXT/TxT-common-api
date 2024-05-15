@@ -1,0 +1,35 @@
+### 모든 장소 조회
+GET http://localhost:8400/api/common/place
+
+### 단일 장소 조회
+GET http://localhost:8400/api/common/place/1
+
+### 장소 추가
+POST http://localhost:8400/api/common/place
+Content-Type: application/json
+
+{
+  "placeName": "test place"
+}
+
+### 장소 업데이트
+PUT http://localhost:8400/api/common/place/3
+Content-Type: application/json
+
+{
+  "placeName": "update place"
+}
+
+### 장소 제거
+DELETE http://localhost:8400/api/common/place/1
+
+### 장소 단일 조회 exception
+GET http://localhost:8400/api/common/place/0
+
+### 장소 수정 exception
+GET http://localhost:8400/api/common/place/0
+Content-Type: application/json
+
+{
+  "placeName": "update place"
+}
