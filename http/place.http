@@ -27,7 +27,7 @@ DELETE http://localhost:8400/api/common/place/1
 GET http://localhost:8400/api/common/place/0
 
 ### 장소 수정 exception
-GET http://localhost:8400/api/common/place/0
+PUT http://localhost:8400/api/common/place/0
 Content-Type: application/json
 
 {
