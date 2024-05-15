@@ -19,6 +19,7 @@ import java.time.LocalTime;
 @AllArgsConstructor
 public class DeviceResponse {
     Long deviceId;
+    Long placeId;
     String deviceName;
     LocalTime cycle;
 }

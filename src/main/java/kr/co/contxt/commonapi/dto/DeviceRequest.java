@@ -1,6 +1,7 @@
 package kr.co.contxt.commonapi.dto;
 
 import kr.co.contxt.commonapi.entity.Device;
+import kr.co.contxt.commonapi.entity.Place;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -19,6 +20,8 @@ import java.time.LocalTime;
 @NoArgsConstructor
 @AllArgsConstructor
 public class DeviceRequest {
+    @NotNull
+    Long placeId;
     @NotBlank
     String deviceName;
     @NotNull
@@ -31,6 +34,7 @@ public class DeviceRequest {
      */
     public Device toEntity() {
         return Device.builder()
+                .place(new Place(placeId, null))
                 .deviceName(deviceName)
                 .cycle(cycle)
                 .build();
