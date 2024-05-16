@@ -12,7 +12,9 @@ import javax.validation.constraints.NotBlank;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class DeviceNameDto {
+public class DeviceNameAndPlaceNameDto {
     @NotBlank
     private String deviceName;
+    @NotBlank
+    private String placeName;
 }
