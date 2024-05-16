@@ -21,6 +21,8 @@ public class DeviceSensorRequest {
     private String deviceName;
     @NotBlank
     private String sensorName;
+    @NotBlank
+    private String placeName;
     @NotNull
     private Float onValue;
     @NotNull
