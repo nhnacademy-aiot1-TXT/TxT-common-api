@@ -71,9 +71,9 @@ public class CommonApiConfig {
 
         AtomicLong id = new AtomicLong(ID_INITIAL_VALUE);
         placeList.forEach(place -> {
-            deviceList.add(Device.builder().deviceId(id.getAndIncrement()).place(place).deviceName("airConditioner").build());
-            deviceList.add(Device.builder().deviceId(id.getAndIncrement()).place(place).deviceName("aircleaner").build());
-            deviceList.add(Device.builder().deviceId(id.getAndIncrement()).place(place).deviceName("light").build());
+            deviceList.add(Device.builder().deviceId(id.getAndIncrement()).place(place).deviceName("airConditioner").aiMode(1).build());
+            deviceList.add(Device.builder().deviceId(id.getAndIncrement()).place(place).deviceName("aircleaner").aiMode(0).build());
+            deviceList.add(Device.builder().deviceId(id.getAndIncrement()).place(place).deviceName("light").aiMode(0).build());
         });
 
         return deviceList;
