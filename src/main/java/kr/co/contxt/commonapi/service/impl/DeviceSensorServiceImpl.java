@@ -1,7 +1,7 @@
 package kr.co.contxt.commonapi.service.impl;
 
-import kr.co.contxt.commonapi.dto.DeviceAndSensorNameDto;
-import kr.co.contxt.commonapi.dto.DeviceNameDto;
+import kr.co.contxt.commonapi.dto.DeviceAndSensorNameAndPlaceNameDto;
+import kr.co.contxt.commonapi.dto.DeviceNameAndPlaceNameDto;
 import kr.co.contxt.commonapi.dto.DeviceSensorRequest;
 import kr.co.contxt.commonapi.dto.DeviceSensorResponse;
 import kr.co.contxt.commonapi.entity.DeviceSensor;
@@ -54,18 +54,21 @@ public class DeviceSensorServiceImpl implements DeviceSensorService {
     /**
      * DeviceSensor 리스트 조회 메서드
      *
-     * @param deviceNameDto the device name dto
+     * @param deviceNameAndPlaceNameDto the device name dto
      * @return deviceSensor list
      */
     @Override
     @Transactional(readOnly = true)
     @Cacheable(
             value = "getSensorListByDevice",
-            key = "#deviceNameDto.getDeviceName()",
+            key = "#deviceNameAndPlaceNameDto.getDeviceName().concat(':').concat(#deviceNameAndPlaceNameDto.getPlaceName())",
             unless = "#result == null"
     )
-    public List<DeviceSensorResponse> getSensorListByDevice(DeviceNameDto deviceNameDto) {
-        return deviceSensorRepository.findByDevice_DeviceName(deviceNameDto.getDeviceName())
+    public List<DeviceSensorResponse> getSensorListByDevice(DeviceNameAndPlaceNameDto deviceNameAndPlaceNameDto) {
+        return deviceSensorRepository.findByDevice_DeviceNameAndDevice_Place_PlaceName(
+                        deviceNameAndPlaceNameDto.getDeviceName(),
+                        deviceNameAndPlaceNameDto.getPlaceName()
+                )
                 .stream()
                 .map(DeviceSensor::toDto)
                 .collect(Collectors.toList());
@@ -94,18 +97,22 @@ public class DeviceSensorServiceImpl implements DeviceSensorService {
     /**
      * DeviceSensor 단일 조회 메서드
      *
-     * @param deviceAndSensorNameDto the device and sensor name dto
+     * @param deviceAndSensorNameAndPlaceNameDto the device and sensor name dto
      * @return deviceSensor
      */
     @Override
     @Transactional(readOnly = true)
     @Cacheable(
             value = "getSensorByDeviceAndSensor",
-            key = "#deviceAndSensorNameDto.getDeviceName().concat(':').concat(#deviceAndSensorNameDto.getSensorName())",
+            key = "#deviceAndSensorNameAndPlaceNameDto.getDeviceName().concat(':').concat(#deviceAndSensorNameAndPlaceNameDto.getSensorName()).concat(':').concat(#deviceAndSensorNameAndPlaceNameDto.getPlaceName())",
             unless = "#result == null"
     )
-    public DeviceSensorResponse getSensorByDeviceAndSensor(DeviceAndSensorNameDto deviceAndSensorNameDto) {
-        return deviceSensorRepository.findByDevice_DeviceNameAndSensor_SensorName(deviceAndSensorNameDto.getDeviceName(), deviceAndSensorNameDto.getSensorName())
+    public DeviceSensorResponse getSensorByDeviceAndSensor(DeviceAndSensorNameAndPlaceNameDto deviceAndSensorNameAndPlaceNameDto) {
+        return deviceSensorRepository.findByDevice_DeviceNameAndSensor_SensorNameAndDevice_Place_PlaceName(
+                        deviceAndSensorNameAndPlaceNameDto.getDeviceName(),
+                        deviceAndSensorNameAndPlaceNameDto.getSensorName(),
+                        deviceAndSensorNameAndPlaceNameDto.getPlaceName()
+                )
                 .orElseThrow(() -> new DeviceSensorNotFoundException(DEVICE_SENSOR_NOT_FOUND_MESSAGE))
                 .toDto();
     }
@@ -124,11 +131,11 @@ public class DeviceSensorServiceImpl implements DeviceSensorService {
             evict = {
                     @CacheEvict(
                             value = "getSensorListByDevice",
-                            key = "#deviceSensorRequest.getDeviceName()"
+                            key = "#deviceId"
                     ),
                     @CacheEvict(
                             value = "getSensorListByDevice",
-                            key = "#deviceId"
+                            key = "#deviceSensorRequest.getDeviceName().concat(':').concat(#deviceSensorRequest.getPlaceName())"
                     )
             },
             put = {
@@ -139,13 +146,17 @@ public class DeviceSensorServiceImpl implements DeviceSensorService {
                     ),
                     @CachePut(
                             value = "getSensorByDeviceAndSensor",
-                            key = "#deviceSensorRequest.getDeviceName().concat(':').concat(#deviceSensorRequest.getSensorName())",
+                            key = "#deviceSensorRequest.getDeviceName().concat(':').concat(#deviceSensorRequest.getSensorName()).concat(':').concat(#deviceSensorRequest.getPlaceName())",
                             unless = "#result == null"
                     )
             }
     )
     public DeviceSensorResponse updateSensorByDeviceAndSensor(Long deviceId, Long sensorId, DeviceSensorRequest deviceSensorRequest) {
-        DeviceSensor deviceSensor = deviceSensorRepository.findByDevice_DeviceNameAndSensor_SensorName(deviceSensorRequest.getDeviceName(), deviceSensorRequest.getSensorName())
+        DeviceSensor deviceSensor = deviceSensorRepository.findByDevice_DeviceNameAndSensor_SensorNameAndDevice_Place_PlaceName(
+                        deviceSensorRequest.getDeviceName(),
+                        deviceSensorRequest.getSensorName(),
+                        deviceSensorRequest.getPlaceName()
+                )
                 .orElseThrow(() -> new DeviceSensorNotFoundException(DEVICE_SENSOR_NOT_FOUND_MESSAGE));
 
         DeviceSensor build = deviceSensor.toBuilder()
