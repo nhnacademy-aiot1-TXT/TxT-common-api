@@ -1,7 +1,7 @@
 package kr.co.contxt.commonapi.service;
 
-import kr.co.contxt.commonapi.dto.DeviceAndSensorNameDto;
-import kr.co.contxt.commonapi.dto.DeviceNameDto;
+import kr.co.contxt.commonapi.dto.DeviceAndPlaceNameDto;
+import kr.co.contxt.commonapi.dto.DeviceAndSensorAndPlaceNameDto;
 import kr.co.contxt.commonapi.dto.DeviceSensorRequest;
 import kr.co.contxt.commonapi.dto.DeviceSensorResponse;
 
@@ -23,12 +23,12 @@ public interface DeviceSensorService {
     List<DeviceSensorResponse> getSensorListByDevice(Long deviceId);
 
     /**
-     * Device Name으로 리스트 조회 메서드
+     * Device Name, Place Name 으로 리스트 조회 메서드
      *
-     * @param deviceNameDto the device name dto
+     * @param deviceAndPlaceNameDto the device and place name dto
      * @return the deviceSensor list
      */
-    List<DeviceSensorResponse> getSensorListByDevice(DeviceNameDto deviceNameDto);
+    List<DeviceSensorResponse> getSensorListByDevice(DeviceAndPlaceNameDto deviceAndPlaceNameDto);
 
     /**
      * Device Id, Sensor Id로 단일 조회 메서드
@@ -40,12 +40,12 @@ public interface DeviceSensorService {
     DeviceSensorResponse getSensorByDeviceAndSensor(Long deviceId, Long sensorId);
 
     /**
-     * Device Name, Sensor Name으로 단일 조회 메서드
+     * Device Name, Sensor Name, Place Name으로 단일 조회 메서드
      *
-     * @param deviceAndSensorNameDto the device and sensor name dto
+     * @param deviceAndSensorAndPlaceNameDto the device and sensor and place name dto
      * @return the deviceSensor
      */
-    DeviceSensorResponse getSensorByDeviceAndSensor(DeviceAndSensorNameDto deviceAndSensorNameDto);
+    DeviceSensorResponse getSensorByDeviceAndSensor(DeviceAndSensorAndPlaceNameDto deviceAndSensorAndPlaceNameDto);
 
     /**
      * Device id, Sensor id로 업데이트 메서드

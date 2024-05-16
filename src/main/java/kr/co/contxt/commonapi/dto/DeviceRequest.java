@@ -23,6 +23,8 @@ public class DeviceRequest {
     Long placeId;
     @NotBlank
     String deviceName;
+    @NotNull
+    Integer aiMode;
 
     /**
      * To entity device.
@@ -33,6 +35,7 @@ public class DeviceRequest {
         return Device.builder()
                 .place(new Place(placeId, null, null))
                 .deviceName(deviceName)
+                .aiMode(aiMode)
                 .build();
     }
 }

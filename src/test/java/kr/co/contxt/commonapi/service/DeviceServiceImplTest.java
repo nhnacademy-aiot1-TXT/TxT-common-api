@@ -34,9 +34,9 @@ class DeviceServiceImplTest {
     void getDeviceList() {
         Place place = new Place(1L, "test place", LocalTime.of(0, 10, 0));
         List<Device> deviceList = new ArrayList<>();
-        deviceList.add(new Device(1L, place, "test1"));
-        deviceList.add(new Device(2L, place, "test2"));
-        deviceList.add(new Device(3L, place, "test3"));
+        deviceList.add(new Device(1L, place, "test1", 1));
+        deviceList.add(new Device(2L, place, "test2", 1));
+        deviceList.add(new Device(3L, place, "test3", 1));
 
         given(deviceRepository.findAll()).willReturn(deviceList);
 
@@ -51,7 +51,7 @@ class DeviceServiceImplTest {
     @Test
     void getDeviceById() {
         Place place = new Place(1L, "test place", LocalTime.of(0, 10, 0));
-        Device device = new Device(1L, place, "test1");
+        Device device = new Device(1L, place, "test1", 1);
 
         given(deviceRepository.findById(anyLong())).willReturn(Optional.of(device));
 
@@ -66,7 +66,7 @@ class DeviceServiceImplTest {
     @Test
     void getDeviceByName() {
         Place place = new Place(1L, "test place", LocalTime.of(0, 10, 0));
-        Device device = new Device(1L, place, "test1");
+        Device device = new Device(1L, place, "test1", 1);
 
         given(deviceRepository.findByPlace_PlaceNameAndDeviceName(anyString(), anyString())).willReturn(Optional.of(device));
 
@@ -99,7 +99,7 @@ class DeviceServiceImplTest {
     @Test
     void addDevice() {
         Place place = new Place(1L, "test place", LocalTime.of(0, 10, 0));
-        Device device = new Device(1L, place, "test1");
+        Device device = new Device(1L, place, "test1", 1);
 
         given(deviceRepository.save(any())).willReturn(device);
 
@@ -114,7 +114,7 @@ class DeviceServiceImplTest {
     @Test
     void updateDevice() {
         Place place = new Place(1L, "test place", LocalTime.of(0, 10, 0));
-        Device device = new Device(1L, place, "test1");
+        Device device = new Device(1L, place, "test1", 1);
 
         given(deviceRepository.findById(anyLong())).willReturn(Optional.of(device));
         given(deviceRepository.save(any())).willReturn(device);

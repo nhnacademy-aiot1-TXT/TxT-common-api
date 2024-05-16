@@ -14,6 +14,7 @@ class DeviceTest {
                 .place(new Place(1L, "test place", LocalTime.of(10, 0)))
                 .deviceId(1L)
                 .deviceName("Test Device")
+                .aiMode(1)
                 .build();
 
         DeviceResponse deviceResponse = device.toDto();
@@ -21,7 +22,8 @@ class DeviceTest {
         assertAll(
                 () -> assertNotNull(deviceResponse),
                 () -> assertEquals(device.getDeviceId(), deviceResponse.getDeviceId()),
-                () -> assertEquals(device.getDeviceName(), deviceResponse.getDeviceName())
+                () -> assertEquals(device.getDeviceName(), deviceResponse.getDeviceName()),
+                () -> assertEquals(device.getAiMode(), deviceResponse.getAiMode())
         );
     }
 }

@@ -2,6 +2,7 @@ package kr.co.contxt.commonapi.repository;
 
 import kr.co.contxt.commonapi.entity.Device;
 import kr.co.contxt.commonapi.entity.DeviceSensor;
+import kr.co.contxt.commonapi.entity.Place;
 import kr.co.contxt.commonapi.entity.Sensor;
 import kr.co.contxt.commonapi.exception.DeviceSensorNotFoundException;
 import org.junit.jupiter.api.Test;
@@ -64,13 +65,18 @@ class DeviceSensorRepositoryTest {
     }
 
     @Test
-    void findByDevice_Name() {
+    void findByDevice_NameAndDevice_Place_PlaceName() {
         String deviceName = "test device";
         String sensorName = "test sensor";
+        String placeName = "test place";
         Float onValue = 25F;
         Float offValue = 22F;
 
+        Place place = Place.builder()
+                .placeName(placeName)
+                .build();
         Device device = Device.builder()
+                .place(place)
                 .deviceName(deviceName)
                 .build();
         Sensor sensor = Sensor.builder()
@@ -83,13 +89,14 @@ class DeviceSensorRepositoryTest {
                 .offValue(offValue)
                 .build();
 
+        entityManager.persist(place);
         entityManager.persist(device);
         entityManager.persist(sensor);
         entityManager.persist(deviceSensor);
 
         Long deviceSensorId = deviceSensor.getDeviceSensorId();
 
-        List<DeviceSensor> deviceSensors = deviceSensorRepository.findByDevice_DeviceName(deviceName);
+        List<DeviceSensor> deviceSensors = deviceSensorRepository.findByDevice_DeviceNameAndDevice_Place_PlaceName(deviceName, placeName);
 
         assertAll(
                 () -> assertNotNull(deviceSensors),
@@ -144,13 +151,18 @@ class DeviceSensorRepositoryTest {
     }
 
     @Test
-    void findByDevice_NameAndSensor_SensorName() {
+    void findByDevice_NameAndSensor_SensorNameAndDevice_Place_PlaceName() {
         String deviceName = "test device";
         String sensorName = "test sensor";
+        String placeName = "test place";
         Float onValue = 25F;
         Float offValue = 22F;
 
+        Place place = Place.builder()
+                .placeName(placeName)
+                .build();
         Device device = Device.builder()
+                .place(place)
                 .deviceName(deviceName)
                 .build();
         Sensor sensor = Sensor.builder()
@@ -163,13 +175,14 @@ class DeviceSensorRepositoryTest {
                 .offValue(offValue)
                 .build();
 
+        entityManager.persist(place);
         entityManager.persist(device);
         entityManager.persist(sensor);
         entityManager.persist(deviceSensor);
 
         Long deviceSensorId = deviceSensor.getDeviceSensorId();
 
-        Optional<DeviceSensor> deviceSensorOptional = deviceSensorRepository.findByDevice_DeviceNameAndSensor_SensorName(deviceName, sensorName);
+        Optional<DeviceSensor> deviceSensorOptional = deviceSensorRepository.findByDevice_DeviceNameAndSensor_SensorNameAndDevice_Place_PlaceName(deviceName, sensorName, placeName);
         DeviceSensor deviceSensorResult = deviceSensorOptional.orElseThrow(DeviceSensorNotFoundException::new);
 
         assertAll(

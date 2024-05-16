@@ -23,11 +23,11 @@ class DeviceSensorDtoTest {
 
     @Test
     void deviceAndSensorNameDtoValidation() {
-        DeviceAndSensorNameDto deviceAndSensorNameDto = new DeviceAndSensorNameDto("test", "test");
-        DeviceAndSensorNameDto deviceAndSensorNameDtoWithNull = new DeviceAndSensorNameDto("", "");
+        DeviceAndSensorAndPlaceNameDto deviceAndSensorAndPlaceNameDto = new DeviceAndSensorAndPlaceNameDto("test", "test", "test");
+        DeviceAndSensorAndPlaceNameDto deviceAndSensorAndPlaceNameDtoWithNull = new DeviceAndSensorAndPlaceNameDto("", "", "");
 
-        Set<ConstraintViolation<DeviceAndSensorNameDto>> validate = validator.validate(deviceAndSensorNameDto);
-        Set<ConstraintViolation<DeviceAndSensorNameDto>> validateNull = validator.validate(deviceAndSensorNameDtoWithNull);
+        Set<ConstraintViolation<DeviceAndSensorAndPlaceNameDto>> validate = validator.validate(deviceAndSensorAndPlaceNameDto);
+        Set<ConstraintViolation<DeviceAndSensorAndPlaceNameDto>> validateNull = validator.validate(deviceAndSensorAndPlaceNameDtoWithNull);
 
         assertAll(
                 () -> assertTrue(validate.isEmpty()),
@@ -37,11 +37,11 @@ class DeviceSensorDtoTest {
 
     @Test
     void deviceNameDtoValidation() {
-        DeviceNameDto deviceNameDto = new DeviceNameDto("test");
-        DeviceNameDto deviceNameDtoWithNull = new DeviceNameDto("");
+        DeviceAndPlaceNameDto deviceAndPlaceNameDto = new DeviceAndPlaceNameDto("test", "test");
+        DeviceAndPlaceNameDto deviceAndPlaceNameDtoWithNull = new DeviceAndPlaceNameDto("", "");
 
-        Set<ConstraintViolation<DeviceNameDto>> validate = validator.validate(deviceNameDto);
-        Set<ConstraintViolation<DeviceNameDto>> validateNull = validator.validate(deviceNameDtoWithNull);
+        Set<ConstraintViolation<DeviceAndPlaceNameDto>> validate = validator.validate(deviceAndPlaceNameDto);
+        Set<ConstraintViolation<DeviceAndPlaceNameDto>> validateNull = validator.validate(deviceAndPlaceNameDtoWithNull);
 
         assertAll(
                 () -> assertTrue(validate.isEmpty()),
@@ -51,8 +51,8 @@ class DeviceSensorDtoTest {
 
     @Test
     void deviceSensorRequestValidation() {
-        DeviceSensorRequest request = new DeviceSensorRequest("test", "test", 1f, 2f);
-        DeviceSensorRequest requestWithNull = new DeviceSensorRequest("", "", null, null);
+        DeviceSensorRequest request = new DeviceSensorRequest("test", "test", "test", 1f, 2f);
+        DeviceSensorRequest requestWithNull = new DeviceSensorRequest("", "", "", null, null);
 
         Set<ConstraintViolation<DeviceSensorRequest>> validate = validator.validate(request);
         Set<ConstraintViolation<DeviceSensorRequest>> validateNull = validator.validate(requestWithNull);

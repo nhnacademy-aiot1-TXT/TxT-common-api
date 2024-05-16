@@ -40,6 +40,7 @@ public class DeviceRestController {
     /**
      * 장소별 장비 정보 리스트 조회 api
      *
+     * @param placeId the place id
      * @return the device list
      */
     @GetMapping("/devices/{placeId}")

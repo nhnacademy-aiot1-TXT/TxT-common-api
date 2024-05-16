@@ -7,12 +7,19 @@ import lombok.NoArgsConstructor;
 import javax.validation.constraints.NotBlank;
 
 /**
- * DeviceSensor 리스트 조회 DTO 클래스
+ * DeviceSensor 단일 조회 DTO 클래스
+ *
+ * @author parksangwon
+ * @version 1.0.0
  */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class DeviceNameDto {
+public class DeviceAndSensorAndPlaceNameDto {
     @NotBlank
     private String deviceName;
+    @NotBlank
+    private String sensorName;
+    @NotBlank
+    private String placeName;
 }
