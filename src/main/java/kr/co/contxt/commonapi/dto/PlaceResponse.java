@@ -5,6 +5,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalTime;
+
 /**
  * Place 응답 DTO 클래스
  *
@@ -18,4 +20,5 @@ import lombok.NoArgsConstructor;
 public class PlaceResponse {
     private Long placeId;
     private String placeName;
+    private LocalTime cycle;
 }
