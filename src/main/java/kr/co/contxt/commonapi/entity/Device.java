@@ -4,7 +4,6 @@ import kr.co.contxt.commonapi.dto.DeviceResponse;
 import lombok.*;
 
 import javax.persistence.*;
-import java.time.LocalTime;
 
 /**
  * Device Entity
@@ -29,8 +28,6 @@ public class Device {
     private Place place;
     @Column(name = "device_name")
     private String deviceName;
-    @Column
-    LocalTime cycle;
 
     /**
      * To dto device response.
@@ -42,7 +39,6 @@ public class Device {
                 .placeId(place.getPlaceId())
                 .deviceId(deviceId)
                 .deviceName(deviceName)
-                .cycle(cycle)
                 .build();
     }
 }
