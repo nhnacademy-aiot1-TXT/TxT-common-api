@@ -28,6 +28,8 @@ public class Device {
     private Place place;
     @Column(name = "device_name")
     private String deviceName;
+    @Column(name = "ai_mode")
+    private Integer aiMode;
 
     /**
      * To dto device response.
@@ -39,6 +41,7 @@ public class Device {
                 .placeId(place.getPlaceId())
                 .deviceId(deviceId)
                 .deviceName(deviceName)
+                .aiMode(aiMode)
                 .build();
     }
 }
