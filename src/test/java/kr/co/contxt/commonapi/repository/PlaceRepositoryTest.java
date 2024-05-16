@@ -7,6 +7,8 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 
+import java.time.LocalTime;
+
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @DataJpaTest
@@ -20,10 +22,14 @@ class PlaceRepositoryTest {
     @Test
     void existsByPlaceName() {
         String placeName = "test place";
+        LocalTime cycle = LocalTime.of(7, 0);
         Place place = Place.builder()
                 .placeName(placeName)
+                .cycle(cycle)
                 .build();
+
         entityManager.persist(place);
+
         boolean result = placeRepository.existsByPlaceName(placeName);
 
         assertTrue(result);

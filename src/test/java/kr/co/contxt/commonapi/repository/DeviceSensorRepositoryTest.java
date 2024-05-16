@@ -10,7 +10,6 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 
-import java.time.LocalTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -33,7 +32,6 @@ class DeviceSensorRepositoryTest {
 
         Device device = Device.builder()
                 .deviceName(deviceName)
-                .cycle(LocalTime.of(0, 10))
                 .build();
         Sensor sensor = Sensor.builder()
                 .sensorName(sensorName)
@@ -74,7 +72,6 @@ class DeviceSensorRepositoryTest {
 
         Device device = Device.builder()
                 .deviceName(deviceName)
-                .cycle(LocalTime.of(0, 10))
                 .build();
         Sensor sensor = Sensor.builder()
                 .sensorName(sensorName)
@@ -114,7 +111,6 @@ class DeviceSensorRepositoryTest {
 
         Device device = Device.builder()
                 .deviceName(deviceName)
-                .cycle(LocalTime.of(0, 10))
                 .build();
         Sensor sensor = Sensor.builder()
                 .sensorName(sensorName)
@@ -156,7 +152,6 @@ class DeviceSensorRepositoryTest {
 
         Device device = Device.builder()
                 .deviceName(deviceName)
-                .cycle(LocalTime.of(0, 10))
                 .build();
         Sensor sensor = Sensor.builder()
                 .sensorName(sensorName)
@@ -196,7 +191,6 @@ class DeviceSensorRepositoryTest {
 
         Device device = Device.builder()
                 .deviceName(deviceName)
-                .cycle(LocalTime.of(0, 10))
                 .build();
         Sensor sensor = Sensor.builder()
                 .sensorName(sensorName)

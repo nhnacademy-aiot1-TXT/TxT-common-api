@@ -32,11 +32,11 @@ class DeviceServiceImplTest {
 
     @Test
     void getDeviceList() {
-        Place place = new Place(1L, "test place");
+        Place place = new Place(1L, "test place", LocalTime.of(0, 10, 0));
         List<Device> deviceList = new ArrayList<>();
-        deviceList.add(new Device(1L, place, "test1", LocalTime.of(0, 10, 0)));
-        deviceList.add(new Device(2L, place, "test2", LocalTime.of(0, 20, 0)));
-        deviceList.add(new Device(3L, place, "test3", LocalTime.of(0, 30, 0)));
+        deviceList.add(new Device(1L, place, "test1"));
+        deviceList.add(new Device(2L, place, "test2"));
+        deviceList.add(new Device(3L, place, "test3"));
 
         given(deviceRepository.findAll()).willReturn(deviceList);
 
@@ -50,8 +50,8 @@ class DeviceServiceImplTest {
 
     @Test
     void getDeviceById() {
-        Place place = new Place(1L, "test place");
-        Device device = new Device(1L, place, "test1", LocalTime.of(0, 10, 0));
+        Place place = new Place(1L, "test place", LocalTime.of(0, 10, 0));
+        Device device = new Device(1L, place, "test1");
 
         given(deviceRepository.findById(anyLong())).willReturn(Optional.of(device));
 
@@ -59,15 +59,14 @@ class DeviceServiceImplTest {
 
         assertAll(
                 () -> assertEquals(device.getDeviceId(), result.getDeviceId()),
-                () -> assertEquals(device.getDeviceName(), result.getDeviceName()),
-                () -> assertEquals(device.getCycle(), result.getCycle())
+                () -> assertEquals(device.getDeviceName(), result.getDeviceName())
         );
     }
 
     @Test
     void getDeviceByName() {
-        Place place = new Place(1L, "test place");
-        Device device = new Device(1L, place, "test1", LocalTime.of(0, 10, 0));
+        Place place = new Place(1L, "test place", LocalTime.of(0, 10, 0));
+        Device device = new Device(1L, place, "test1");
 
         given(deviceRepository.findByPlace_PlaceNameAndDeviceName(anyString(), anyString())).willReturn(Optional.of(device));
 
@@ -75,8 +74,7 @@ class DeviceServiceImplTest {
 
         assertAll(
                 () -> assertEquals(device.getDeviceId(), result.getDeviceId()),
-                () -> assertEquals(device.getDeviceName(), result.getDeviceName()),
-                () -> assertEquals(device.getCycle(), result.getCycle())
+                () -> assertEquals(device.getDeviceName(), result.getDeviceName())
         );
     }
 
@@ -100,8 +98,8 @@ class DeviceServiceImplTest {
 
     @Test
     void addDevice() {
-        Place place = new Place(1L, "test place");
-        Device device = new Device(1L, place, "test1", LocalTime.of(0, 10, 0));
+        Place place = new Place(1L, "test place", LocalTime.of(0, 10, 0));
+        Device device = new Device(1L, place, "test1");
 
         given(deviceRepository.save(any())).willReturn(device);
 
@@ -109,15 +107,14 @@ class DeviceServiceImplTest {
 
         assertAll(
                 () -> assertEquals(device.getDeviceId(), result.getDeviceId()),
-                () -> assertEquals(device.getDeviceName(), result.getDeviceName()),
-                () -> assertEquals(device.getCycle(), result.getCycle())
+                () -> assertEquals(device.getDeviceName(), result.getDeviceName())
         );
     }
 
     @Test
     void updateDevice() {
-        Place place = new Place(1L, "test place");
-        Device device = new Device(1L, place, "test1", LocalTime.of(0, 10, 0));
+        Place place = new Place(1L, "test place", LocalTime.of(0, 10, 0));
+        Device device = new Device(1L, place, "test1");
 
         given(deviceRepository.findById(anyLong())).willReturn(Optional.of(device));
         given(deviceRepository.save(any())).willReturn(device);
@@ -126,8 +123,7 @@ class DeviceServiceImplTest {
 
         assertAll(
                 () -> assertEquals(device.getDeviceId(), result.getDeviceId()),
-                () -> assertEquals(device.getDeviceName(), result.getDeviceName()),
-                () -> assertEquals(device.getCycle(), result.getCycle())
+                () -> assertEquals(device.getDeviceName(), result.getDeviceName())
         );
     }
 

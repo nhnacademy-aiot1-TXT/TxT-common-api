@@ -71,9 +71,9 @@ public class CommonApiConfig {
 
         AtomicLong id = new AtomicLong(ID_INITIAL_VALUE);
         placeList.forEach(place -> {
-            deviceList.add(Device.builder().deviceId(id.getAndIncrement()).place(place).deviceName("airConditioner").cycle(LocalTime.of(0, 10, 0)).build());
-            deviceList.add(Device.builder().deviceId(id.getAndIncrement()).place(place).deviceName("aircleaner").cycle(LocalTime.of(0, 20, 0)).build());
-            deviceList.add(Device.builder().deviceId(id.getAndIncrement()).place(place).deviceName("light").cycle(LocalTime.of(0, 30, 0)).build());
+            deviceList.add(Device.builder().deviceId(id.getAndIncrement()).place(place).deviceName("airConditioner").build());
+            deviceList.add(Device.builder().deviceId(id.getAndIncrement()).place(place).deviceName("aircleaner").build());
+            deviceList.add(Device.builder().deviceId(id.getAndIncrement()).place(place).deviceName("light").build());
         });
 
         return deviceList;
@@ -89,8 +89,8 @@ public class CommonApiConfig {
         List<Place> placeList = new ArrayList<>();
 
         AtomicLong id = new AtomicLong(ID_INITIAL_VALUE);
-        placeList.add(Place.builder().placeId(id.getAndIncrement()).placeName("class_a").build());
-        placeList.add(Place.builder().placeId(id.getAndIncrement()).placeName("class_b").build());
+        placeList.add(Place.builder().placeId(id.getAndIncrement()).placeName("class_a").cycle(LocalTime.of(0, 10, 0)).build());
+        placeList.add(Place.builder().placeId(id.getAndIncrement()).placeName("class_b").cycle(LocalTime.of(0, 15, 0)).build());
 
         return placeList;
     }

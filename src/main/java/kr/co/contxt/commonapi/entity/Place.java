@@ -4,6 +4,7 @@ import kr.co.contxt.commonapi.dto.PlaceResponse;
 import lombok.*;
 
 import javax.persistence.*;
+import java.time.LocalTime;
 
 /**
  * Place Entity
@@ -25,6 +26,8 @@ public class Place {
     private Long placeId;
     @Column(name = "place_name")
     private String placeName;
+    @Column
+    private LocalTime cycle;
 
     /**
      * 장소 entity를 센서 정보 dto로 변환해주는 메서드
@@ -35,6 +38,7 @@ public class Place {
         return PlaceResponse.builder()
                 .placeId(placeId)
                 .placeName(placeName)
+                .cycle(cycle)
                 .build();
     }
 }

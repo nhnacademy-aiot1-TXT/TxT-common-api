@@ -7,6 +7,7 @@ import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
+import java.time.LocalTime;
 import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -23,8 +24,8 @@ class PlaceDtoTest {
 
     @Test
     void placeRequestValidation() {
-        PlaceRequest request = new PlaceRequest("test");
-        PlaceRequest resultWithBlank = new PlaceRequest("");
+        PlaceRequest request = new PlaceRequest("test", LocalTime.now());
+        PlaceRequest resultWithBlank = new PlaceRequest("", null);
 
         Set<ConstraintViolation<PlaceRequest>> validate = validator.validate(request);
         Set<ConstraintViolation<PlaceRequest>> validateNull = validator.validate(resultWithBlank);

@@ -17,18 +17,16 @@ Content-Type: application/json
 
 {
   "placeId": 1,
-  "deviceName": "test-device2",
-  "cycle": "00:30:00"
+  "deviceName": "test-device2"
 }
 
 ### device 수정
-PUT http://localhost:8400/api/common/device/592
+PUT http://localhost:8400/api/common/device/7
 Content-Type: application/json
 
 {
   "placeId": 2,
-  "deviceName": "change-test",
-  "cycle": "00:15:00"
+  "deviceName": "change-test"
 }
 
 ### device 단일 조회 exception
@@ -40,6 +38,5 @@ Content-Type: application/json
 
 {
   "placeId": 2,
-  "deviceName": "change-test",
-  "cycle": "00:15:00"
+  "deviceName": "change-test"
 }

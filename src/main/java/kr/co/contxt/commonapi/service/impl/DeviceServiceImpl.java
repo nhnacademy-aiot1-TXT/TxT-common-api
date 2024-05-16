@@ -109,7 +109,7 @@ public class DeviceServiceImpl implements DeviceService {
     /**
      * Device 추가 메서드
      *
-     * @param deviceRequest the place name and device name and device cycle
+     * @param deviceRequest the place name and device name
      * @return device response
      */
     @Override
@@ -134,7 +134,7 @@ public class DeviceServiceImpl implements DeviceService {
      * Device 수정 메서드
      *
      * @param deviceId      the device id
-     * @param deviceRequest the device name and device cycle
+     * @param deviceRequest the device name
      * @return device response
      */
     @Override
@@ -162,7 +162,6 @@ public class DeviceServiceImpl implements DeviceService {
                 .orElseThrow(() -> new DeviceNotFoundException(DEVICE_NOT_FOUND_MESSAGE));
 
         device.setDeviceName(deviceRequest.getDeviceName());
-        device.setCycle(deviceRequest.getCycle());
 
         return deviceRepository.save(device).toDto();
     }
