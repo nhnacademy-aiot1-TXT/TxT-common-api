@@ -24,6 +24,7 @@ public interface DeviceRepository extends JpaRepository<Device, Long> {
     /**
      * device name으로 Device 조회
      *
+     * @param placeName  place name
      * @param deviceName device name
      * @return device
      */

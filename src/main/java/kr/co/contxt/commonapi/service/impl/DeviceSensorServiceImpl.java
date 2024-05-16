@@ -54,7 +54,7 @@ public class DeviceSensorServiceImpl implements DeviceSensorService {
     /**
      * DeviceSensor 리스트 조회 메서드
      *
-     * @param deviceNameAndPlaceNameDto the device name dto
+     * @param deviceNameAndPlaceNameDto the device and place name dto
      * @return deviceSensor list
      */
     @Override
@@ -97,7 +97,7 @@ public class DeviceSensorServiceImpl implements DeviceSensorService {
     /**
      * DeviceSensor 단일 조회 메서드
      *
-     * @param deviceAndSensorNameAndPlaceNameDto the device and sensor name dto
+     * @param deviceAndSensorNameAndPlaceNameDto the device and sensor and place name dto
      * @return deviceSensor
      */
     @Override

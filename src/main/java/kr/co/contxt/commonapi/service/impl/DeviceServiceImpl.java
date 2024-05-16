@@ -51,6 +51,7 @@ public class DeviceServiceImpl implements DeviceService {
     /**
      * 장소별 Device 리스트 조회 메서드
      *
+     * @param placeId the placeId
      * @return device list
      */
     @Override

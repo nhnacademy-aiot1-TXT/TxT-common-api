@@ -23,9 +23,9 @@ public interface DeviceSensorService {
     List<DeviceSensorResponse> getSensorListByDevice(Long deviceId);
 
     /**
-     * Device Name으로 리스트 조회 메서드
+     * Device Name, Place Name 으로 리스트 조회 메서드
      *
-     * @param deviceNameAndPlaceNameDto the device name dto
+     * @param deviceNameAndPlaceNameDto the device and place name dto
      * @return the deviceSensor list
      */
     List<DeviceSensorResponse> getSensorListByDevice(DeviceNameAndPlaceNameDto deviceNameAndPlaceNameDto);
@@ -40,9 +40,9 @@ public interface DeviceSensorService {
     DeviceSensorResponse getSensorByDeviceAndSensor(Long deviceId, Long sensorId);
 
     /**
-     * Device Name, Sensor Name으로 단일 조회 메서드
+     * Device Name, Sensor Name, Place Name으로 단일 조회 메서드
      *
-     * @param deviceAndSensorNameAndPlaceNameDto the device and sensor name dto
+     * @param deviceAndSensorNameAndPlaceNameDto the device and sensor and place name dto
      * @return the deviceSensor
      */
     DeviceSensorResponse getSensorByDeviceAndSensor(DeviceAndSensorNameAndPlaceNameDto deviceAndSensorNameAndPlaceNameDto);

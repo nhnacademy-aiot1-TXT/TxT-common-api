@@ -22,6 +22,7 @@ public interface DeviceService {
     /**
      * Gets device list by place.
      *
+     * @param placeId the placeId
      * @return the device list
      */
     List<DeviceResponse> getDeviceListByPlace(Long placeId);

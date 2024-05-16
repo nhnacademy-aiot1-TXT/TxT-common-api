@@ -44,7 +44,7 @@ public class DeviceSensorRestController {
     /**
      * 장비 정보 이름으로 센서 정보 리스트 조회 api
      *
-     * @param deviceNameAndPlaceNameDto the device name dto
+     * @param deviceNameAndPlaceNameDto the device name and place name dto
      * @return the deviceSensor list
      */
     @GetMapping("/sensors")
@@ -73,7 +73,7 @@ public class DeviceSensorRestController {
     /**
      * 장비 정보 이름, 센서 정보 이름으로 단일 조회 api
      *
-     * @param deviceAndSensorNameAndPlaceNameDto the device and sensor name dto
+     * @param deviceAndSensorNameAndPlaceNameDto the device and sensor name and place name dto
      * @return the deviceSensor
      */
     @GetMapping("/sensor")

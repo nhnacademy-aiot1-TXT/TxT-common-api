@@ -25,6 +25,7 @@ public interface DeviceSensorRepository extends JpaRepository<DeviceSensor, Long
      * device name으로 장비별 센서 리스트 조회
      *
      * @param deviceName the device name
+     * @param placeName  the place name
      * @return deviceSensor list
      */
     List<DeviceSensor> findByDevice_DeviceNameAndDevice_Place_PlaceName(String deviceName, String placeName);
@@ -43,6 +44,7 @@ public interface DeviceSensorRepository extends JpaRepository<DeviceSensor, Long
      *
      * @param deviceName the device name
      * @param sensorName the sensor name
+     * @param placeName  the place name
      * @return deviceSensor
      */
     Optional<DeviceSensor> findByDevice_DeviceNameAndSensor_SensorNameAndDevice_Place_PlaceName(String deviceName, String sensorName, String placeName);
