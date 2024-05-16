@@ -5,8 +5,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalTime;
-
 /**
  * Device 응답 DTO 클래스
  *
@@ -21,5 +19,4 @@ public class DeviceResponse {
     Long deviceId;
     Long placeId;
     String deviceName;
-    LocalTime cycle;
 }

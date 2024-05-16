@@ -8,7 +8,6 @@ import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import java.time.LocalTime;
 
 /**
  * Device 생성, 수정 DTO 클래스
@@ -24,8 +23,6 @@ public class DeviceRequest {
     Long placeId;
     @NotBlank
     String deviceName;
-    @NotNull
-    LocalTime cycle;
 
     /**
      * To entity device.
@@ -34,9 +31,8 @@ public class DeviceRequest {
      */
     public Device toEntity() {
         return Device.builder()
-                .place(new Place(placeId, null))
+                .place(new Place(placeId, null, null))
                 .deviceName(deviceName)
-                .cycle(cycle)
                 .build();
     }
 }
