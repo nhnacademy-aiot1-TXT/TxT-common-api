@@ -12,7 +12,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
-import java.time.LocalTime;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -42,7 +41,7 @@ class DeviceRestControllerTest {
 
     @Test
     void getDeviceById() {
-        DeviceResponse device = new DeviceResponse(1L, 1L, "test", LocalTime.of(0, 30, 0));
+        DeviceResponse device = new DeviceResponse(1L, 1L, "test");
 
         given(deviceService.getDeviceById(anyLong())).willReturn(device);
 
@@ -56,7 +55,7 @@ class DeviceRestControllerTest {
 
     @Test
     void getDeviceByName() {
-        DeviceResponse device = new DeviceResponse(1L, 1L, "test", LocalTime.of(0, 30, 0));
+        DeviceResponse device = new DeviceResponse(1L, 1L, "test");
 
         given(deviceService.getDeviceByPlaceAndName(anyString(), anyString())).willReturn(device);
 
@@ -88,7 +87,7 @@ class DeviceRestControllerTest {
 
     @Test
     void addDevice() {
-        DeviceResponse device = new DeviceResponse(1L, 1L, "test", LocalTime.of(0, 30, 0));
+        DeviceResponse device = new DeviceResponse(1L, 1L, "test");
 
         given(deviceService.addDevice(any())).willReturn(device);
 
@@ -101,7 +100,7 @@ class DeviceRestControllerTest {
 
     @Test
     void updateDevice() {
-        DeviceResponse device = new DeviceResponse(1L, 1L, "test", LocalTime.of(0, 30, 0));
+        DeviceResponse device = new DeviceResponse(1L, 1L, "test");
 
         given(deviceService.updateDevice(anyLong(), any())).willReturn(device);
 

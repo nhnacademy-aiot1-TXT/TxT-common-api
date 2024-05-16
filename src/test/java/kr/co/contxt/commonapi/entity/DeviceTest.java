@@ -11,10 +11,9 @@ class DeviceTest {
     @Test
     void deviceEntityTest() {
         Device device = Device.builder()
-                .place(new Place(1L, "test place"))
+                .place(new Place(1L, "test place", LocalTime.of(10, 0)))
                 .deviceId(1L)
                 .deviceName("Test Device")
-                .cycle(LocalTime.of(10, 0))
                 .build();
 
         DeviceResponse deviceResponse = device.toDto();
@@ -22,8 +21,7 @@ class DeviceTest {
         assertAll(
                 () -> assertNotNull(deviceResponse),
                 () -> assertEquals(device.getDeviceId(), deviceResponse.getDeviceId()),
-                () -> assertEquals(device.getDeviceName(), deviceResponse.getDeviceName()),
-                () -> assertEquals(device.getCycle(), deviceResponse.getCycle())
+                () -> assertEquals(device.getDeviceName(), deviceResponse.getDeviceName())
         );
     }
 }

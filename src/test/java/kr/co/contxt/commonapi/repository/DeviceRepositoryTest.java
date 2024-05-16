@@ -6,7 +6,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.time.LocalTime;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertAll;
@@ -24,7 +23,6 @@ class DeviceRepositoryTest {
         Device device = Device.builder()
                 .deviceId(1L)
                 .deviceName("test")
-                .cycle(LocalTime.of(0, 10))
                 .build();
 
         given(deviceRepository.findByPlace_PlaceNameAndDeviceName(anyString(), anyString())).willReturn(Optional.of(device));
@@ -34,7 +32,6 @@ class DeviceRepositoryTest {
         assertAll(() -> {
             assertEquals(device.getDeviceId(), result.getDeviceId());
             assertEquals(device.getDeviceName(), result.getDeviceName());
-            assertEquals(device.getCycle(), result.getCycle());
         });
     }
 }

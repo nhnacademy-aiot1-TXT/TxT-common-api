@@ -1,8 +1,9 @@
 package kr.co.contxt.commonapi.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import kr.co.contxt.commonapi.dto.PlaceRequest;
 import kr.co.contxt.commonapi.dto.PlaceResponse;
-import kr.co.contxt.commonapi.entity.Place;
 import kr.co.contxt.commonapi.exception.PlaceNotFountException;
 import kr.co.contxt.commonapi.service.PlaceService;
 import org.junit.jupiter.api.Test;
@@ -13,6 +14,8 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import static org.hamcrest.Matchers.equalTo;
@@ -37,9 +40,13 @@ class PlaceRestControllerTest {
         // given
         Long placeId = 1L;
         String placeName = "test place";
+        LocalTime cycle = LocalTime.of(0, 10, 0);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
+        String cycleString = cycle.format(formatter);
         PlaceResponse placeResponse = PlaceResponse.builder()
                 .placeId(placeId)
                 .placeName(placeName)
+                .cycle(cycle)
                 .build();
 
         given(placeService.getAllPlaces()).willReturn(List.of(placeResponse));
@@ -51,7 +58,8 @@ class PlaceRestControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$[0].placeId", equalTo(placeId.intValue())))
-                .andExpect(jsonPath("$[0].placeName", equalTo(placeName)));
+                .andExpect(jsonPath("$[0].placeName", equalTo(placeName)))
+                .andExpect(jsonPath("$[0].cycle", equalTo(cycleString)));
     }
 
     @Test
@@ -59,9 +67,13 @@ class PlaceRestControllerTest {
         // given
         Long placeId = 1L;
         String placeName = "test place";
+        LocalTime cycle = LocalTime.of(0, 10, 0);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
+        String cycleString = cycle.format(formatter);
         PlaceResponse placeResponse = PlaceResponse.builder()
                 .placeId(placeId)
                 .placeName(placeName)
+                .cycle(cycle)
                 .build();
 
         given(placeService.getPlace(anyLong())).willReturn(placeResponse);
@@ -73,7 +85,8 @@ class PlaceRestControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.placeId", equalTo(placeId.intValue())))
-                .andExpect(jsonPath("$.placeName", equalTo(placeName)));
+                .andExpect(jsonPath("$.placeName", equalTo(placeName)))
+                .andExpect(jsonPath("$.cycle", equalTo(cycleString)));
     }
 
     @Test
@@ -95,24 +108,31 @@ class PlaceRestControllerTest {
         // given
         Long placeId = 1L;
         String placeName = "test place";
-        PlaceResponse place = PlaceResponse.builder()
+        LocalTime cycle = LocalTime.of(0, 10, 0);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
+        String cycleString = cycle.format(formatter);
+        PlaceRequest placeRequest = new PlaceRequest(placeName, cycle);
+        PlaceResponse placeResponse = PlaceResponse.builder()
                 .placeId(placeId)
                 .placeName(placeName)
+                .cycle(cycle)
                 .build();
 
-        given(placeService.savePlace(any())).willReturn(place);
+        given(placeService.savePlace(any())).willReturn(placeResponse);
 
         // when
         // then
         ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.registerModule(new JavaTimeModule());
         mockMvc.perform(post("/api/common/place")
-                        .content(objectMapper.writeValueAsString(place))
+                        .content(objectMapper.writeValueAsString(placeRequest))
                         .contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isCreated())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.placeId", equalTo(placeId.intValue())))
-                .andExpect(jsonPath("$.placeName", equalTo(placeName)));
+                .andExpect(jsonPath("$.placeName", equalTo(placeName)))
+                .andExpect(jsonPath("$.cycle", equalTo(cycleString)));
     }
 
     @Test
@@ -120,41 +140,47 @@ class PlaceRestControllerTest {
         // given
         Long placeId = 1L;
         String placeName = "test place";
-        PlaceResponse place = PlaceResponse.builder()
+        LocalTime cycle = LocalTime.of(0, 10, 0);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
+        String cycleString = cycle.format(formatter);
+        PlaceRequest placeRequest = new PlaceRequest(placeName, cycle);
+        PlaceResponse placeResponse = PlaceResponse.builder()
                 .placeId(placeId)
                 .placeName(placeName)
+                .cycle(cycle)
                 .build();
 
-        given(placeService.updatePlace(anyLong(), any())).willReturn(place);
+        given(placeService.updatePlace(anyLong(), any())).willReturn(placeResponse);
 
         // when
         // then
         ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.registerModule(new JavaTimeModule());
         mockMvc.perform(put("/api/common/place/" + placeId)
-                        .content(objectMapper.writeValueAsString(place))
+                        .content(objectMapper.writeValueAsString(placeRequest))
                         .contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.placeId", equalTo(placeId.intValue())))
-                .andExpect(jsonPath("$.placeName", equalTo(placeName)));
+                .andExpect(jsonPath("$.placeName", equalTo(placeName)))
+                .andExpect(jsonPath("$.cycle", equalTo(cycleString)));
     }
 
     @Test
     void updatePlaceException() throws Exception {
-        Long placeId = 1L;
+        long placeId = 1L;
         String placeName = "test place";
-        Place place = Place.builder()
-                .placeId(placeId)
-                .placeName(placeName)
-                .build();
+        LocalTime cycle = LocalTime.of(0, 30, 0);
+        PlaceRequest placeRequest = new PlaceRequest(placeName, cycle);
 
         given(placeService.updatePlace(anyLong(), any()))
                 .willThrow(new PlaceNotFountException("Place를 찾을 수 없습니다."));
 
         ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.registerModule(new JavaTimeModule());
         mockMvc.perform(put("/api/common/place/" + placeId)
-                        .content(objectMapper.writeValueAsString(place))
+                        .content(objectMapper.writeValueAsString(placeRequest))
                         .contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isNotFound())
