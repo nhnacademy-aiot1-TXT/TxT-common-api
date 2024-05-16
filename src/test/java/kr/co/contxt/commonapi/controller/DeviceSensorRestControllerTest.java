@@ -1,8 +1,8 @@
 package kr.co.contxt.commonapi.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import kr.co.contxt.commonapi.dto.DeviceAndSensorNameDto;
-import kr.co.contxt.commonapi.dto.DeviceNameDto;
+import kr.co.contxt.commonapi.dto.DeviceAndSensorNameAndPlaceNameDto;
+import kr.co.contxt.commonapi.dto.DeviceNameAndPlaceNameDto;
 import kr.co.contxt.commonapi.dto.DeviceSensorRequest;
 import kr.co.contxt.commonapi.dto.DeviceSensorResponse;
 import kr.co.contxt.commonapi.exception.DeviceSensorNotFoundException;
@@ -63,9 +63,10 @@ class DeviceSensorRestControllerTest {
         Long deviceId = 1L;
         Long sensorId = 1L;
         String deviceName = "test device";
+        String placeName = "test place";
         Float onValue = 25F;
         Float offValue = 22F;
-        DeviceNameDto deviceNameDto = new DeviceNameDto(deviceName);
+        DeviceNameAndPlaceNameDto deviceNameAndPlaceNameDto = new DeviceNameAndPlaceNameDto(deviceName, placeName);
         DeviceSensorResponse deviceSensorResponse = DeviceSensorResponse.builder()
                 .deviceId(deviceId)
                 .sensorId(sensorId)
@@ -73,10 +74,11 @@ class DeviceSensorRestControllerTest {
                 .offValue(offValue)
                 .build();
 
-        given(deviceSensorService.getSensorListByDevice(deviceNameDto)).willReturn(List.of(deviceSensorResponse));
+        given(deviceSensorService.getSensorListByDevice(deviceNameAndPlaceNameDto)).willReturn(List.of(deviceSensorResponse));
 
         mockMvc.perform(get("/api/common/device-sensor/sensors")
-                        .param("deviceName", deviceName))
+                        .param("deviceName", deviceName)
+                        .param("placeName", placeName))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$[0].onValue", equalTo(onValue.doubleValue())))
@@ -127,9 +129,10 @@ class DeviceSensorRestControllerTest {
         Long sensorId = 1L;
         String deviceName = "test device";
         String sensorName = "test sensor";
+        String placeName = "test place";
         Float onValue = 25F;
         Float offValue = 22F;
-        DeviceAndSensorNameDto deviceAndSensorNameDto = new DeviceAndSensorNameDto(deviceName, sensorName);
+        DeviceAndSensorNameAndPlaceNameDto deviceAndSensorNameAndPlaceNameDto = new DeviceAndSensorNameAndPlaceNameDto(deviceName, sensorName, placeName);
         DeviceSensorResponse deviceSensorResponse = DeviceSensorResponse.builder()
                 .deviceId(deviceId)
                 .sensorId(sensorId)
@@ -137,11 +140,12 @@ class DeviceSensorRestControllerTest {
                 .offValue(offValue)
                 .build();
 
-        given(deviceSensorService.getSensorByDeviceAndSensor(deviceAndSensorNameDto)).willReturn(deviceSensorResponse);
+        given(deviceSensorService.getSensorByDeviceAndSensor(deviceAndSensorNameAndPlaceNameDto)).willReturn(deviceSensorResponse);
 
         mockMvc.perform(get("/api/common/device-sensor/sensor")
                         .param("deviceName", deviceName)
-                        .param("sensorName", sensorName))
+                        .param("sensorName", sensorName)
+                        .param("placeName", placeName))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.deviceId", equalTo(deviceId.intValue())))
@@ -154,14 +158,16 @@ class DeviceSensorRestControllerTest {
     void getSensorByDeviceNameAndSensorNameException() throws Exception {
         String deviceName = "test device";
         String sensorName = "test sensor";
-        DeviceAndSensorNameDto deviceAndSensorNameDto = new DeviceAndSensorNameDto(deviceName, sensorName);
+        String placeName = "test place";
+        DeviceAndSensorNameAndPlaceNameDto deviceAndSensorNameAndPlaceNameDto = new DeviceAndSensorNameAndPlaceNameDto(deviceName, sensorName, placeName);
 
-        given(deviceSensorService.getSensorByDeviceAndSensor(deviceAndSensorNameDto))
+        given(deviceSensorService.getSensorByDeviceAndSensor(deviceAndSensorNameAndPlaceNameDto))
                 .willThrow(new DeviceSensorNotFoundException("장비별 센서 데이터를 찾을 수 없습니다."));
 
         mockMvc.perform(get("/api/common/device-sensor/sensor")
                         .param("deviceName", deviceName)
-                        .param("sensorName", sensorName))
+                        .param("sensorName", sensorName)
+                        .param("placeName", placeName))
                 .andDo(print())
                 .andExpect(status().isNotFound())
                 .andExpect(jsonPath("$.message", equalTo("장비별 센서 데이터를 찾을 수 없습니다.")));
@@ -173,9 +179,10 @@ class DeviceSensorRestControllerTest {
         Long sensorId = 1L;
         String deviceName = "test device";
         String sensorName = "test sensor";
+        String placeName = "test place";
         Float onValue = 29f;
         Float offValue = 20f;
-        DeviceSensorRequest deviceSensorRequest = new DeviceSensorRequest(deviceName, sensorName, onValue, offValue);
+        DeviceSensorRequest deviceSensorRequest = new DeviceSensorRequest(deviceName, sensorName, placeName, onValue, offValue);
         DeviceSensorResponse deviceSensorResponse = DeviceSensorResponse.builder()
                 .deviceId(deviceId)
                 .sensorId(sensorId)
@@ -205,9 +212,10 @@ class DeviceSensorRestControllerTest {
         long sensorId = 1L;
         String deviceName = "test device";
         String sensorName = "test sensor";
+        String placeName = "test place";
         Float onValue = 29f;
         Float offValue = 20f;
-        DeviceSensorRequest deviceSensorRequest = new DeviceSensorRequest(deviceName, sensorName, onValue, offValue);
+        DeviceSensorRequest deviceSensorRequest = new DeviceSensorRequest(deviceName, sensorName, placeName, onValue, offValue);
 
         given(deviceSensorService.updateSensorByDeviceAndSensor(anyLong(), anyLong(), any()))
                 .willThrow(new DeviceSensorNotFoundException("장비별 센서 데이터를 찾을 수 없습니다."));

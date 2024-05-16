@@ -23,6 +23,7 @@ class DeviceRepositoryTest {
         Device device = Device.builder()
                 .deviceId(1L)
                 .deviceName("test")
+                .aiMode(1)
                 .build();
 
         given(deviceRepository.findByPlace_PlaceNameAndDeviceName(anyString(), anyString())).willReturn(Optional.of(device));

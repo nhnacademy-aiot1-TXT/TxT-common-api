@@ -15,7 +15,7 @@ class DeviceSensorTest {
                 .deviceSensorId(1L)
                 .onValue(25f)
                 .offValue(20f)
-                .device(new Device(1L, place, "test device"))
+                .device(new Device(1L, place, "test device", 1))
                 .sensor(new Sensor(1L, "test sensor"))
                 .build();
 

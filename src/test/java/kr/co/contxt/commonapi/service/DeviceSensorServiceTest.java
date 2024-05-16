@@ -1,7 +1,7 @@
 package kr.co.contxt.commonapi.service;
 
-import kr.co.contxt.commonapi.dto.DeviceAndSensorNameDto;
-import kr.co.contxt.commonapi.dto.DeviceNameDto;
+import kr.co.contxt.commonapi.dto.DeviceAndSensorNameAndPlaceNameDto;
+import kr.co.contxt.commonapi.dto.DeviceNameAndPlaceNameDto;
 import kr.co.contxt.commonapi.dto.DeviceSensorRequest;
 import kr.co.contxt.commonapi.dto.DeviceSensorResponse;
 import kr.co.contxt.commonapi.entity.Device;
@@ -63,9 +63,10 @@ class DeviceSensorServiceTest {
         Long sensorId = 1L;
         String deviceName = "test device";
         String sensorName = "test sensor";
+        String placeName = "test place";
         Float onValue = 25F;
         Float offValue = 22F;
-        DeviceNameDto deviceNameDto = new DeviceNameDto(deviceName);
+        DeviceNameAndPlaceNameDto deviceNameAndPlaceNameDto = new DeviceNameAndPlaceNameDto(deviceName, placeName);
         DeviceSensor deviceSensor = DeviceSensor.builder()
                 .device(Device.builder().deviceId(deviceId).deviceName(deviceName).build())
                 .sensor(Sensor.builder().sensorId(sensorId).sensorName(sensorName).build())
@@ -73,9 +74,9 @@ class DeviceSensorServiceTest {
                 .offValue(offValue)
                 .build();
 
-        given(deviceSensorRepository.findByDevice_DeviceName(anyString())).willReturn(List.of(deviceSensor));
+        given(deviceSensorRepository.findByDevice_DeviceNameAndDevice_Place_PlaceName(anyString(), anyString())).willReturn(List.of(deviceSensor));
 
-        List<DeviceSensorResponse> deviceSensors = deviceSensorService.getSensorListByDevice(deviceNameDto);
+        List<DeviceSensorResponse> deviceSensors = deviceSensorService.getSensorListByDevice(deviceNameAndPlaceNameDto);
 
         assertAll(
                 () -> assertNotNull(deviceSensors),
@@ -138,9 +139,10 @@ class DeviceSensorServiceTest {
         Long sensorId = 1L;
         String deviceName = "test device";
         String sensorName = "test sensor";
+        String placeName = "test place";
         Float onValue = 25F;
         Float offValue = 22F;
-        DeviceAndSensorNameDto deviceAndSensorNameDto = new DeviceAndSensorNameDto(deviceName, sensorName);
+        DeviceAndSensorNameAndPlaceNameDto deviceAndSensorNameAndPlaceNameDto = new DeviceAndSensorNameAndPlaceNameDto(deviceName, sensorName, placeName);
         DeviceSensor deviceSensor = DeviceSensor.builder()
                 .device(Device.builder().deviceId(deviceId).deviceName(deviceName).build())
                 .sensor(Sensor.builder().sensorId(sensorId).sensorName(sensorName).build())
@@ -148,10 +150,10 @@ class DeviceSensorServiceTest {
                 .offValue(offValue)
                 .build();
 
-        given(deviceSensorRepository.findByDevice_DeviceNameAndSensor_SensorName(anyString(), anyString()))
+        given(deviceSensorRepository.findByDevice_DeviceNameAndSensor_SensorNameAndDevice_Place_PlaceName(anyString(), anyString(), anyString()))
                 .willReturn(Optional.of(deviceSensor));
 
-        DeviceSensorResponse deviceSensorResponse = deviceSensorService.getSensorByDeviceAndSensor(deviceAndSensorNameDto);
+        DeviceSensorResponse deviceSensorResponse = deviceSensorService.getSensorByDeviceAndSensor(deviceAndSensorNameAndPlaceNameDto);
 
         assertAll(
                 () -> assertNotNull(deviceSensorResponse),
@@ -166,11 +168,12 @@ class DeviceSensorServiceTest {
     void getSensorByDeviceNameAndSensorNameThrowException() {
         String deviceName = "test device";
         String sensorName = "test sensor";
-        DeviceAndSensorNameDto deviceAndSensorNameDto = new DeviceAndSensorNameDto(deviceName, sensorName);
+        String placeName = "test place";
+        DeviceAndSensorNameAndPlaceNameDto deviceAndSensorNameAndPlaceNameDto = new DeviceAndSensorNameAndPlaceNameDto(deviceName, sensorName, placeName);
 
-        given(deviceSensorRepository.findByDevice_DeviceNameAndSensor_SensorName(anyString(), anyString()))
+        given(deviceSensorRepository.findByDevice_DeviceNameAndSensor_SensorNameAndDevice_Place_PlaceName(anyString(), anyString(), anyString()))
                 .willReturn(Optional.empty());
-        Throwable throwable = assertThrows(DeviceSensorNotFoundException.class, () -> deviceSensorService.getSensorByDeviceAndSensor(deviceAndSensorNameDto));
+        Throwable throwable = assertThrows(DeviceSensorNotFoundException.class, () -> deviceSensorService.getSensorByDeviceAndSensor(deviceAndSensorNameAndPlaceNameDto));
 
         assertAll(
                 () -> assertEquals("장비별 센서 데이터를 찾을 수 없습니다.", throwable.getMessage())
@@ -183,11 +186,12 @@ class DeviceSensorServiceTest {
         Long sensorId = 1L;
         String deviceName = "test device";
         String sensorName = "test sensor";
+        String placeName = "test place";
         Float beforeOnValue = 25F;
         Float beforeOffValue = 22F;
         Float afterOnValue = 25F;
         Float afterOffValue = 22F;
-        DeviceSensorRequest deviceSensorRequest = new DeviceSensorRequest(deviceName, sensorName, afterOnValue, afterOffValue);
+        DeviceSensorRequest deviceSensorRequest = new DeviceSensorRequest(deviceName, sensorName, placeName, afterOnValue, afterOffValue);
         DeviceSensor beforeDeviceSensor = DeviceSensor.builder()
                 .device(Device.builder().deviceId(deviceId).deviceName(deviceName).build())
                 .sensor(Sensor.builder().sensorId(sensorId).sensorName(sensorName).build())
@@ -201,7 +205,7 @@ class DeviceSensorServiceTest {
                 .offValue(afterOffValue)
                 .build();
 
-        given(deviceSensorRepository.findByDevice_DeviceNameAndSensor_SensorName(anyString(), anyString()))
+        given(deviceSensorRepository.findByDevice_DeviceNameAndSensor_SensorNameAndDevice_Place_PlaceName(anyString(), anyString(), anyString()))
                 .willReturn(Optional.of(beforeDeviceSensor));
         given(deviceSensorRepository.save(any()))
                 .willReturn(afterDeviceSensor);
@@ -224,10 +228,11 @@ class DeviceSensorServiceTest {
         Long sensorId = 1L;
         String deviceName = "test device";
         String sensorName = "test sensor";
+        String placeName = "test place";
         Float onValue = 22f;
         Float offValue = 15f;
-        DeviceSensorRequest deviceSensorRequest = new DeviceSensorRequest(deviceName, sensorName, onValue, offValue);
-        given(deviceSensorRepository.findByDevice_DeviceNameAndSensor_SensorName(anyString(), anyString()))
+        DeviceSensorRequest deviceSensorRequest = new DeviceSensorRequest(deviceName, sensorName, placeName, onValue, offValue);
+        given(deviceSensorRepository.findByDevice_DeviceNameAndSensor_SensorNameAndDevice_Place_PlaceName(anyString(), anyString(), anyString()))
                 .willReturn(Optional.empty());
 
         Throwable throwable = assertThrows(DeviceSensorNotFoundException.class, () -> deviceSensorService.updateSensorByDeviceAndSensor(deviceId, sensorId, deviceSensorRequest));

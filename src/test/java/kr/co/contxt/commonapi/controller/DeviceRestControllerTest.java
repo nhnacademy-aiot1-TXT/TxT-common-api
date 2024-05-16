@@ -41,7 +41,7 @@ class DeviceRestControllerTest {
 
     @Test
     void getDeviceById() {
-        DeviceResponse device = new DeviceResponse(1L, 1L, "test");
+        DeviceResponse device = new DeviceResponse(1L, 1L, "test", 1);
 
         given(deviceService.getDeviceById(anyLong())).willReturn(device);
 
@@ -55,7 +55,7 @@ class DeviceRestControllerTest {
 
     @Test
     void getDeviceByName() {
-        DeviceResponse device = new DeviceResponse(1L, 1L, "test");
+        DeviceResponse device = new DeviceResponse(1L, 1L, "test", 1);
 
         given(deviceService.getDeviceByPlaceAndName(anyString(), anyString())).willReturn(device);
 
@@ -87,7 +87,7 @@ class DeviceRestControllerTest {
 
     @Test
     void addDevice() {
-        DeviceResponse device = new DeviceResponse(1L, 1L, "test");
+        DeviceResponse device = new DeviceResponse(1L, 1L, "test", 1);
 
         given(deviceService.addDevice(any())).willReturn(device);
 
@@ -100,7 +100,7 @@ class DeviceRestControllerTest {
 
     @Test
     void updateDevice() {
-        DeviceResponse device = new DeviceResponse(1L, 1L, "test");
+        DeviceResponse device = new DeviceResponse(1L, 1L, "test", 1);
 
         given(deviceService.updateDevice(anyLong(), any())).willReturn(device);
 
