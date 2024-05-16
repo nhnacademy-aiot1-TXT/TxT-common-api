@@ -1,7 +1,7 @@
 package kr.co.contxt.commonapi.service.impl;
 
-import kr.co.contxt.commonapi.dto.DeviceAndSensorNameAndPlaceNameDto;
-import kr.co.contxt.commonapi.dto.DeviceNameAndPlaceNameDto;
+import kr.co.contxt.commonapi.dto.DeviceAndPlaceNameDto;
+import kr.co.contxt.commonapi.dto.DeviceAndSensorAndPlaceNameDto;
 import kr.co.contxt.commonapi.dto.DeviceSensorRequest;
 import kr.co.contxt.commonapi.dto.DeviceSensorResponse;
 import kr.co.contxt.commonapi.entity.DeviceSensor;
@@ -54,20 +54,20 @@ public class DeviceSensorServiceImpl implements DeviceSensorService {
     /**
      * DeviceSensor 리스트 조회 메서드
      *
-     * @param deviceNameAndPlaceNameDto the device and place name dto
+     * @param deviceAndPlaceNameDto the device and place name dto
      * @return deviceSensor list
      */
     @Override
     @Transactional(readOnly = true)
     @Cacheable(
             value = "getSensorListByDevice",
-            key = "#deviceNameAndPlaceNameDto.getDeviceName().concat(':').concat(#deviceNameAndPlaceNameDto.getPlaceName())",
+            key = "#deviceAndPlaceNameDto.getDeviceName().concat(':').concat(#deviceAndPlaceNameDto.getPlaceName())",
             unless = "#result == null"
     )
-    public List<DeviceSensorResponse> getSensorListByDevice(DeviceNameAndPlaceNameDto deviceNameAndPlaceNameDto) {
+    public List<DeviceSensorResponse> getSensorListByDevice(DeviceAndPlaceNameDto deviceAndPlaceNameDto) {
         return deviceSensorRepository.findByDevice_DeviceNameAndDevice_Place_PlaceName(
-                        deviceNameAndPlaceNameDto.getDeviceName(),
-                        deviceNameAndPlaceNameDto.getPlaceName()
+                        deviceAndPlaceNameDto.getDeviceName(),
+                        deviceAndPlaceNameDto.getPlaceName()
                 )
                 .stream()
                 .map(DeviceSensor::toDto)
@@ -97,21 +97,21 @@ public class DeviceSensorServiceImpl implements DeviceSensorService {
     /**
      * DeviceSensor 단일 조회 메서드
      *
-     * @param deviceAndSensorNameAndPlaceNameDto the device and sensor and place name dto
+     * @param deviceAndSensorAndPlaceNameDto the device and sensor and place name dto
      * @return deviceSensor
      */
     @Override
     @Transactional(readOnly = true)
     @Cacheable(
             value = "getSensorByDeviceAndSensor",
-            key = "#deviceAndSensorNameAndPlaceNameDto.getDeviceName().concat(':').concat(#deviceAndSensorNameAndPlaceNameDto.getSensorName()).concat(':').concat(#deviceAndSensorNameAndPlaceNameDto.getPlaceName())",
+            key = "#deviceAndSensorAndPlaceNameDto.getDeviceName().concat(':').concat(#deviceAndSensorAndPlaceNameDto.getSensorName()).concat(':').concat(#deviceAndSensorAndPlaceNameDto.getPlaceName())",
             unless = "#result == null"
     )
-    public DeviceSensorResponse getSensorByDeviceAndSensor(DeviceAndSensorNameAndPlaceNameDto deviceAndSensorNameAndPlaceNameDto) {
+    public DeviceSensorResponse getSensorByDeviceAndSensor(DeviceAndSensorAndPlaceNameDto deviceAndSensorAndPlaceNameDto) {
         return deviceSensorRepository.findByDevice_DeviceNameAndSensor_SensorNameAndDevice_Place_PlaceName(
-                        deviceAndSensorNameAndPlaceNameDto.getDeviceName(),
-                        deviceAndSensorNameAndPlaceNameDto.getSensorName(),
-                        deviceAndSensorNameAndPlaceNameDto.getPlaceName()
+                        deviceAndSensorAndPlaceNameDto.getDeviceName(),
+                        deviceAndSensorAndPlaceNameDto.getSensorName(),
+                        deviceAndSensorAndPlaceNameDto.getPlaceName()
                 )
                 .orElseThrow(() -> new DeviceSensorNotFoundException(DEVICE_SENSOR_NOT_FOUND_MESSAGE))
                 .toDto();

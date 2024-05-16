@@ -1,8 +1,8 @@
 package kr.co.contxt.commonapi.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import kr.co.contxt.commonapi.dto.DeviceAndSensorNameAndPlaceNameDto;
-import kr.co.contxt.commonapi.dto.DeviceNameAndPlaceNameDto;
+import kr.co.contxt.commonapi.dto.DeviceAndPlaceNameDto;
+import kr.co.contxt.commonapi.dto.DeviceAndSensorAndPlaceNameDto;
 import kr.co.contxt.commonapi.dto.DeviceSensorRequest;
 import kr.co.contxt.commonapi.dto.DeviceSensorResponse;
 import kr.co.contxt.commonapi.exception.DeviceSensorNotFoundException;
@@ -66,7 +66,7 @@ class DeviceSensorRestControllerTest {
         String placeName = "test place";
         Float onValue = 25F;
         Float offValue = 22F;
-        DeviceNameAndPlaceNameDto deviceNameAndPlaceNameDto = new DeviceNameAndPlaceNameDto(deviceName, placeName);
+        DeviceAndPlaceNameDto deviceAndPlaceNameDto = new DeviceAndPlaceNameDto(deviceName, placeName);
         DeviceSensorResponse deviceSensorResponse = DeviceSensorResponse.builder()
                 .deviceId(deviceId)
                 .sensorId(sensorId)
@@ -74,7 +74,7 @@ class DeviceSensorRestControllerTest {
                 .offValue(offValue)
                 .build();
 
-        given(deviceSensorService.getSensorListByDevice(deviceNameAndPlaceNameDto)).willReturn(List.of(deviceSensorResponse));
+        given(deviceSensorService.getSensorListByDevice(deviceAndPlaceNameDto)).willReturn(List.of(deviceSensorResponse));
 
         mockMvc.perform(get("/api/common/device-sensor/sensors")
                         .param("deviceName", deviceName)
@@ -132,7 +132,7 @@ class DeviceSensorRestControllerTest {
         String placeName = "test place";
         Float onValue = 25F;
         Float offValue = 22F;
-        DeviceAndSensorNameAndPlaceNameDto deviceAndSensorNameAndPlaceNameDto = new DeviceAndSensorNameAndPlaceNameDto(deviceName, sensorName, placeName);
+        DeviceAndSensorAndPlaceNameDto deviceAndSensorAndPlaceNameDto = new DeviceAndSensorAndPlaceNameDto(deviceName, sensorName, placeName);
         DeviceSensorResponse deviceSensorResponse = DeviceSensorResponse.builder()
                 .deviceId(deviceId)
                 .sensorId(sensorId)
@@ -140,7 +140,7 @@ class DeviceSensorRestControllerTest {
                 .offValue(offValue)
                 .build();
 
-        given(deviceSensorService.getSensorByDeviceAndSensor(deviceAndSensorNameAndPlaceNameDto)).willReturn(deviceSensorResponse);
+        given(deviceSensorService.getSensorByDeviceAndSensor(deviceAndSensorAndPlaceNameDto)).willReturn(deviceSensorResponse);
 
         mockMvc.perform(get("/api/common/device-sensor/sensor")
                         .param("deviceName", deviceName)
@@ -159,9 +159,9 @@ class DeviceSensorRestControllerTest {
         String deviceName = "test device";
         String sensorName = "test sensor";
         String placeName = "test place";
-        DeviceAndSensorNameAndPlaceNameDto deviceAndSensorNameAndPlaceNameDto = new DeviceAndSensorNameAndPlaceNameDto(deviceName, sensorName, placeName);
+        DeviceAndSensorAndPlaceNameDto deviceAndSensorAndPlaceNameDto = new DeviceAndSensorAndPlaceNameDto(deviceName, sensorName, placeName);
 
-        given(deviceSensorService.getSensorByDeviceAndSensor(deviceAndSensorNameAndPlaceNameDto))
+        given(deviceSensorService.getSensorByDeviceAndSensor(deviceAndSensorAndPlaceNameDto))
                 .willThrow(new DeviceSensorNotFoundException("장비별 센서 데이터를 찾을 수 없습니다."));
 
         mockMvc.perform(get("/api/common/device-sensor/sensor")

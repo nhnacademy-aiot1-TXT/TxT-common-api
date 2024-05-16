@@ -15,7 +15,7 @@ import javax.validation.constraints.NotBlank;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class DeviceAndSensorNameAndPlaceNameDto {
+public class DeviceAndSensorAndPlaceNameDto {
     @NotBlank
     private String deviceName;
     @NotBlank

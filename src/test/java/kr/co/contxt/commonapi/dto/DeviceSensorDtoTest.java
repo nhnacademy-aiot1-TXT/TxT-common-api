@@ -23,11 +23,11 @@ class DeviceSensorDtoTest {
 
     @Test
     void deviceAndSensorNameDtoValidation() {
-        DeviceAndSensorNameAndPlaceNameDto deviceAndSensorNameAndPlaceNameDto = new DeviceAndSensorNameAndPlaceNameDto("test", "test", "test");
-        DeviceAndSensorNameAndPlaceNameDto deviceAndSensorNameAndPlaceNameDtoWithNull = new DeviceAndSensorNameAndPlaceNameDto("", "", "");
+        DeviceAndSensorAndPlaceNameDto deviceAndSensorAndPlaceNameDto = new DeviceAndSensorAndPlaceNameDto("test", "test", "test");
+        DeviceAndSensorAndPlaceNameDto deviceAndSensorAndPlaceNameDtoWithNull = new DeviceAndSensorAndPlaceNameDto("", "", "");
 
-        Set<ConstraintViolation<DeviceAndSensorNameAndPlaceNameDto>> validate = validator.validate(deviceAndSensorNameAndPlaceNameDto);
-        Set<ConstraintViolation<DeviceAndSensorNameAndPlaceNameDto>> validateNull = validator.validate(deviceAndSensorNameAndPlaceNameDtoWithNull);
+        Set<ConstraintViolation<DeviceAndSensorAndPlaceNameDto>> validate = validator.validate(deviceAndSensorAndPlaceNameDto);
+        Set<ConstraintViolation<DeviceAndSensorAndPlaceNameDto>> validateNull = validator.validate(deviceAndSensorAndPlaceNameDtoWithNull);
 
         assertAll(
                 () -> assertTrue(validate.isEmpty()),
@@ -37,11 +37,11 @@ class DeviceSensorDtoTest {
 
     @Test
     void deviceNameDtoValidation() {
-        DeviceNameAndPlaceNameDto deviceNameAndPlaceNameDto = new DeviceNameAndPlaceNameDto("test", "test");
-        DeviceNameAndPlaceNameDto deviceNameAndPlaceNameDtoWithNull = new DeviceNameAndPlaceNameDto("", "");
+        DeviceAndPlaceNameDto deviceAndPlaceNameDto = new DeviceAndPlaceNameDto("test", "test");
+        DeviceAndPlaceNameDto deviceAndPlaceNameDtoWithNull = new DeviceAndPlaceNameDto("", "");
 
-        Set<ConstraintViolation<DeviceNameAndPlaceNameDto>> validate = validator.validate(deviceNameAndPlaceNameDto);
-        Set<ConstraintViolation<DeviceNameAndPlaceNameDto>> validateNull = validator.validate(deviceNameAndPlaceNameDtoWithNull);
+        Set<ConstraintViolation<DeviceAndPlaceNameDto>> validate = validator.validate(deviceAndPlaceNameDto);
+        Set<ConstraintViolation<DeviceAndPlaceNameDto>> validateNull = validator.validate(deviceAndPlaceNameDtoWithNull);
 
         assertAll(
                 () -> assertTrue(validate.isEmpty()),

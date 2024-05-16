@@ -1,7 +1,7 @@
 package kr.co.contxt.commonapi.service;
 
-import kr.co.contxt.commonapi.dto.DeviceAndSensorNameAndPlaceNameDto;
-import kr.co.contxt.commonapi.dto.DeviceNameAndPlaceNameDto;
+import kr.co.contxt.commonapi.dto.DeviceAndPlaceNameDto;
+import kr.co.contxt.commonapi.dto.DeviceAndSensorAndPlaceNameDto;
 import kr.co.contxt.commonapi.dto.DeviceSensorRequest;
 import kr.co.contxt.commonapi.dto.DeviceSensorResponse;
 import kr.co.contxt.commonapi.entity.Device;
@@ -66,7 +66,7 @@ class DeviceSensorServiceTest {
         String placeName = "test place";
         Float onValue = 25F;
         Float offValue = 22F;
-        DeviceNameAndPlaceNameDto deviceNameAndPlaceNameDto = new DeviceNameAndPlaceNameDto(deviceName, placeName);
+        DeviceAndPlaceNameDto deviceAndPlaceNameDto = new DeviceAndPlaceNameDto(deviceName, placeName);
         DeviceSensor deviceSensor = DeviceSensor.builder()
                 .device(Device.builder().deviceId(deviceId).deviceName(deviceName).build())
                 .sensor(Sensor.builder().sensorId(sensorId).sensorName(sensorName).build())
@@ -76,7 +76,7 @@ class DeviceSensorServiceTest {
 
         given(deviceSensorRepository.findByDevice_DeviceNameAndDevice_Place_PlaceName(anyString(), anyString())).willReturn(List.of(deviceSensor));
 
-        List<DeviceSensorResponse> deviceSensors = deviceSensorService.getSensorListByDevice(deviceNameAndPlaceNameDto);
+        List<DeviceSensorResponse> deviceSensors = deviceSensorService.getSensorListByDevice(deviceAndPlaceNameDto);
 
         assertAll(
                 () -> assertNotNull(deviceSensors),
@@ -142,7 +142,7 @@ class DeviceSensorServiceTest {
         String placeName = "test place";
         Float onValue = 25F;
         Float offValue = 22F;
-        DeviceAndSensorNameAndPlaceNameDto deviceAndSensorNameAndPlaceNameDto = new DeviceAndSensorNameAndPlaceNameDto(deviceName, sensorName, placeName);
+        DeviceAndSensorAndPlaceNameDto deviceAndSensorAndPlaceNameDto = new DeviceAndSensorAndPlaceNameDto(deviceName, sensorName, placeName);
         DeviceSensor deviceSensor = DeviceSensor.builder()
                 .device(Device.builder().deviceId(deviceId).deviceName(deviceName).build())
                 .sensor(Sensor.builder().sensorId(sensorId).sensorName(sensorName).build())
@@ -153,7 +153,7 @@ class DeviceSensorServiceTest {
         given(deviceSensorRepository.findByDevice_DeviceNameAndSensor_SensorNameAndDevice_Place_PlaceName(anyString(), anyString(), anyString()))
                 .willReturn(Optional.of(deviceSensor));
 
-        DeviceSensorResponse deviceSensorResponse = deviceSensorService.getSensorByDeviceAndSensor(deviceAndSensorNameAndPlaceNameDto);
+        DeviceSensorResponse deviceSensorResponse = deviceSensorService.getSensorByDeviceAndSensor(deviceAndSensorAndPlaceNameDto);
 
         assertAll(
                 () -> assertNotNull(deviceSensorResponse),
@@ -169,11 +169,11 @@ class DeviceSensorServiceTest {
         String deviceName = "test device";
         String sensorName = "test sensor";
         String placeName = "test place";
-        DeviceAndSensorNameAndPlaceNameDto deviceAndSensorNameAndPlaceNameDto = new DeviceAndSensorNameAndPlaceNameDto(deviceName, sensorName, placeName);
+        DeviceAndSensorAndPlaceNameDto deviceAndSensorAndPlaceNameDto = new DeviceAndSensorAndPlaceNameDto(deviceName, sensorName, placeName);
 
         given(deviceSensorRepository.findByDevice_DeviceNameAndSensor_SensorNameAndDevice_Place_PlaceName(anyString(), anyString(), anyString()))
                 .willReturn(Optional.empty());
-        Throwable throwable = assertThrows(DeviceSensorNotFoundException.class, () -> deviceSensorService.getSensorByDeviceAndSensor(deviceAndSensorNameAndPlaceNameDto));
+        Throwable throwable = assertThrows(DeviceSensorNotFoundException.class, () -> deviceSensorService.getSensorByDeviceAndSensor(deviceAndSensorAndPlaceNameDto));
 
         assertAll(
                 () -> assertEquals("장비별 센서 데이터를 찾을 수 없습니다.", throwable.getMessage())
