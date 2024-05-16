@@ -2,8 +2,8 @@ package kr.co.contxt.commonapi.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import kr.co.contxt.commonapi.dto.DeviceAndSensorNameDto;
-import kr.co.contxt.commonapi.dto.DeviceNameDto;
+import kr.co.contxt.commonapi.dto.DeviceAndSensorNameAndPlaceNameDto;
+import kr.co.contxt.commonapi.dto.DeviceNameAndPlaceNameDto;
 import kr.co.contxt.commonapi.dto.DeviceSensorRequest;
 import kr.co.contxt.commonapi.dto.DeviceSensorResponse;
 import kr.co.contxt.commonapi.service.DeviceSensorService;
@@ -44,13 +44,13 @@ public class DeviceSensorRestController {
     /**
      * 장비 정보 이름으로 센서 정보 리스트 조회 api
      *
-     * @param deviceNameDto the device name dto
+     * @param deviceNameAndPlaceNameDto the device name dto
      * @return the deviceSensor list
      */
     @GetMapping("/sensors")
     @Operation(summary = "장비별 센서 정보 리스트 조회")
-    public ResponseEntity<List<DeviceSensorResponse>> getSensorListByDeviceName(@ModelAttribute @Valid DeviceNameDto deviceNameDto) {
-        List<DeviceSensorResponse> deviceSensors = deviceSensorService.getSensorListByDevice(deviceNameDto);
+    public ResponseEntity<List<DeviceSensorResponse>> getSensorListByDeviceName(@ModelAttribute @Valid DeviceNameAndPlaceNameDto deviceNameAndPlaceNameDto) {
+        List<DeviceSensorResponse> deviceSensors = deviceSensorService.getSensorListByDevice(deviceNameAndPlaceNameDto);
 
         return ResponseEntity.ok(deviceSensors);
     }
@@ -73,13 +73,13 @@ public class DeviceSensorRestController {
     /**
      * 장비 정보 이름, 센서 정보 이름으로 단일 조회 api
      *
-     * @param deviceAndSensorNameDto the device and sensor name dto
+     * @param deviceAndSensorNameAndPlaceNameDto the device and sensor name dto
      * @return the deviceSensor
      */
     @GetMapping("/sensor")
     @Operation(summary = "장비별 센서 정보 단일 조회")
-    public ResponseEntity<DeviceSensorResponse> getSensorByDeviceNameAndSensorName(@ModelAttribute @Valid DeviceAndSensorNameDto deviceAndSensorNameDto) {
-        DeviceSensorResponse deviceSensor = deviceSensorService.getSensorByDeviceAndSensor(deviceAndSensorNameDto);
+    public ResponseEntity<DeviceSensorResponse> getSensorByDeviceNameAndSensorName(@ModelAttribute @Valid DeviceAndSensorNameAndPlaceNameDto deviceAndSensorNameAndPlaceNameDto) {
+        DeviceSensorResponse deviceSensor = deviceSensorService.getSensorByDeviceAndSensor(deviceAndSensorNameAndPlaceNameDto);
 
         return ResponseEntity.ok(deviceSensor);
     }
