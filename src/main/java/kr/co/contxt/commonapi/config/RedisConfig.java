@@ -48,7 +48,6 @@ public class RedisConfig {
      *
      * @return redis connection factory
      */
-    @Bean
     public RedisConnectionFactory redisConnectionFactoryPlace() {
         RedisStandaloneConfiguration configuration = new RedisStandaloneConfiguration();
         configuration.setHostName(hostname);
