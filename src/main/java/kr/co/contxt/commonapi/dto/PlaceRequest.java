@@ -22,6 +22,8 @@ public class PlaceRequest {
     @NotBlank
     private String placeName;
     @NotNull
+    private String placeCode;
+    @NotNull
     private LocalTime cycle;
 
     /**
@@ -32,6 +34,7 @@ public class PlaceRequest {
     public Place toEntity() {
         return Place.builder()
                 .placeName(placeName)
+                .placeCode(placeCode)
                 .cycle(cycle)
                 .build();
     }
