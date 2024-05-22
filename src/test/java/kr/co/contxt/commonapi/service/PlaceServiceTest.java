@@ -137,6 +137,7 @@ class PlaceServiceTest {
                 .build();
         PlaceRequest placeRequest = new PlaceRequest();
         placeRequest.setPlaceName(placeName);
+        placeRequest.setPlaceCode(placeCode);
         placeRequest.setCycle(cycle);
 
         given(placeRepository.findById(anyLong())).willReturn(Optional.of(place));
