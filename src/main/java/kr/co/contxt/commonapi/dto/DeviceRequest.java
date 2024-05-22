@@ -33,7 +33,7 @@ public class DeviceRequest {
      */
     public Device toEntity() {
         return Device.builder()
-                .place(new Place(placeId, null, null))
+                .place(new Place(placeId, null, null, null))
                 .deviceName(deviceName)
                 .aiMode(aiMode)
                 .build();

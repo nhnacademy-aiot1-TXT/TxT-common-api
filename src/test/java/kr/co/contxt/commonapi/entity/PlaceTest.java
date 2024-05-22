@@ -13,6 +13,7 @@ class PlaceTest {
         Place place = Place.builder()
                 .placeId(1L)
                 .placeName("test")
+                .placeCode("test_place")
                 .cycle(LocalTime.of(7, 0))
                 .build();
 
@@ -22,6 +23,7 @@ class PlaceTest {
                 () -> assertNotNull(placeResponse),
                 () -> assertEquals(place.getPlaceId(), placeResponse.getPlaceId()),
                 () -> assertEquals(place.getPlaceName(), placeResponse.getPlaceName()),
+                () -> assertEquals(place.getPlaceCode(), placeResponse.getPlaceCode()),
                 () -> assertEquals(place.getCycle(), placeResponse.getCycle())
         );
     }

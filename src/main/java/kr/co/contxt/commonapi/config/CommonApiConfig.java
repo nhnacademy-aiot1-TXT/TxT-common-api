@@ -89,8 +89,8 @@ public class CommonApiConfig {
         List<Place> placeList = new ArrayList<>();
 
         AtomicLong id = new AtomicLong(ID_INITIAL_VALUE);
-        placeList.add(Place.builder().placeId(id.getAndIncrement()).placeName("class_a").cycle(LocalTime.of(0, 10, 0)).build());
-        placeList.add(Place.builder().placeId(id.getAndIncrement()).placeName("class_b").cycle(LocalTime.of(0, 15, 0)).build());
+        placeList.add(Place.builder().placeId(id.getAndIncrement()).placeName("강의실 A").placeCode("class_a").cycle(LocalTime.of(0, 10, 0)).build());
+        placeList.add(Place.builder().placeId(id.getAndIncrement()).placeName("강의실 B").placeCode("class_b").cycle(LocalTime.of(0, 15, 0)).build());
 
         return placeList;
     }

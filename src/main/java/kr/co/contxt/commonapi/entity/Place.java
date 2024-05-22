@@ -26,6 +26,8 @@ public class Place {
     private Long placeId;
     @Column(name = "place_name")
     private String placeName;
+    @Column(name = "place_code")
+    private String placeCode;
     @Column
     private LocalTime cycle;
 
@@ -38,6 +40,7 @@ public class Place {
         return PlaceResponse.builder()
                 .placeId(placeId)
                 .placeName(placeName)
+                .placeCode(placeCode)
                 .cycle(cycle)
                 .build();
     }

@@ -24,8 +24,8 @@ class PlaceDtoTest {
 
     @Test
     void placeRequestValidation() {
-        PlaceRequest request = new PlaceRequest("test", LocalTime.now());
-        PlaceRequest resultWithBlank = new PlaceRequest("", null);
+        PlaceRequest request = new PlaceRequest("test", "test_place", LocalTime.now());
+        PlaceRequest resultWithBlank = new PlaceRequest("", "", null);
 
         Set<ConstraintViolation<PlaceRequest>> validate = validator.validate(request);
         Set<ConstraintViolation<PlaceRequest>> validateNull = validator.validate(resultWithBlank);

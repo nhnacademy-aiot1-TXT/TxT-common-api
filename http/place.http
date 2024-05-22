@@ -10,6 +10,7 @@ Content-Type: application/json
 
 {
   "placeName": "test place",
+  "placeCode": "test_place",
   "cycle": "00:10:00"
 }
 
@@ -19,6 +20,7 @@ Content-Type: application/json
 
 {
   "placeName": "update place",
+  "placeCode": "update_place",
   "cycle": "00:13:00"
 }
 
@@ -34,5 +36,6 @@ Content-Type: application/json
 
 {
   "placeName": "update place",
+  "placeCode": "update_place",
   "cycle": "00:10:00"
 }

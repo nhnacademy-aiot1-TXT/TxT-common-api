@@ -32,10 +32,12 @@ class PlaceServiceTest {
         // given
         Long placeId = 1L;
         String placeName = "test place";
+        String placeCode = "test_place";
         LocalTime cycle = LocalTime.of(7, 0);
         Place place = Place.builder()
                 .placeId(placeId)
                 .placeName(placeName)
+                .placeCode(placeCode)
                 .cycle(cycle)
                 .build();
 
@@ -50,6 +52,7 @@ class PlaceServiceTest {
                 () -> assertFalse(places.isEmpty()),
                 () -> assertEquals(placeId, places.get(0).getPlaceId()),
                 () -> assertEquals(placeName, places.get(0).getPlaceName()),
+                () -> assertEquals(placeCode, places.get(0).getPlaceCode()),
                 () -> assertEquals(cycle, places.get(0).getCycle())
         );
     }
@@ -59,10 +62,12 @@ class PlaceServiceTest {
         // given
         Long placeId = 1L;
         String placeName = "test place";
+        String placeCode = "test_place";
         LocalTime cycle = LocalTime.of(7, 0);
         Place place = Place.builder()
                 .placeId(placeId)
                 .placeName(placeName)
+                .placeCode(placeCode)
                 .cycle(cycle)
                 .build();
 
@@ -76,6 +81,7 @@ class PlaceServiceTest {
                 () -> assertNotNull(placeResponse),
                 () -> assertEquals(placeId, placeResponse.getPlaceId()),
                 () -> assertEquals(placeName, placeResponse.getPlaceName()),
+                () -> assertEquals(placeCode, placeResponse.getPlaceCode()),
                 () -> assertEquals(cycle, placeResponse.getCycle())
         );
     }
@@ -92,10 +98,12 @@ class PlaceServiceTest {
         // given
         Long placeId = 1L;
         String placeName = "test place";
+        String placeCode = "test_place";
         LocalTime cycle = LocalTime.of(7, 0);
         Place place = Place.builder()
                 .placeId(placeId)
                 .placeName(placeName)
+                .placeCode(placeCode)
                 .cycle(cycle)
                 .build();
 
@@ -109,6 +117,7 @@ class PlaceServiceTest {
                 () -> assertNotNull(savePlace),
                 () -> assertEquals(placeId, savePlace.getPlaceId()),
                 () -> assertEquals(placeName, savePlace.getPlaceName()),
+                () -> assertEquals(placeCode, savePlace.getPlaceCode()),
                 () -> assertEquals(cycle, savePlace.getCycle())
         );
     }
@@ -118,14 +127,17 @@ class PlaceServiceTest {
         // given
         Long placeId = 1L;
         String placeName = "test place";
+        String placeCode = "test_place";
         LocalTime cycle = LocalTime.of(7, 0);
         Place place = Place.builder()
                 .placeId(placeId)
                 .placeName(placeName)
+                .placeCode(placeCode)
                 .cycle(cycle)
                 .build();
         PlaceRequest placeRequest = new PlaceRequest();
         placeRequest.setPlaceName(placeName);
+        placeRequest.setPlaceCode(placeCode);
         placeRequest.setCycle(cycle);
 
         given(placeRepository.findById(anyLong())).willReturn(Optional.of(place));
@@ -139,6 +151,7 @@ class PlaceServiceTest {
                 () -> assertNotNull(updatePlace),
                 () -> assertEquals(placeId, updatePlace.getPlaceId()),
                 () -> assertEquals(placeName, updatePlace.getPlaceName()),
+                () -> assertEquals(placeCode, updatePlace.getPlaceCode()),
                 () -> assertEquals(cycle, updatePlace.getCycle())
         );
     }

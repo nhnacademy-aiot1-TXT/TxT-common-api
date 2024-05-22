@@ -22,9 +22,11 @@ class PlaceRepositoryTest {
     @Test
     void existsByPlaceName() {
         String placeName = "test place";
+        String placeCode = "test_place";
         LocalTime cycle = LocalTime.of(7, 0);
         Place place = Place.builder()
                 .placeName(placeName)
+                .placeCode(placeCode)
                 .cycle(cycle)
                 .build();
 
