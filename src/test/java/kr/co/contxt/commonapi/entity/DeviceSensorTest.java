@@ -10,7 +10,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class DeviceSensorTest {
     @Test
     void deviceSensorEntityTest() {
-        Place place = new Place(1L, "test place", LocalTime.now());
+        Place place = new Place(1L, "test place", "test_place", LocalTime.now());
         DeviceSensor deviceSensor = DeviceSensor.builder()
                 .deviceSensorId(1L)
                 .onValue(25f)

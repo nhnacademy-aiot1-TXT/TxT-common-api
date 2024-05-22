@@ -40,12 +40,14 @@ class PlaceRestControllerTest {
         // given
         Long placeId = 1L;
         String placeName = "test place";
+        String placeCode = "test_place";
         LocalTime cycle = LocalTime.of(0, 10, 0);
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
         String cycleString = cycle.format(formatter);
         PlaceResponse placeResponse = PlaceResponse.builder()
                 .placeId(placeId)
                 .placeName(placeName)
+                .placeCode(placeCode)
                 .cycle(cycle)
                 .build();
 
@@ -59,6 +61,7 @@ class PlaceRestControllerTest {
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$[0].placeId", equalTo(placeId.intValue())))
                 .andExpect(jsonPath("$[0].placeName", equalTo(placeName)))
+                .andExpect(jsonPath("$[0].placeCode", equalTo(placeCode)))
                 .andExpect(jsonPath("$[0].cycle", equalTo(cycleString)));
     }
 
@@ -67,12 +70,14 @@ class PlaceRestControllerTest {
         // given
         Long placeId = 1L;
         String placeName = "test place";
+        String placeCode = "test_place";
         LocalTime cycle = LocalTime.of(0, 10, 0);
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
         String cycleString = cycle.format(formatter);
         PlaceResponse placeResponse = PlaceResponse.builder()
                 .placeId(placeId)
                 .placeName(placeName)
+                .placeCode(placeCode)
                 .cycle(cycle)
                 .build();
 
@@ -86,6 +91,7 @@ class PlaceRestControllerTest {
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.placeId", equalTo(placeId.intValue())))
                 .andExpect(jsonPath("$.placeName", equalTo(placeName)))
+                .andExpect(jsonPath("$.placeCode", equalTo(placeCode)))
                 .andExpect(jsonPath("$.cycle", equalTo(cycleString)));
     }
 
@@ -108,13 +114,15 @@ class PlaceRestControllerTest {
         // given
         Long placeId = 1L;
         String placeName = "test place";
+        String placeCode = "test_place";
         LocalTime cycle = LocalTime.of(0, 10, 0);
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
         String cycleString = cycle.format(formatter);
-        PlaceRequest placeRequest = new PlaceRequest(placeName, cycle);
+        PlaceRequest placeRequest = new PlaceRequest(placeName, placeCode, cycle);
         PlaceResponse placeResponse = PlaceResponse.builder()
                 .placeId(placeId)
                 .placeName(placeName)
+                .placeCode(placeCode)
                 .cycle(cycle)
                 .build();
 
@@ -132,6 +140,7 @@ class PlaceRestControllerTest {
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.placeId", equalTo(placeId.intValue())))
                 .andExpect(jsonPath("$.placeName", equalTo(placeName)))
+                .andExpect(jsonPath("$.placeCode", equalTo(placeCode)))
                 .andExpect(jsonPath("$.cycle", equalTo(cycleString)));
     }
 
@@ -140,13 +149,15 @@ class PlaceRestControllerTest {
         // given
         Long placeId = 1L;
         String placeName = "test place";
+        String placeCode = "test_place";
         LocalTime cycle = LocalTime.of(0, 10, 0);
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
         String cycleString = cycle.format(formatter);
-        PlaceRequest placeRequest = new PlaceRequest(placeName, cycle);
+        PlaceRequest placeRequest = new PlaceRequest(placeName, placeCode, cycle);
         PlaceResponse placeResponse = PlaceResponse.builder()
                 .placeId(placeId)
                 .placeName(placeName)
+                .placeCode(placeCode)
                 .cycle(cycle)
                 .build();
 
@@ -164,6 +175,7 @@ class PlaceRestControllerTest {
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.placeId", equalTo(placeId.intValue())))
                 .andExpect(jsonPath("$.placeName", equalTo(placeName)))
+                .andExpect(jsonPath("$.placeCode", equalTo(placeCode)))
                 .andExpect(jsonPath("$.cycle", equalTo(cycleString)));
     }
 
@@ -171,8 +183,9 @@ class PlaceRestControllerTest {
     void updatePlaceException() throws Exception {
         long placeId = 1L;
         String placeName = "test place";
+        String placeCode = "test_place";
         LocalTime cycle = LocalTime.of(0, 30, 0);
-        PlaceRequest placeRequest = new PlaceRequest(placeName, cycle);
+        PlaceRequest placeRequest = new PlaceRequest(placeName, placeCode, cycle);
 
         given(placeService.updatePlace(anyLong(), any()))
                 .willThrow(new PlaceNotFountException("Place를 찾을 수 없습니다."));
