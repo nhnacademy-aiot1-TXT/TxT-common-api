@@ -112,6 +112,7 @@ public class PlaceServiceImpl implements PlaceService {
                 .orElseThrow(() -> new PlaceNotFountException(PLACE_NOT_FOUND_MESSAGE));
 
         place.setPlaceName(placeRequest.getPlaceName());
+        place.setPlaceCode(placeRequest.getPlaceCode());
         place.setCycle(placeRequest.getCycle());
 
         return placeRepository.save(place)
