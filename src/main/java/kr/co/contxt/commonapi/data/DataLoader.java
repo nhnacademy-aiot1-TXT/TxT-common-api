@@ -2,6 +2,7 @@ package kr.co.contxt.commonapi.data;
 
 import kr.co.contxt.commonapi.entity.*;
 import kr.co.contxt.commonapi.repository.*;
+import kr.co.contxt.commonapi.service.RedisService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
@@ -17,6 +18,7 @@ import java.util.List;
 @Component
 @RequiredArgsConstructor
 public class DataLoader implements CommandLineRunner {
+    private final RedisService redisService;
     private final List<Sensor> sensorList;
     private final List<TimeInterval> timeIntervalList;
     private final List<Place> placeList;
@@ -37,7 +39,10 @@ public class DataLoader implements CommandLineRunner {
                 .filter(timeInterval -> !timeIntervalRepository.existsBySensor_SensorId(timeInterval.getSensor().getSensorId()))
                 .forEach(timeIntervalRepository::save);
         placeList.stream()
-                .filter(place -> !placeRepository.existsByPlaceName(place.getPlaceName()))
+                .filter(place -> {
+                    redisService.setValue(place.getPlaceCode(), place.getPlaceName());
+                    return !placeRepository.existsByPlaceName(place.getPlaceName());
+                })
                 .forEach(placeRepository::save);
         deviceList.stream()
                 .filter(device -> !deviceRepository.existsById(device.getDeviceId()))
