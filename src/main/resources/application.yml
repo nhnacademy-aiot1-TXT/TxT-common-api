@@ -24,6 +24,8 @@ spring:
     password: '*N2vya7H@muDTwdNMR!'
     database: '12'
     port: '6379'
+    place:
+      database: 15
   jpa:
     hibernate:
       naming:
