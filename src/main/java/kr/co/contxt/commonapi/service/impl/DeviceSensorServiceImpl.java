@@ -60,12 +60,12 @@ public class DeviceSensorServiceImpl implements DeviceSensorService {
     @Override
     @Transactional(readOnly = true)
     @Cacheable(
-            value = "getSensorListByDevice",
+            value = "getSensorListByDeviceName",
             key = "#deviceAndPlaceNameDto.getDeviceName().concat(':').concat(#deviceAndPlaceNameDto.getPlaceName())",
             unless = "#result == null"
     )
     public List<DeviceSensorResponse> getSensorListByDevice(DeviceAndPlaceNameDto deviceAndPlaceNameDto) {
-        return deviceSensorRepository.findByDevice_DeviceNameAndDevice_Place_PlaceName(
+        return deviceSensorRepository.findByDevice_DeviceNameAndDevice_Place_PlaceCode(
                         deviceAndPlaceNameDto.getDeviceName(),
                         deviceAndPlaceNameDto.getPlaceName()
                 )
@@ -108,7 +108,7 @@ public class DeviceSensorServiceImpl implements DeviceSensorService {
             unless = "#result == null"
     )
     public DeviceSensorResponse getSensorByDeviceAndSensor(DeviceAndSensorAndPlaceNameDto deviceAndSensorAndPlaceNameDto) {
-        return deviceSensorRepository.findByDevice_DeviceNameAndSensor_SensorNameAndDevice_Place_PlaceName(
+        return deviceSensorRepository.findByDevice_DeviceNameAndSensor_SensorNameAndDevice_Place_PlaceCode(
                         deviceAndSensorAndPlaceNameDto.getDeviceName(),
                         deviceAndSensorAndPlaceNameDto.getSensorName(),
                         deviceAndSensorAndPlaceNameDto.getPlaceName()
@@ -120,8 +120,6 @@ public class DeviceSensorServiceImpl implements DeviceSensorService {
     /**
      * DeviceSensor 업데이트 메서드
      *
-     * @param deviceId            the device id
-     * @param sensorId            the sensor id
      * @param deviceSensorRequest 장비별 센서 on/off dto
      * @return deviceSensor
      */
@@ -131,10 +129,10 @@ public class DeviceSensorServiceImpl implements DeviceSensorService {
             evict = {
                     @CacheEvict(
                             value = "getSensorListByDevice",
-                            key = "#deviceId"
+                            allEntries = true
                     ),
                     @CacheEvict(
-                            value = "getSensorListByDevice",
+                            value = "getSensorListByDeviceName",
                             key = "#deviceSensorRequest.getDeviceName().concat(':').concat(#deviceSensorRequest.getPlaceName())"
                     ),
                     @CacheEvict(
@@ -151,7 +149,7 @@ public class DeviceSensorServiceImpl implements DeviceSensorService {
             }
     )
     public DeviceSensorResponse updateSensorByDeviceAndSensor(DeviceSensorRequest deviceSensorRequest) {
-        DeviceSensor deviceSensor = deviceSensorRepository.findByDevice_DeviceNameAndSensor_SensorNameAndDevice_Place_PlaceName(
+        DeviceSensor deviceSensor = deviceSensorRepository.findByDevice_DeviceNameAndSensor_SensorNameAndDevice_Place_PlaceCode(
                         deviceSensorRequest.getDeviceName(),
                         deviceSensorRequest.getSensorName(),
                         deviceSensorRequest.getPlaceName()
