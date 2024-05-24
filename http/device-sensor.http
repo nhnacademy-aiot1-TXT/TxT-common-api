@@ -12,7 +12,7 @@ GET http://localhost:8400/api/common/device-sensor/1
 GET http://localhost:8400/api/common/device-sensor/sensors?deviceName=airconditioner&placeName=class_b
 
 ### 장비별 센서 업데이트
-PUT http://localhost:8400/api/common/device-sensor/1/1
+PUT http://localhost:8400/api/common/device-sensor
 Content-Type: application/json
 
 {
