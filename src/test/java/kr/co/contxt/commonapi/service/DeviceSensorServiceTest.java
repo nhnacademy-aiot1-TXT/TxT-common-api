@@ -210,7 +210,7 @@ class DeviceSensorServiceTest {
         given(deviceSensorRepository.save(any()))
                 .willReturn(afterDeviceSensor);
 
-        DeviceSensorResponse deviceSensorResponse = deviceSensorService.updateSensorByDeviceAndSensor(deviceId, sensorId, deviceSensorRequest);
+        DeviceSensorResponse deviceSensorResponse = deviceSensorService.updateSensorByDeviceAndSensor(deviceSensorRequest);
 
         assertAll(
                 () -> assertNotNull(deviceSensorResponse),
@@ -224,8 +224,6 @@ class DeviceSensorServiceTest {
 
     @Test
     void updateSensorByDeviceAndSensorException() {
-        Long deviceId = 1L;
-        Long sensorId = 1L;
         String deviceName = "test device";
         String sensorName = "test sensor";
         String placeName = "test place";
@@ -235,7 +233,7 @@ class DeviceSensorServiceTest {
         given(deviceSensorRepository.findByDevice_DeviceNameAndSensor_SensorNameAndDevice_Place_PlaceName(anyString(), anyString(), anyString()))
                 .willReturn(Optional.empty());
 
-        Throwable throwable = assertThrows(DeviceSensorNotFoundException.class, () -> deviceSensorService.updateSensorByDeviceAndSensor(deviceId, sensorId, deviceSensorRequest));
+        Throwable throwable = assertThrows(DeviceSensorNotFoundException.class, () -> deviceSensorService.updateSensorByDeviceAndSensor(deviceSensorRequest));
 
         assertAll(
                 () -> assertEquals("장비별 센서 데이터를 찾을 수 없습니다.", throwable.getMessage())

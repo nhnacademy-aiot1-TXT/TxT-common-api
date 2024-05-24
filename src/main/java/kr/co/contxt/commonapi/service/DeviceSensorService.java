@@ -50,10 +50,8 @@ public interface DeviceSensorService {
     /**
      * Device id, Sensor id로 업데이트 메서드
      *
-     * @param deviceId            the device id
-     * @param sensorId            the sensor id
      * @param deviceSensorRequest 장비별 센서 on/off dto
      * @return the deviceSensor
      */
-    DeviceSensorResponse updateSensorByDeviceAndSensor(Long deviceId, Long sensorId, DeviceSensorRequest deviceSensorRequest);
+    DeviceSensorResponse updateSensorByDeviceAndSensor(DeviceSensorRequest deviceSensorRequest);
 }

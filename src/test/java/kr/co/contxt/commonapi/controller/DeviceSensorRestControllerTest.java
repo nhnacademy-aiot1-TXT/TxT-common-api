@@ -190,11 +190,11 @@ class DeviceSensorRestControllerTest {
                 .offValue(offValue)
                 .build();
 
-        given(deviceSensorService.updateSensorByDeviceAndSensor(anyLong(), anyLong(), any()))
+        given(deviceSensorService.updateSensorByDeviceAndSensor(any()))
                 .willReturn(deviceSensorResponse);
 
         ObjectMapper objectMapper = new ObjectMapper();
-        mockMvc.perform(put("/api/common/device-sensor/" + deviceId + "/" + sensorId)
+        mockMvc.perform(put("/api/common/device-sensor")
                         .content(objectMapper.writeValueAsString(deviceSensorRequest))
                         .contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
@@ -217,11 +217,11 @@ class DeviceSensorRestControllerTest {
         Float offValue = 20f;
         DeviceSensorRequest deviceSensorRequest = new DeviceSensorRequest(deviceName, sensorName, placeName, onValue, offValue);
 
-        given(deviceSensorService.updateSensorByDeviceAndSensor(anyLong(), anyLong(), any()))
+        given(deviceSensorService.updateSensorByDeviceAndSensor(any()))
                 .willThrow(new DeviceSensorNotFoundException("장비별 센서 데이터를 찾을 수 없습니다."));
 
         ObjectMapper objectMapper = new ObjectMapper();
-        mockMvc.perform(put("/api/common/device-sensor/" + deviceId + "/" + sensorId)
+        mockMvc.perform(put("/api/common/device-sensor")
                         .content(objectMapper.writeValueAsString(deviceSensorRequest))
                         .contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
