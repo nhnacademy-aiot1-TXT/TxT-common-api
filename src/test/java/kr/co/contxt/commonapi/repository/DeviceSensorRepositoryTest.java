@@ -65,14 +65,16 @@ class DeviceSensorRepositoryTest {
     }
 
     @Test
-    void findByDevice_NameAndDevice_Place_PlaceName() {
+    void findByDevice_NameAndDevice_Place_PlaceCode() {
         String deviceName = "test device";
         String sensorName = "test sensor";
+        String placeCode = "test place code";
         String placeName = "test place";
         Float onValue = 25F;
         Float offValue = 22F;
 
         Place place = Place.builder()
+                .placeCode(placeCode)
                 .placeName(placeName)
                 .build();
         Device device = Device.builder()
@@ -96,7 +98,7 @@ class DeviceSensorRepositoryTest {
 
         Long deviceSensorId = deviceSensor.getDeviceSensorId();
 
-        List<DeviceSensor> deviceSensors = deviceSensorRepository.findByDevice_DeviceNameAndDevice_Place_PlaceName(deviceName, placeName);
+        List<DeviceSensor> deviceSensors = deviceSensorRepository.findByDevice_DeviceNameAndDevice_Place_PlaceCode(deviceName, placeCode);
 
         assertAll(
                 () -> assertNotNull(deviceSensors),
@@ -151,14 +153,16 @@ class DeviceSensorRepositoryTest {
     }
 
     @Test
-    void findByDevice_NameAndSensor_SensorNameAndDevice_Place_PlaceName() {
+    void findByDevice_NameAndSensor_SensorNameAndDevice_Place_PlaceCode() {
         String deviceName = "test device";
         String sensorName = "test sensor";
+        String placeCode = "test place code";
         String placeName = "test place";
         Float onValue = 25F;
         Float offValue = 22F;
 
         Place place = Place.builder()
+                .placeCode(placeCode)
                 .placeName(placeName)
                 .build();
         Device device = Device.builder()
@@ -182,7 +186,7 @@ class DeviceSensorRepositoryTest {
 
         Long deviceSensorId = deviceSensor.getDeviceSensorId();
 
-        Optional<DeviceSensor> deviceSensorOptional = deviceSensorRepository.findByDevice_DeviceNameAndSensor_SensorNameAndDevice_Place_PlaceName(deviceName, sensorName, placeName);
+        Optional<DeviceSensor> deviceSensorOptional = deviceSensorRepository.findByDevice_DeviceNameAndSensor_SensorNameAndDevice_Place_PlaceCode(deviceName, sensorName, placeCode);
         DeviceSensor deviceSensorResult = deviceSensorOptional.orElseThrow(DeviceSensorNotFoundException::new);
 
         assertAll(

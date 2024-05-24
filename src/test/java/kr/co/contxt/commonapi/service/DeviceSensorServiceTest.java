@@ -74,7 +74,7 @@ class DeviceSensorServiceTest {
                 .offValue(offValue)
                 .build();
 
-        given(deviceSensorRepository.findByDevice_DeviceNameAndDevice_Place_PlaceName(anyString(), anyString())).willReturn(List.of(deviceSensor));
+        given(deviceSensorRepository.findByDevice_DeviceNameAndDevice_Place_PlaceCode(anyString(), anyString())).willReturn(List.of(deviceSensor));
 
         List<DeviceSensorResponse> deviceSensors = deviceSensorService.getSensorListByDevice(deviceAndPlaceNameDto);
 
@@ -150,7 +150,7 @@ class DeviceSensorServiceTest {
                 .offValue(offValue)
                 .build();
 
-        given(deviceSensorRepository.findByDevice_DeviceNameAndSensor_SensorNameAndDevice_Place_PlaceName(anyString(), anyString(), anyString()))
+        given(deviceSensorRepository.findByDevice_DeviceNameAndSensor_SensorNameAndDevice_Place_PlaceCode(anyString(), anyString(), anyString()))
                 .willReturn(Optional.of(deviceSensor));
 
         DeviceSensorResponse deviceSensorResponse = deviceSensorService.getSensorByDeviceAndSensor(deviceAndSensorAndPlaceNameDto);
@@ -171,7 +171,7 @@ class DeviceSensorServiceTest {
         String placeName = "test place";
         DeviceAndSensorAndPlaceNameDto deviceAndSensorAndPlaceNameDto = new DeviceAndSensorAndPlaceNameDto(deviceName, sensorName, placeName);
 
-        given(deviceSensorRepository.findByDevice_DeviceNameAndSensor_SensorNameAndDevice_Place_PlaceName(anyString(), anyString(), anyString()))
+        given(deviceSensorRepository.findByDevice_DeviceNameAndSensor_SensorNameAndDevice_Place_PlaceCode(anyString(), anyString(), anyString()))
                 .willReturn(Optional.empty());
         Throwable throwable = assertThrows(DeviceSensorNotFoundException.class, () -> deviceSensorService.getSensorByDeviceAndSensor(deviceAndSensorAndPlaceNameDto));
 
@@ -205,7 +205,7 @@ class DeviceSensorServiceTest {
                 .offValue(afterOffValue)
                 .build();
 
-        given(deviceSensorRepository.findByDevice_DeviceNameAndSensor_SensorNameAndDevice_Place_PlaceName(anyString(), anyString(), anyString()))
+        given(deviceSensorRepository.findByDevice_DeviceNameAndSensor_SensorNameAndDevice_Place_PlaceCode(anyString(), anyString(), anyString()))
                 .willReturn(Optional.of(beforeDeviceSensor));
         given(deviceSensorRepository.save(any()))
                 .willReturn(afterDeviceSensor);
@@ -230,7 +230,7 @@ class DeviceSensorServiceTest {
         Float onValue = 22f;
         Float offValue = 15f;
         DeviceSensorRequest deviceSensorRequest = new DeviceSensorRequest(deviceName, sensorName, placeName, onValue, offValue);
-        given(deviceSensorRepository.findByDevice_DeviceNameAndSensor_SensorNameAndDevice_Place_PlaceName(anyString(), anyString(), anyString()))
+        given(deviceSensorRepository.findByDevice_DeviceNameAndSensor_SensorNameAndDevice_Place_PlaceCode(anyString(), anyString(), anyString()))
                 .willReturn(Optional.empty());
 
         Throwable throwable = assertThrows(DeviceSensorNotFoundException.class, () -> deviceSensorService.updateSensorByDeviceAndSensor(deviceSensorRequest));
