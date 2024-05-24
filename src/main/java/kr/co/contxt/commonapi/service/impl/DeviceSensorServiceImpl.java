@@ -103,7 +103,7 @@ public class DeviceSensorServiceImpl implements DeviceSensorService {
     @Override
     @Transactional(readOnly = true)
     @Cacheable(
-            value = "getSensorByDeviceAndSensor",
+            value = "getSensorByDeviceAndSensorName",
             key = "#deviceAndSensorAndPlaceNameDto.getDeviceName().concat(':').concat(#deviceAndSensorAndPlaceNameDto.getSensorName()).concat(':').concat(#deviceAndSensorAndPlaceNameDto.getPlaceName())",
             unless = "#result == null"
     )
@@ -136,22 +136,21 @@ public class DeviceSensorServiceImpl implements DeviceSensorService {
                     @CacheEvict(
                             value = "getSensorListByDevice",
                             key = "#deviceSensorRequest.getDeviceName().concat(':').concat(#deviceSensorRequest.getPlaceName())"
+                    ),
+                    @CacheEvict(
+                            value = "getSensorByDeviceAndSensor",
+                            allEntries = true
                     )
             },
             put = {
                     @CachePut(
-                            value = "getSensorByDeviceAndSensor",
-                            key = "#deviceId.toString().concat(':').concat(#sensorId)",
-                            unless = "#result == null"
-                    ),
-                    @CachePut(
-                            value = "getSensorByDeviceAndSensor",
+                            value = "getSensorByDeviceAndSensorName",
                             key = "#deviceSensorRequest.getDeviceName().concat(':').concat(#deviceSensorRequest.getSensorName()).concat(':').concat(#deviceSensorRequest.getPlaceName())",
                             unless = "#result == null"
                     )
             }
     )
-    public DeviceSensorResponse updateSensorByDeviceAndSensor(Long deviceId, Long sensorId, DeviceSensorRequest deviceSensorRequest) {
+    public DeviceSensorResponse updateSensorByDeviceAndSensor(DeviceSensorRequest deviceSensorRequest) {
         DeviceSensor deviceSensor = deviceSensorRepository.findByDevice_DeviceNameAndSensor_SensorNameAndDevice_Place_PlaceName(
                         deviceSensorRequest.getDeviceName(),
                         deviceSensorRequest.getSensorName(),
