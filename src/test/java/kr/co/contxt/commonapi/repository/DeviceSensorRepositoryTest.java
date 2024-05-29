@@ -232,4 +232,45 @@ class DeviceSensorRepositoryTest {
                 () -> assertTrue(existDeviceSensor)
         );
     }
+
+    @Test
+    void deleteAllByDevice_Place_PlaceCodeAndDevice_DeviceName() {
+        String deviceName = "test device";
+        String sensorName = "test sensor";
+        String placeCode = "test place code";
+        String placeName = "test place";
+        Float onValue = 25F;
+        Float offValue = 22F;
+
+        Place place = Place.builder()
+                .placeCode(placeCode)
+                .placeName(placeName)
+                .build();
+        Device device = Device.builder()
+                .place(place)
+                .deviceName(deviceName)
+                .build();
+        Sensor sensor = Sensor.builder()
+                .sensorName(sensorName)
+                .build();
+        DeviceSensor deviceSensor = DeviceSensor.builder()
+                .device(device)
+                .sensor(sensor)
+                .onValue(onValue)
+                .offValue(offValue)
+                .build();
+
+        entityManager.persist(place);
+        entityManager.persist(device);
+        entityManager.persist(sensor);
+        entityManager.persist(deviceSensor);
+
+        Optional<DeviceSensor> before = deviceSensorRepository.findById(deviceSensor.getDeviceSensorId());
+        assertTrue(before.isPresent());
+
+        deviceSensorRepository.deleteAllByDevice_Place_PlaceCodeAndDevice_DeviceName(placeCode, deviceName);
+
+        Optional<DeviceSensor> after = deviceSensorRepository.findById(deviceSensor.getDeviceSensorId());
+        assertFalse(after.isPresent());
+    }
 }
