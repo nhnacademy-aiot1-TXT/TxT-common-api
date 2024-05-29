@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
@@ -162,5 +163,36 @@ public class DeviceSensorServiceImpl implements DeviceSensorService {
                 .build();
 
         return deviceSensorRepository.save(build).toDto();
+    }
+
+    /**
+     * DeviceSensor 삭제 메서드
+     *
+     * @param placeCode  placeCode
+     * @param deviceName deviceName
+     */
+    @Override
+    @Transactional
+    @Caching(
+            evict = {
+                    @CacheEvict(
+                            value = "getSensorListByDevice",
+                            allEntries = true
+                    ),
+                    @CacheEvict(
+                            value = "getSensorListByDeviceName",
+                            key = "#deviceName.concat(':').concat(#placeCode)"
+                    ),
+                    @CacheEvict(
+                            value = "getSensorByDeviceAndSensor",
+                            allEntries = true
+                    )
+            }
+    )
+    public void deleteSensors(String placeCode, String deviceName) {
+        if (Objects.isNull(deviceSensorRepository.findByDevice_DeviceNameAndDevice_Place_PlaceCode(deviceName, placeCode))) {
+            throw new DeviceSensorNotFoundException(DEVICE_SENSOR_NOT_FOUND_MESSAGE);
+        }
+        deviceSensorRepository.deleteAllByDevice_Place_PlaceCodeAndDevice_DeviceName(placeCode, deviceName);
     }
 }

@@ -18,11 +18,11 @@ import org.springframework.test.web.servlet.MockMvc;
 import java.util.List;
 
 import static org.hamcrest.Matchers.equalTo;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.BDDMockito.given;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.doThrow;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -223,6 +223,35 @@ class DeviceSensorRestControllerTest {
         ObjectMapper objectMapper = new ObjectMapper();
         mockMvc.perform(put("/api/common/device-sensor")
                         .content(objectMapper.writeValueAsString(deviceSensorRequest))
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$.message", equalTo("장비별 센서 데이터를 찾을 수 없습니다.")));
+    }
+
+    @Test
+    void deleteSensorsByPlaceAndDevice() throws Exception {
+        String deviceName = "test device";
+        String placeCode = "test place";
+
+        doNothing().when(deviceSensorService)
+                .deleteSensors(placeCode, deviceName);
+
+        mockMvc.perform(delete("/api/common/device-sensor/" + placeCode + "/" + deviceName)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    void deleteSensorsByPlaceAndDeviceException() throws Exception {
+        String deviceName = "test device";
+        String placeCode = "test place";
+
+        doThrow(new DeviceSensorNotFoundException("장비별 센서 데이터를 찾을 수 없습니다."))
+                .when(deviceSensorService).deleteSensors(anyString(), anyString());
+
+        mockMvc.perform(delete("/api/common/device-sensor/" + placeCode + "/" + deviceName)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isNotFound())

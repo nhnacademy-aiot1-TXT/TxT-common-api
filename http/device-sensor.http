@@ -9,7 +9,7 @@ GET http://localhost:8400/api/common/device-sensor/sensor?deviceName=airconditio
 GET http://localhost:8400/api/common/device-sensor/1
 
 ### 장비 이름별 모든 센서 on/off 조회
-GET http://localhost:8400/api/common/device-sensor/sensors?deviceName=airconditioner&placeName=class_b
+GET http://localhost:8400/api/common/device-sensor/sensors?deviceName=airconditioner&placeName=class_a
 
 ### 장비별 센서 업데이트
 PUT http://localhost:8400/api/common/device-sensor
@@ -22,3 +22,6 @@ Content-Type: application/json
   "onValue": 28,
   "offValue": 20
 }
+
+### 장비별 센서 삭제
+DELETE http://localhost:8400/api/common/device-sensor/class_a/airconditioner

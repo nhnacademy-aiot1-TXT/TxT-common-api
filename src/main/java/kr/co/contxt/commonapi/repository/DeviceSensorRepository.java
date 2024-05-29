@@ -57,4 +57,12 @@ public interface DeviceSensorRepository extends JpaRepository<DeviceSensor, Long
      * @return boolean
      */
     boolean existsByDevice_DeviceIdAndSensor_SensorId(Long deviceId, Long sensorId);
+
+    /**
+     * 장소 코드와 장치 이름에 해당하는 모든 센서 삭제
+     *
+     * @param placeCode  the place code
+     * @param deviceName the device name
+     */
+    void deleteAllByDevice_Place_PlaceCodeAndDevice_DeviceName(String placeCode, String deviceName);
 }

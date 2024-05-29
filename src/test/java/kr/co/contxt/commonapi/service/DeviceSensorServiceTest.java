@@ -20,6 +20,8 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.doThrow;
 
 @WebMvcTest(DeviceSensorService.class)
 class DeviceSensorServiceTest {
@@ -237,6 +239,30 @@ class DeviceSensorServiceTest {
 
         assertAll(
                 () -> assertEquals("장비별 센서 데이터를 찾을 수 없습니다.", throwable.getMessage())
+        );
+    }
+
+    @Test
+    void deleteSensors() {
+        String deviceName = "test device";
+        String placeCode = "test place";
+
+        doNothing().when(deviceSensorRepository).deleteAllByDevice_Place_PlaceCodeAndDevice_DeviceName(placeCode, deviceName);
+
+        assertAll(
+                () -> assertDoesNotThrow(() -> deviceSensorService.deleteSensors(placeCode, deviceName))
+        );
+    }
+
+    @Test
+    void deleteSensorsException() {
+        String deviceName = "test device";
+        String placeCode = "test place";
+
+        doThrow(new DeviceSensorNotFoundException("장비별 센서 데이터를 찾을 수 없습니다.")).when(deviceSensorRepository).deleteAllByDevice_Place_PlaceCodeAndDevice_DeviceName(placeCode, deviceName);
+
+        assertAll(
+                () -> assertThrows(DeviceSensorNotFoundException.class, () -> deviceSensorService.deleteSensors(placeCode, deviceName))
         );
     }
 }

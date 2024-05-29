@@ -91,9 +91,24 @@ public class DeviceSensorRestController {
      * @return 업데이트된 장비별 센서 dto
      */
     @PutMapping
+    @Operation(summary = "장비별 센서 정보 수정")
     public ResponseEntity<DeviceSensorResponse> updateSensorByDeviceAndSensor(@RequestBody @Valid DeviceSensorRequest deviceSensorRequest) {
         DeviceSensorResponse deviceSensor = deviceSensorService.updateSensorByDeviceAndSensor(deviceSensorRequest);
 
         return ResponseEntity.ok(deviceSensor);
+    }
+
+    /**
+     * 장소 코드, 장치 이름으로 삭제 api
+     *
+     * @param placeCode  placeCode
+     * @param deviceName deviceName
+     * @return ok
+     */
+    @Operation(summary = "장비별 센서 삭제")
+    @DeleteMapping("/{placeCode}/{deviceName}")
+    public ResponseEntity<Void> deleteSensorsByPlaceAndDevice(@PathVariable String placeCode, @PathVariable String deviceName) {
+        deviceSensorService.deleteSensors(placeCode, deviceName);
+        return ResponseEntity.ok().build();
     }
 }
