@@ -20,5 +20,11 @@ public interface SensorRepository extends JpaRepository<Sensor, Long> {
      */
     boolean existsBySensorName(String sensorName);
 
+    /**
+     * 센서 이름에 해당하는 센서를 반환하는 메서드
+     *
+     * @param sensorName 센서 이름
+     * @return 센서
+     */
     Optional<Sensor> findBySensorName(String sensorName);
 }

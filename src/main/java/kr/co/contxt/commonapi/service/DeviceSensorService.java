@@ -55,7 +55,20 @@ public interface DeviceSensorService {
      */
     DeviceSensorResponse updateSensorByDeviceAndSensor(DeviceSensorRequest deviceSensorRequest);
 
+    /**
+     * 장치별 센서 추가 메서드
+     *
+     * @param deviceSensorRequest 장비별 센서 on/off dto
+     * @return the deviceSensor
+     */
     DeviceSensorResponse saveSensor(DeviceSensorRequest deviceSensorRequest);
 
+    /**
+     * 장치별 센서 제거 메서드
+     *
+     * @param placeCode  장소 코드
+     * @param deviceName 장치 이름
+     * @return the deviceSensor
+     */
     void deleteSensors(String placeCode, String deviceName);
 }

@@ -174,6 +174,12 @@ public class DeviceSensorServiceImpl implements DeviceSensorService {
                 .toDto();
     }
 
+    /**
+     * DeviceSensor 추가 메서드
+     *
+     * @param deviceSensorRequest 장비별 센서 on/off dto
+     * @return deviceSensor
+     */
     @Override
     @Transactional
     @Caching(
