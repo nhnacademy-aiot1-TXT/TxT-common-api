@@ -4,6 +4,7 @@ import kr.co.contxt.commonapi.dto.SensorNameDto;
 import kr.co.contxt.commonapi.dto.TimeIntervalRequest;
 import kr.co.contxt.commonapi.dto.TimeIntervalResponse;
 import kr.co.contxt.commonapi.entity.TimeInterval;
+import kr.co.contxt.commonapi.exception.TimeIntervalAlreadyExistException;
 import kr.co.contxt.commonapi.exception.TimeIntervalNotFoundException;
 import kr.co.contxt.commonapi.repository.TimeIntervalRepository;
 import kr.co.contxt.commonapi.service.TimeIntervalService;
@@ -25,6 +26,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class TimeIntervalServiceImpl implements TimeIntervalService {
     private final TimeIntervalRepository timeIntervalRepository;
     private static final String TIME_INTERVAL_NOT_FOUND_MESSAGE = "탐지 시간을 찾을 수 없습니다.";
+    private static final String TIME_INTERVAL_ALREADY_EXIST_EXCEPTION_MESSAGE = "탐지 시간이 이미 존재 합니다.";
 
     /**
      * 센서 아이디로 탐지 시간 조회 메서드
@@ -72,6 +74,10 @@ public class TimeIntervalServiceImpl implements TimeIntervalService {
     @Override
     @Transactional
     public void createTimeInterval(TimeIntervalRequest timeIntervalRequest) {
+        if (timeIntervalRepository.existsBySensor_SensorId(timeIntervalRequest.getSensorId())) {
+            throw new TimeIntervalAlreadyExistException(TIME_INTERVAL_ALREADY_EXIST_EXCEPTION_MESSAGE);
+        }
+        
         timeIntervalRepository.save(timeIntervalRequest.toEntity());
     }
 

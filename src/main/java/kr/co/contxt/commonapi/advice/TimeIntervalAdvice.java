@@ -2,6 +2,7 @@ package kr.co.contxt.commonapi.advice;
 
 import kr.co.contxt.commonapi.controller.TimeIntervalRestController;
 import kr.co.contxt.commonapi.dto.ApiExceptionDto;
+import kr.co.contxt.commonapi.exception.TimeIntervalAlreadyExistException;
 import kr.co.contxt.commonapi.exception.TimeIntervalNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,6 +28,18 @@ public class TimeIntervalAdvice {
     @ExceptionHandler(value = TimeIntervalNotFoundException.class)
     public ResponseEntity<ApiExceptionDto> timeIntervalNotFoundExceptionHandler(TimeIntervalNotFoundException exception) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body(new ApiExceptionDto(LocalDateTime.now(), exception.getMessage()));
+    }
+
+    /**
+     * TimeIntervalAlreadyExistException Handler 메서드
+     *
+     * @param exception the exception
+     * @return the response entity
+     */
+    @ExceptionHandler(value = TimeIntervalAlreadyExistException.class)
+    public ResponseEntity<ApiExceptionDto> timeIntervalAlreadyExistExceptionHandler(TimeIntervalAlreadyExistException exception) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .body(new ApiExceptionDto(LocalDateTime.now(), exception.getMessage()));
     }
 }
