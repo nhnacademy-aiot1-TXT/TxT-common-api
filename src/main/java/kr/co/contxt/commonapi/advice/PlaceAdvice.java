@@ -2,6 +2,7 @@ package kr.co.contxt.commonapi.advice;
 
 import kr.co.contxt.commonapi.controller.PlaceRestController;
 import kr.co.contxt.commonapi.dto.ApiExceptionDto;
+import kr.co.contxt.commonapi.exception.PlaceAlreadyExistException;
 import kr.co.contxt.commonapi.exception.PlaceNotFountException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,6 +28,18 @@ public class PlaceAdvice {
     @ExceptionHandler(value = PlaceNotFountException.class)
     public ResponseEntity<ApiExceptionDto> placeNotFoundExceptionHandler(PlaceNotFountException exception) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body(new ApiExceptionDto(LocalDateTime.now(), exception.getMessage()));
+    }
+
+    /**
+     * PlaceAlreadyExistException Handler 메서드
+     *
+     * @param exception 발생 예외
+     * @return api 예외 응답
+     */
+    @ExceptionHandler(value = PlaceAlreadyExistException.class)
+    public ResponseEntity<ApiExceptionDto> placeAlreadyExistExceptionHandler(PlaceAlreadyExistException exception) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .body(new ApiExceptionDto(LocalDateTime.now(), exception.getMessage()));
     }
 }
