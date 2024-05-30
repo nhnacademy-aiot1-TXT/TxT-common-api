@@ -3,6 +3,7 @@ package kr.co.contxt.commonapi.service.impl;
 import kr.co.contxt.commonapi.dto.SensorRequest;
 import kr.co.contxt.commonapi.dto.SensorResponse;
 import kr.co.contxt.commonapi.entity.Sensor;
+import kr.co.contxt.commonapi.exception.SensorAlreadyExistException;
 import kr.co.contxt.commonapi.exception.SensorNotFoundException;
 import kr.co.contxt.commonapi.repository.SensorRepository;
 import kr.co.contxt.commonapi.service.SensorService;
@@ -27,7 +28,8 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class SensorServiceImpl implements SensorService {
     private final SensorRepository sensorRepository;
-    private static final String SENSOR_NOT_FOUND_MESSAGE = "Sensor를 찾을 수 없습니다.";
+    private static final String SENSOR_NOT_FOUND_MESSAGE = "센서를 찾을 수 없습니다.";
+    private static final String SENSOR_ALREADY_EXIST_EXCEPTION_MESSAGE = "센서가 이미 존재합니다.";
 
     /**
      * Sensor 리스트 조회 메서드
@@ -80,6 +82,9 @@ public class SensorServiceImpl implements SensorService {
             key = "'all'"
     )
     public SensorResponse saveSensor(Sensor sensor) {
+        if (sensorRepository.existsBySensorName(sensor.getSensorName()))
+            throw new SensorAlreadyExistException(SENSOR_ALREADY_EXIST_EXCEPTION_MESSAGE);
+
         return sensorRepository.save(sensor)
                 .toDto();
     }

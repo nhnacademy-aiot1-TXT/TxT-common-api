@@ -28,8 +28,8 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class DeviceServiceImpl implements DeviceService {
     private final DeviceRepository deviceRepository;
-    private static final String DEVICE_NOT_FOUND_MESSAGE = "Device를 찾을 수 없습니다.";
-    private static final String DEVICE_ALREADY_EXIST_MESSAGE = "Device가 이미 존재합니다.";
+    private static final String DEVICE_NOT_FOUND_MESSAGE = "장치를 찾을 수 없습니다.";
+    private static final String DEVICE_ALREADY_EXIST_MESSAGE = "장치가 이미 존재합니다.";
 
     /**
      * Device 리스트 조회 메서드
