@@ -3,6 +3,8 @@ package kr.co.contxt.commonapi.repository;
 import kr.co.contxt.commonapi.entity.Sensor;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.util.Optional;
+
 /**
  * Sensor Table 접근을 위한 JpaRepository interface
  *
@@ -17,4 +19,6 @@ public interface SensorRepository extends JpaRepository<Sensor, Long> {
      * @return 존재 여부
      */
     boolean existsBySensorName(String sensorName);
+
+    Optional<Sensor> findBySensorName(String sensorName);
 }
