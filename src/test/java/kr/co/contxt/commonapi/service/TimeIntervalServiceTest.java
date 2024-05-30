@@ -5,6 +5,7 @@ import kr.co.contxt.commonapi.dto.TimeIntervalRequest;
 import kr.co.contxt.commonapi.dto.TimeIntervalResponse;
 import kr.co.contxt.commonapi.entity.Sensor;
 import kr.co.contxt.commonapi.entity.TimeInterval;
+import kr.co.contxt.commonapi.exception.TimeIntervalAlreadyExistException;
 import kr.co.contxt.commonapi.exception.TimeIntervalNotFoundException;
 import kr.co.contxt.commonapi.repository.TimeIntervalRepository;
 import org.junit.jupiter.api.Test;
@@ -100,6 +101,15 @@ class TimeIntervalServiceTest {
         timeIntervalService.createTimeInterval(timeIntervalRequest);
 
         verify(timeIntervalRepository, times(1)).save(any());
+    }
+
+    @Test
+    void createTimeIntervalException() {
+        given(timeIntervalRepository.existsBySensor_SensorId(1L))
+                .willThrow(TimeIntervalAlreadyExistException.class);
+
+        assertThrows(TimeIntervalAlreadyExistException.class,
+                () -> timeIntervalService.createTimeInterval(new TimeIntervalRequest(1L, null, null, null)));
     }
 
     @Test
