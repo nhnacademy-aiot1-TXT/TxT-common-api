@@ -24,11 +24,11 @@ public interface DeviceRepository extends JpaRepository<Device, Long> {
     /**
      * device name으로 Device 조회
      *
-     * @param placeName  place name
+     * @param placeCode  place code
      * @param deviceName device name
      * @return device
      */
-    Optional<Device> findByPlace_PlaceNameAndDeviceName(String placeName, String deviceName);
+    Optional<Device> findByPlace_PlaceCodeAndDeviceName(String placeCode, String deviceName);
 
     /**
      * device name, place id로 존재여부 조회
