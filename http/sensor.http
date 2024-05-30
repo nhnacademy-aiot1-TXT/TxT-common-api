@@ -12,6 +12,14 @@ Content-Type: application/json
   "sensorName": "test sensor"
 }
 
+### 센서 정보 저장 already exist exception
+POST http://localhost:8400/api/common/sensor
+Content-Type: application/json
+
+{
+  "sensorName": "temperature"
+}
+
 ### 센서 정보 업데이트
 PUT http://localhost:8400/api/common/sensor/9
 Content-Type: application/json

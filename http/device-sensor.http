@@ -35,5 +35,17 @@ Content-Type: application/json
   "offValue": 30
 }
 
+### 장비별 센서 추가 already exist exception
+POST http://localhost:8400/api/common/device-sensor
+Content-Type: application/json
+
+{
+  "deviceName": "airconditioner",
+  "sensorName": "temperature",
+  "placeName": "class_a",
+  "onValue": 28,
+  "offValue": 20
+}
+
 ### 장비별 센서 삭제
 DELETE http://localhost:8400/api/common/device-sensor/class_a/airconditioner

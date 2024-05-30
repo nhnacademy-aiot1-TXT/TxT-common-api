@@ -6,6 +6,7 @@ import kr.co.contxt.commonapi.dto.DeviceAndSensorAndPlaceNameDto;
 import kr.co.contxt.commonapi.dto.DeviceSensorRequest;
 import kr.co.contxt.commonapi.dto.DeviceSensorResponse;
 import kr.co.contxt.commonapi.exception.DeviceNotFoundException;
+import kr.co.contxt.commonapi.exception.DeviceSensorAlreadyExistException;
 import kr.co.contxt.commonapi.exception.DeviceSensorNotFoundException;
 import kr.co.contxt.commonapi.exception.SensorNotFoundException;
 import kr.co.contxt.commonapi.service.DeviceSensorService;
@@ -35,6 +36,8 @@ class DeviceSensorRestControllerTest {
     private MockMvc mockMvc;
     @MockBean
     private DeviceSensorService deviceSensorService;
+    private static final String DEVICE_SENSOR_NOT_FOUND_MESSAGE = "장비별 센서 데이터를 찾을 수 없습니다.";
+    private static final String DEVICE_SENSOR_ALREADY_EXIST_EXCEPTION = "장치별 센서 데이터가 이미 존재합니다.";
 
     @Test
     void getSensorListByDevice() throws Exception {
@@ -117,12 +120,12 @@ class DeviceSensorRestControllerTest {
         long sensorId = 1L;
 
         given(deviceSensorService.getSensorByDeviceAndSensor(anyLong(), anyLong()))
-                .willThrow(new DeviceSensorNotFoundException("장비별 센서 데이터를 찾을 수 없습니다."));
+                .willThrow(new DeviceSensorNotFoundException(DEVICE_SENSOR_NOT_FOUND_MESSAGE));
 
         mockMvc.perform(get("/api/common/device-sensor/" + deviceId + "/" + sensorId))
                 .andDo(print())
                 .andExpect(status().isNotFound())
-                .andExpect(jsonPath("$.message", equalTo("장비별 센서 데이터를 찾을 수 없습니다.")));
+                .andExpect(jsonPath("$.message", equalTo(DEVICE_SENSOR_NOT_FOUND_MESSAGE)));
     }
 
     @Test
@@ -164,7 +167,7 @@ class DeviceSensorRestControllerTest {
         DeviceAndSensorAndPlaceNameDto deviceAndSensorAndPlaceNameDto = new DeviceAndSensorAndPlaceNameDto(deviceName, sensorName, placeName);
 
         given(deviceSensorService.getSensorByDeviceAndSensor(deviceAndSensorAndPlaceNameDto))
-                .willThrow(new DeviceSensorNotFoundException("장비별 센서 데이터를 찾을 수 없습니다."));
+                .willThrow(new DeviceSensorNotFoundException(DEVICE_SENSOR_NOT_FOUND_MESSAGE));
 
         mockMvc.perform(get("/api/common/device-sensor/sensor")
                         .param("deviceName", deviceName)
@@ -172,7 +175,7 @@ class DeviceSensorRestControllerTest {
                         .param("placeName", placeName))
                 .andDo(print())
                 .andExpect(status().isNotFound())
-                .andExpect(jsonPath("$.message", equalTo("장비별 센서 데이터를 찾을 수 없습니다.")));
+                .andExpect(jsonPath("$.message", equalTo(DEVICE_SENSOR_NOT_FOUND_MESSAGE)));
     }
 
     @Test
@@ -218,7 +221,7 @@ class DeviceSensorRestControllerTest {
         DeviceSensorRequest deviceSensorRequest = new DeviceSensorRequest(deviceName, sensorName, placeName, onValue, offValue);
 
         given(deviceSensorService.updateSensorByDeviceAndSensor(any()))
-                .willThrow(new DeviceSensorNotFoundException("장비별 센서 데이터를 찾을 수 없습니다."));
+                .willThrow(new DeviceSensorNotFoundException(DEVICE_SENSOR_NOT_FOUND_MESSAGE));
 
         ObjectMapper objectMapper = new ObjectMapper();
         mockMvc.perform(put("/api/common/device-sensor")
@@ -226,7 +229,7 @@ class DeviceSensorRestControllerTest {
                         .contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isNotFound())
-                .andExpect(jsonPath("$.message", equalTo("장비별 센서 데이터를 찾을 수 없습니다.")));
+                .andExpect(jsonPath("$.message", equalTo(DEVICE_SENSOR_NOT_FOUND_MESSAGE)));
     }
 
     @Test
@@ -302,6 +305,26 @@ class DeviceSensorRestControllerTest {
     }
 
     @Test
+    void addSensorDeviceSensorAlreadyExistException() throws Exception {
+        String deviceName = "test device";
+        String sensorName = "test sensor";
+        String placeName = "test place";
+        Float onValue = 29f;
+        Float offValue = 20f;
+        DeviceSensorRequest deviceSensorRequest = new DeviceSensorRequest(deviceName, sensorName, placeName, onValue, offValue);
+
+        given(deviceSensorService.saveSensor(any())).willThrow(new DeviceSensorAlreadyExistException(DEVICE_SENSOR_ALREADY_EXIST_EXCEPTION));
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        mockMvc.perform(post("/api/common/device-sensor")
+                        .content(objectMapper.writeValueAsString(deviceSensorRequest))
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.message", equalTo(DEVICE_SENSOR_ALREADY_EXIST_EXCEPTION)));
+    }
+
+    @Test
     void deleteSensorsByPlaceAndDevice() throws Exception {
         String deviceName = "test device";
         String placeCode = "test place";
@@ -320,13 +343,13 @@ class DeviceSensorRestControllerTest {
         String deviceName = "test device";
         String placeCode = "test place";
 
-        doThrow(new DeviceSensorNotFoundException("장비별 센서 데이터를 찾을 수 없습니다."))
+        doThrow(new DeviceSensorNotFoundException(DEVICE_SENSOR_NOT_FOUND_MESSAGE))
                 .when(deviceSensorService).deleteSensors(anyString(), anyString());
 
         mockMvc.perform(delete("/api/common/device-sensor/" + placeCode + "/" + deviceName)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isNotFound())
-                .andExpect(jsonPath("$.message", equalTo("장비별 센서 데이터를 찾을 수 없습니다.")));
+                .andExpect(jsonPath("$.message", equalTo(DEVICE_SENSOR_NOT_FOUND_MESSAGE)));
     }
 }

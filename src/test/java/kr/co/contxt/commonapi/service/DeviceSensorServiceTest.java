@@ -8,6 +8,7 @@ import kr.co.contxt.commonapi.entity.Device;
 import kr.co.contxt.commonapi.entity.DeviceSensor;
 import kr.co.contxt.commonapi.entity.Sensor;
 import kr.co.contxt.commonapi.exception.DeviceNotFoundException;
+import kr.co.contxt.commonapi.exception.DeviceSensorAlreadyExistException;
 import kr.co.contxt.commonapi.exception.DeviceSensorNotFoundException;
 import kr.co.contxt.commonapi.exception.SensorNotFoundException;
 import kr.co.contxt.commonapi.repository.DeviceRepository;
@@ -37,6 +38,8 @@ class DeviceSensorServiceTest {
     private DeviceRepository deviceRepository;
     @MockBean
     private SensorRepository sensorRepository;
+    private static final String DEVICE_SENSOR_NOT_FOUND_MESSAGE = "장비별 센서 데이터를 찾을 수 없습니다.";
+    private static final String DEVICE_SENSOR_ALREADY_EXIST_EXCEPTION = "장치별 센서 데이터가 이미 존재합니다.";
 
     @Test
     void getSensorListByDevice() {
@@ -139,7 +142,7 @@ class DeviceSensorServiceTest {
         Throwable throwable = assertThrows(DeviceSensorNotFoundException.class, () -> deviceSensorService.getSensorByDeviceAndSensor(deviceId, sensorId));
 
         assertAll(
-                () -> assertEquals("장비별 센서 데이터를 찾을 수 없습니다.", throwable.getMessage())
+                () -> assertEquals(DEVICE_SENSOR_NOT_FOUND_MESSAGE, throwable.getMessage())
         );
     }
 
@@ -186,7 +189,7 @@ class DeviceSensorServiceTest {
         Throwable throwable = assertThrows(DeviceSensorNotFoundException.class, () -> deviceSensorService.getSensorByDeviceAndSensor(deviceAndSensorAndPlaceNameDto));
 
         assertAll(
-                () -> assertEquals("장비별 센서 데이터를 찾을 수 없습니다.", throwable.getMessage())
+                () -> assertEquals(DEVICE_SENSOR_NOT_FOUND_MESSAGE, throwable.getMessage())
         );
     }
 
@@ -246,7 +249,7 @@ class DeviceSensorServiceTest {
         Throwable throwable = assertThrows(DeviceSensorNotFoundException.class, () -> deviceSensorService.updateSensorByDeviceAndSensor(deviceSensorRequest));
 
         assertAll(
-                () -> assertEquals("장비별 센서 데이터를 찾을 수 없습니다.", throwable.getMessage())
+                () -> assertEquals(DEVICE_SENSOR_NOT_FOUND_MESSAGE, throwable.getMessage())
         );
     }
 
@@ -273,6 +276,8 @@ class DeviceSensorServiceTest {
                 .willReturn(Optional.of(device));
         given(sensorRepository.findBySensorName(anyString()))
                 .willReturn(Optional.of(sensor));
+        given(deviceSensorRepository.existsByDevice_DeviceIdAndSensor_SensorId(anyLong(), anyLong()))
+                .willReturn(false);
         given(deviceSensorRepository.save(any()))
                 .willReturn(deviceSensor);
 
@@ -331,6 +336,39 @@ class DeviceSensorServiceTest {
     }
 
     @Test
+    void saveSensorDeviceSensorAlreadyExistException() {
+        Long deviceId = 1L;
+        Long sensorId = 1L;
+        String deviceName = "test device";
+        String sensorName = "test sensor";
+        String placeName = "test place";
+        Float onValue = 25F;
+        Float offValue = 22F;
+        Device device = Device.builder().deviceId(deviceId).deviceName(deviceName).build();
+        Sensor sensor = Sensor.builder().sensorId(sensorId).sensorName(sensorName).build();
+        DeviceSensorRequest deviceSensorRequest = new DeviceSensorRequest(deviceName, sensorName, placeName, onValue, offValue);
+        DeviceSensor deviceSensor = DeviceSensor.builder()
+                .device(device)
+                .sensor(sensor)
+                .onValue(onValue)
+                .offValue(offValue)
+                .build();
+
+        given(deviceRepository.findByPlace_PlaceCodeAndDeviceName(anyString(), anyString()))
+                .willReturn(Optional.of(device));
+        given(sensorRepository.findBySensorName(anyString()))
+                .willReturn(Optional.of(sensor));
+        given(deviceSensorRepository.existsByDevice_DeviceIdAndSensor_SensorId(anyLong(), anyLong()))
+                .willReturn(true);
+
+        Throwable throwable = assertThrows(DeviceSensorAlreadyExistException.class, () -> deviceSensorService.saveSensor(deviceSensorRequest));
+
+        assertAll(
+                () -> assertEquals(DEVICE_SENSOR_ALREADY_EXIST_EXCEPTION, throwable.getMessage())
+        );
+    }
+
+    @Test
     void deleteSensors() {
         String deviceName = "test device";
         String placeCode = "test place";
@@ -347,7 +385,7 @@ class DeviceSensorServiceTest {
         String deviceName = "test device";
         String placeCode = "test place";
 
-        doThrow(new DeviceSensorNotFoundException("장비별 센서 데이터를 찾을 수 없습니다.")).when(deviceSensorRepository).deleteAllByDevice_Place_PlaceCodeAndDevice_DeviceName(placeCode, deviceName);
+        doThrow(new DeviceSensorNotFoundException(DEVICE_SENSOR_NOT_FOUND_MESSAGE)).when(deviceSensorRepository).deleteAllByDevice_Place_PlaceCodeAndDevice_DeviceName(placeCode, deviceName);
 
         assertAll(
                 () -> assertThrows(DeviceSensorNotFoundException.class, () -> deviceSensorService.deleteSensors(placeCode, deviceName))
