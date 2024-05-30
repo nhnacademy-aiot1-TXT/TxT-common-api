@@ -84,6 +84,7 @@ public class PlaceServiceImpl implements PlaceService {
         if (placeRepository.existsByPlaceName(place.getPlaceName())) {
             throw new PlaceAlreadyExistException(PLACE_ALREADY_EXIST_EXCEPTION_MESSAGE);
         }
+        
         return placeRepository.save(place)
                 .toDto();
     }
