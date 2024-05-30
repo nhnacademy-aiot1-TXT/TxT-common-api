@@ -31,6 +31,12 @@ public class SensorAdvice {
                 .body(new ApiExceptionDto(LocalDateTime.now(), exception.getMessage()));
     }
 
+    /**
+     * SensorAlreadyExistException Handler 메서드
+     *
+     * @param exception 발생 예외
+     * @return api 예외 응답
+     */
     @ExceptionHandler(value = SensorAlreadyExistException.class)
     public ResponseEntity<ApiExceptionDto> sensorAlreadyExistExceptionHandler(SensorAlreadyExistException exception) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
