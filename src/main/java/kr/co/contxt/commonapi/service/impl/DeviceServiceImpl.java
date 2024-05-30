@@ -104,7 +104,7 @@ public class DeviceServiceImpl implements DeviceService {
             unless = "#result == null"
     )
     public DeviceResponse getDeviceByPlaceAndName(String placeName, String deviceName) {
-        return deviceRepository.findByPlace_PlaceNameAndDeviceName(placeName, deviceName)
+        return deviceRepository.findByPlace_PlaceCodeAndDeviceName(placeName, deviceName)
                 .orElseThrow(() -> new DeviceNotFoundException(DEVICE_NOT_FOUND_MESSAGE))
                 .toDto();
     }
