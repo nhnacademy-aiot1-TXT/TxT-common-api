@@ -3,6 +3,7 @@ package kr.co.contxt.commonapi.service;
 import kr.co.contxt.commonapi.dto.SensorRequest;
 import kr.co.contxt.commonapi.dto.SensorResponse;
 import kr.co.contxt.commonapi.entity.Sensor;
+import kr.co.contxt.commonapi.exception.SensorAlreadyExistException;
 import kr.co.contxt.commonapi.exception.SensorNotFoundException;
 import kr.co.contxt.commonapi.repository.SensorRepository;
 import org.junit.jupiter.api.Test;
@@ -15,6 +16,7 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
 
 @WebMvcTest(SensorService.class)
@@ -23,6 +25,8 @@ class SensorServiceTest {
     private SensorService sensorService;
     @MockBean
     private SensorRepository sensorRepository;
+    private static final String SENSOR_NOT_FOUND_MESSAGE = "센서를 찾을 수 없습니다.";
+    private static final String SENSOR_ALREADY_EXIST_EXCEPTION = "센서가 이미 존재합니다.";
 
     @Test
     void getAllSensors() {
@@ -73,9 +77,13 @@ class SensorServiceTest {
 
     @Test
     void getSensorException() {
-        given(sensorRepository.findById(1L)).willThrow(SensorNotFoundException.class);
+        given(sensorRepository.findById(1L)).willThrow(new SensorNotFoundException(SENSOR_NOT_FOUND_MESSAGE));
 
-        assertThrows(SensorNotFoundException.class, () -> sensorService.getSensor(1L));
+        Throwable throwable = assertThrows(SensorNotFoundException.class, () -> sensorService.getSensor(1L));
+
+        assertAll(
+                () -> assertEquals(SENSOR_NOT_FOUND_MESSAGE, throwable.getMessage())
+        );
     }
 
     @Test
@@ -88,6 +96,7 @@ class SensorServiceTest {
                 .sensorName(sensorName)
                 .build();
 
+        given(sensorRepository.existsBySensorName(anyString())).willReturn(false);
         given(sensorRepository.save(sensor)).willReturn(sensor);
 
         // when
@@ -98,6 +107,25 @@ class SensorServiceTest {
                 () -> assertNotNull(saveSensor),
                 () -> assertEquals(sensorId, saveSensor.getSensorId()),
                 () -> assertEquals(sensorName, saveSensor.getSensorName())
+        );
+    }
+
+    @Test
+    void saveSensorSensorAlreadyExistException() {
+        // given
+        Long sensorId = 1L;
+        String sensorName = "test sensor";
+        Sensor sensor = Sensor.builder()
+                .sensorId(sensorId)
+                .sensorName(sensorName)
+                .build();
+
+        given(sensorRepository.existsBySensorName(anyString())).willReturn(true);
+
+        Throwable throwable = assertThrows(SensorAlreadyExistException.class, () -> sensorService.saveSensor(sensor));
+
+        assertAll(
+                () -> assertEquals(SENSOR_ALREADY_EXIST_EXCEPTION, throwable.getMessage())
         );
     }
 
@@ -131,8 +159,12 @@ class SensorServiceTest {
     void updateSensorException() {
         SensorRequest sensorRequest = new SensorRequest();
 
-        given(sensorRepository.findById(1L)).willThrow(SensorNotFoundException.class);
+        given(sensorRepository.findById(1L)).willThrow(new SensorNotFoundException(SENSOR_NOT_FOUND_MESSAGE));
 
-        assertThrows(SensorNotFoundException.class, () -> sensorService.updateSensor(1L, sensorRequest));
+        Throwable throwable = assertThrows(SensorNotFoundException.class, () -> sensorService.updateSensor(1L, sensorRequest));
+
+        assertAll(
+                () -> assertEquals(SENSOR_NOT_FOUND_MESSAGE, throwable.getMessage())
+        );
     }
 }
