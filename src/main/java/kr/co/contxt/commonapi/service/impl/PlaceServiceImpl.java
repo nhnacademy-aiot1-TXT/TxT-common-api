@@ -3,6 +3,7 @@ package kr.co.contxt.commonapi.service.impl;
 import kr.co.contxt.commonapi.dto.PlaceRequest;
 import kr.co.contxt.commonapi.dto.PlaceResponse;
 import kr.co.contxt.commonapi.entity.Place;
+import kr.co.contxt.commonapi.exception.PlaceAlreadyExistException;
 import kr.co.contxt.commonapi.exception.PlaceNotFountException;
 import kr.co.contxt.commonapi.repository.PlaceRepository;
 import kr.co.contxt.commonapi.service.PlaceService;
@@ -28,6 +29,7 @@ import java.util.stream.Collectors;
 public class PlaceServiceImpl implements PlaceService {
     private final PlaceRepository placeRepository;
     private static final String PLACE_NOT_FOUND_MESSAGE = "장소를 찾을 수 없습니다.";
+    private static final String PLACE_ALREADY_EXIST_EXCEPTION_MESSAGE = "장소가 이미 존재합니다.";
 
     /**
      * Place 리스트 조회 메서드
@@ -79,6 +81,10 @@ public class PlaceServiceImpl implements PlaceService {
             key = "'all'"
     )
     public PlaceResponse savePlace(Place place) {
+        if (placeRepository.existsByPlaceName(place.getPlaceName())) {
+            throw new PlaceAlreadyExistException(PLACE_ALREADY_EXIST_EXCEPTION_MESSAGE);
+        }
+        
         return placeRepository.save(place)
                 .toDto();
     }

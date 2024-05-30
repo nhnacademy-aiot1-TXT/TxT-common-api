@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import kr.co.contxt.commonapi.dto.PlaceRequest;
 import kr.co.contxt.commonapi.dto.PlaceResponse;
+import kr.co.contxt.commonapi.exception.PlaceAlreadyExistException;
 import kr.co.contxt.commonapi.exception.PlaceNotFountException;
 import kr.co.contxt.commonapi.service.PlaceService;
 import org.junit.jupiter.api.Test;
@@ -142,6 +143,28 @@ class PlaceRestControllerTest {
                 .andExpect(jsonPath("$.placeName", equalTo(placeName)))
                 .andExpect(jsonPath("$.placeCode", equalTo(placeCode)))
                 .andExpect(jsonPath("$.cycle", equalTo(cycleString)));
+    }
+
+    @Test
+    void addPlaceException() throws Exception {
+        Long placeId = 1L;
+        String placeName = "test place";
+        String placeCode = "test_place";
+        LocalTime cycle = LocalTime.of(0, 10, 0);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
+        PlaceRequest placeRequest = new PlaceRequest(placeName, placeCode, cycle);
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.registerModule(new JavaTimeModule());
+        given(placeService.savePlace(any())).willThrow(new PlaceAlreadyExistException("이미 존재하는 Place 입니다."));
+
+        mockMvc.perform(post("/api/common/place")
+                        .content(objectMapper.writeValueAsString(placeRequest))
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isBadRequest())
+                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.message", equalTo("이미 존재하는 Place 입니다.")));
     }
 
     @Test

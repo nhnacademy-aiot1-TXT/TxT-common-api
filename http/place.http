@@ -39,3 +39,13 @@ Content-Type: application/json
   "placeCode": "update_place",
   "cycle": "00:10:00"
 }
+
+### 장소 추가 exception
+POST http://localhost:8400/api/common/place
+Content-Type: application/json
+
+{
+  "placeName": "강의실 A",
+  "placeCode": "class_a",
+  "cycle": "00:10:00"
+}
