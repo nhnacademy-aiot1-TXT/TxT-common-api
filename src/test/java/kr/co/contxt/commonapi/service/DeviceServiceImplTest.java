@@ -4,6 +4,7 @@ import kr.co.contxt.commonapi.dto.DeviceRequest;
 import kr.co.contxt.commonapi.dto.DeviceResponse;
 import kr.co.contxt.commonapi.entity.Device;
 import kr.co.contxt.commonapi.entity.Place;
+import kr.co.contxt.commonapi.exception.DeviceAlreadyExistException;
 import kr.co.contxt.commonapi.exception.DeviceNotFoundException;
 import kr.co.contxt.commonapi.repository.DeviceRepository;
 import kr.co.contxt.commonapi.service.impl.DeviceServiceImpl;
@@ -108,6 +109,15 @@ class DeviceServiceImplTest {
         assertAll(
                 () -> assertEquals(device.getDeviceId(), result.getDeviceId()),
                 () -> assertEquals(device.getDeviceName(), result.getDeviceName())
+        );
+    }
+
+    @Test
+    void addDeviceException() {
+        given(deviceRepository.save(any())).willThrow(DeviceAlreadyExistException.class);
+
+        assertAll(
+                () -> assertThrows(DeviceAlreadyExistException.class, () -> deviceService.addDevice(new DeviceRequest()))
         );
     }
 
