@@ -3,6 +3,7 @@ package kr.co.contxt.commonapi.service;
 import kr.co.contxt.commonapi.dto.PlaceRequest;
 import kr.co.contxt.commonapi.dto.PlaceResponse;
 import kr.co.contxt.commonapi.entity.Place;
+import kr.co.contxt.commonapi.exception.PlaceAlreadyExistException;
 import kr.co.contxt.commonapi.exception.PlaceNotFountException;
 import kr.co.contxt.commonapi.repository.PlaceRepository;
 import org.junit.jupiter.api.Test;
@@ -119,6 +120,16 @@ class PlaceServiceTest {
                 () -> assertEquals(placeName, savePlace.getPlaceName()),
                 () -> assertEquals(placeCode, savePlace.getPlaceCode()),
                 () -> assertEquals(cycle, savePlace.getCycle())
+        );
+    }
+
+    @Test
+    void savePlaceException() {
+        given(placeRepository.existsByPlaceName("test place")).willThrow(PlaceAlreadyExistException.class);
+
+        assertAll(
+                () -> assertThrows(PlaceAlreadyExistException.class, ()
+                        -> placeService.savePlace(new PlaceRequest("test place", null, null).toEntity()))
         );
     }
 
