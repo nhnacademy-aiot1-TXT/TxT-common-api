@@ -55,5 +55,7 @@ public interface DeviceSensorService {
      */
     DeviceSensorResponse updateSensorByDeviceAndSensor(DeviceSensorRequest deviceSensorRequest);
 
+    DeviceSensorResponse saveSensor(DeviceSensorRequest deviceSensorRequest);
+
     void deleteSensors(String placeCode, String deviceName);
 }
