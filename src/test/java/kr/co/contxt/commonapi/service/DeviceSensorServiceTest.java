@@ -7,8 +7,12 @@ import kr.co.contxt.commonapi.dto.DeviceSensorResponse;
 import kr.co.contxt.commonapi.entity.Device;
 import kr.co.contxt.commonapi.entity.DeviceSensor;
 import kr.co.contxt.commonapi.entity.Sensor;
+import kr.co.contxt.commonapi.exception.DeviceNotFoundException;
 import kr.co.contxt.commonapi.exception.DeviceSensorNotFoundException;
+import kr.co.contxt.commonapi.exception.SensorNotFoundException;
+import kr.co.contxt.commonapi.repository.DeviceRepository;
 import kr.co.contxt.commonapi.repository.DeviceSensorRepository;
+import kr.co.contxt.commonapi.repository.SensorRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -29,6 +33,10 @@ class DeviceSensorServiceTest {
     private DeviceSensorService deviceSensorService;
     @MockBean
     private DeviceSensorRepository deviceSensorRepository;
+    @MockBean
+    private DeviceRepository deviceRepository;
+    @MockBean
+    private SensorRepository sensorRepository;
 
     @Test
     void getSensorListByDevice() {
@@ -239,6 +247,86 @@ class DeviceSensorServiceTest {
 
         assertAll(
                 () -> assertEquals("장비별 센서 데이터를 찾을 수 없습니다.", throwable.getMessage())
+        );
+    }
+
+    @Test
+    void saveSensor() {
+        Long deviceId = 1L;
+        Long sensorId = 1L;
+        String deviceName = "test device";
+        String sensorName = "test sensor";
+        String placeName = "test place";
+        Float onValue = 25F;
+        Float offValue = 22F;
+        Device device = Device.builder().deviceId(deviceId).deviceName(deviceName).build();
+        Sensor sensor = Sensor.builder().sensorId(sensorId).sensorName(sensorName).build();
+        DeviceSensorRequest deviceSensorRequest = new DeviceSensorRequest(deviceName, sensorName, placeName, onValue, offValue);
+        DeviceSensor deviceSensor = DeviceSensor.builder()
+                .device(device)
+                .sensor(sensor)
+                .onValue(onValue)
+                .offValue(offValue)
+                .build();
+
+        given(deviceRepository.findByPlace_PlaceCodeAndDeviceName(anyString(), anyString()))
+                .willReturn(Optional.of(device));
+        given(sensorRepository.findBySensorName(anyString()))
+                .willReturn(Optional.of(sensor));
+        given(deviceSensorRepository.save(any()))
+                .willReturn(deviceSensor);
+
+        DeviceSensorResponse deviceSensorResponse = deviceSensorService.saveSensor(deviceSensorRequest);
+
+        assertAll(
+                () -> assertNotNull(deviceSensorResponse),
+                () -> assertEquals(deviceId, deviceSensorResponse.getDeviceId()),
+                () -> assertEquals(sensorId, deviceSensorResponse.getSensorId()),
+                () -> assertEquals(sensorName, deviceSensorResponse.getSensorName()),
+                () -> assertEquals(onValue, deviceSensorResponse.getOnValue()),
+                () -> assertEquals(offValue, deviceSensorResponse.getOffValue())
+        );
+    }
+
+    @Test
+    void saveSensorDeviceNotFoundException() {
+        String deviceName = "test device";
+        String sensorName = "test sensor";
+        String placeName = "test place";
+        Float onValue = 25F;
+        Float offValue = 22F;
+        DeviceSensorRequest deviceSensorRequest = new DeviceSensorRequest(deviceName, sensorName, placeName, onValue, offValue);
+
+        given(deviceRepository.findByPlace_PlaceCodeAndDeviceName(anyString(), anyString()))
+                .willReturn(Optional.empty());
+
+        Throwable throwable = assertThrows(DeviceNotFoundException.class, () -> deviceSensorService.saveSensor(deviceSensorRequest));
+
+        assertAll(
+                () -> assertEquals("Device를 찾을 수 없습니다.", throwable.getMessage())
+        );
+    }
+
+    @Test
+    void saveSensorSensorNotFoundException() {
+        Long deviceId = 1L;
+        String deviceName = "test device";
+        String sensorName = "test sensor";
+        String placeName = "test place";
+        Float onValue = 25F;
+        Float offValue = 22F;
+        Device device = Device.builder().deviceId(deviceId).deviceName(deviceName).build();
+        DeviceSensorRequest deviceSensorRequest = new DeviceSensorRequest(deviceName, sensorName, placeName, onValue, offValue);
+
+        given(deviceRepository.findByPlace_PlaceCodeAndDeviceName(anyString(), anyString()))
+                .willReturn(Optional.of(device));
+        given(sensorRepository.findBySensorName(anyString()))
+                .willReturn(Optional.empty());
+
+        Throwable throwable = assertThrows(SensorNotFoundException.class, () -> deviceSensorService.saveSensor(deviceSensorRequest));
+
+        assertAll(
+                () -> assertEquals("Sensor를 찾을 수 없습니다.", throwable.getMessage())
         );
     }
 

@@ -45,9 +45,9 @@ class DeviceRepositoryTest {
                 .aiMode(1)
                 .build();
 
-        given(deviceRepository.findByPlace_PlaceNameAndDeviceName(anyString(), anyString())).willReturn(Optional.of(device));
+        given(deviceRepository.findByPlace_PlaceCodeAndDeviceName(anyString(), anyString())).willReturn(Optional.of(device));
 
-        Device result = deviceRepository.findByPlace_PlaceNameAndDeviceName("test place", "test").get();
+        Device result = deviceRepository.findByPlace_PlaceCodeAndDeviceName("test place", "test").get();
 
         assertAll(() -> {
             assertEquals(device.getDeviceId(), result.getDeviceId());

@@ -8,6 +8,7 @@ import kr.co.contxt.commonapi.dto.DeviceSensorRequest;
 import kr.co.contxt.commonapi.dto.DeviceSensorResponse;
 import kr.co.contxt.commonapi.service.DeviceSensorService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -96,6 +97,21 @@ public class DeviceSensorRestController {
         DeviceSensorResponse deviceSensor = deviceSensorService.updateSensorByDeviceAndSensor(deviceSensorRequest);
 
         return ResponseEntity.ok(deviceSensor);
+    }
+
+    /**
+     * 장비별 센서 추가 api
+     *
+     * @param deviceSensorRequest 징비별 센서 on/off dto
+     * @return 추가된 장비별 센서 dto
+     */
+    @PostMapping
+    @Operation(summary = "장비별 센서 추가")
+    public ResponseEntity<DeviceSensorResponse> addSensor(@RequestBody @Valid DeviceSensorRequest deviceSensorRequest) {
+        DeviceSensorResponse deviceSensor = deviceSensorService.saveSensor(deviceSensorRequest);
+
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(deviceSensor);
     }
 
     /**

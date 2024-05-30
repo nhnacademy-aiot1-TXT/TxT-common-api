@@ -23,5 +23,17 @@ Content-Type: application/json
   "offValue": 20
 }
 
+### 장비별 센서 추가
+POST http://localhost:8400/api/common/device-sensor
+Content-Type: application/json
+
+{
+  "deviceName": "airconditioner",
+  "sensorName": "humidity",
+  "placeName": "class_a",
+  "onValue": 40,
+  "offValue": 30
+}
+
 ### 장비별 센서 삭제
 DELETE http://localhost:8400/api/common/device-sensor/class_a/airconditioner
