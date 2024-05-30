@@ -69,7 +69,7 @@ class DeviceServiceImplTest {
         Place place = new Place(1L, "test place", "test_place", LocalTime.of(0, 10, 0));
         Device device = new Device(1L, place, "test1", 1);
 
-        given(deviceRepository.findByPlace_PlaceNameAndDeviceName(anyString(), anyString())).willReturn(Optional.of(device));
+        given(deviceRepository.findByPlace_PlaceCodeAndDeviceName(anyString(), anyString())).willReturn(Optional.of(device));
 
         DeviceResponse result = deviceService.getDeviceByPlaceAndName("test place", "test1");
 
@@ -90,7 +90,7 @@ class DeviceServiceImplTest {
 
     @Test
     void getDeviceByNameException() {
-        given(deviceRepository.findByPlace_PlaceNameAndDeviceName(anyString(), anyString())).willThrow(DeviceNotFoundException.class);
+        given(deviceRepository.findByPlace_PlaceCodeAndDeviceName(anyString(), anyString())).willThrow(DeviceNotFoundException.class);
 
         assertAll(
                 () -> assertThrows(DeviceNotFoundException.class, () -> deviceService.getDeviceByPlaceAndName("test place", "test"))
