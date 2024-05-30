@@ -4,9 +4,15 @@ import kr.co.contxt.commonapi.dto.DeviceAndPlaceNameDto;
 import kr.co.contxt.commonapi.dto.DeviceAndSensorAndPlaceNameDto;
 import kr.co.contxt.commonapi.dto.DeviceSensorRequest;
 import kr.co.contxt.commonapi.dto.DeviceSensorResponse;
+import kr.co.contxt.commonapi.entity.Device;
 import kr.co.contxt.commonapi.entity.DeviceSensor;
+import kr.co.contxt.commonapi.entity.Sensor;
+import kr.co.contxt.commonapi.exception.DeviceNotFoundException;
 import kr.co.contxt.commonapi.exception.DeviceSensorNotFoundException;
+import kr.co.contxt.commonapi.exception.SensorNotFoundException;
+import kr.co.contxt.commonapi.repository.DeviceRepository;
 import kr.co.contxt.commonapi.repository.DeviceSensorRepository;
+import kr.co.contxt.commonapi.repository.SensorRepository;
 import kr.co.contxt.commonapi.service.DeviceSensorService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.CacheEvict;
@@ -30,6 +36,8 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class DeviceSensorServiceImpl implements DeviceSensorService {
     private final DeviceSensorRepository deviceSensorRepository;
+    private final DeviceRepository deviceRepository;
+    private final SensorRepository sensorRepository;
     private static final String DEVICE_SENSOR_NOT_FOUND_MESSAGE = "장비별 센서 데이터를 찾을 수 없습니다.";
 
     /**
@@ -162,7 +170,44 @@ public class DeviceSensorServiceImpl implements DeviceSensorService {
                 .offValue(deviceSensorRequest.getOffValue())
                 .build();
 
-        return deviceSensorRepository.save(build).toDto();
+        return deviceSensorRepository.save(build)
+                .toDto();
+    }
+
+    /**
+     * DeviceSensor 추가 메서드
+     *
+     * @param deviceSensorRequest 장비별 센서 on/off dto
+     * @return deviceSensor
+     */
+    @Override
+    @Transactional
+    @Caching(
+            evict = {
+                    @CacheEvict(
+                            value = "getSensorListByDevice",
+                            allEntries = true
+                    ),
+                    @CacheEvict(
+                            value = "getSensorListByDeviceName",
+                            key = "#deviceSensorRequest.getDeviceName().concat(':').concat(#deviceSensorRequest.getPlaceName())"
+                    )
+            }
+    )
+    public DeviceSensorResponse saveSensor(DeviceSensorRequest deviceSensorRequest) {
+        Device device = deviceRepository.findByPlace_PlaceCodeAndDeviceName(deviceSensorRequest.getPlaceName(), deviceSensorRequest.getDeviceName())
+                .orElseThrow(() -> new DeviceNotFoundException("Device를 찾을 수 없습니다."));
+        Sensor sensor = sensorRepository.findBySensorName(deviceSensorRequest.getSensorName())
+                .orElseThrow(() -> new SensorNotFoundException("Sensor를 찾을 수 없습니다."));
+        DeviceSensor deviceSensor = DeviceSensor.builder()
+                .device(device)
+                .sensor(sensor)
+                .onValue(deviceSensorRequest.getOnValue())
+                .offValue(deviceSensorRequest.getOffValue())
+                .build();
+
+        return deviceSensorRepository.save(deviceSensor)
+                .toDto();
     }
 
     /**
