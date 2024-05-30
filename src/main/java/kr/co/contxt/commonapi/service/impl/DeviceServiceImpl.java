@@ -3,6 +3,7 @@ package kr.co.contxt.commonapi.service.impl;
 import kr.co.contxt.commonapi.dto.DeviceRequest;
 import kr.co.contxt.commonapi.dto.DeviceResponse;
 import kr.co.contxt.commonapi.entity.Device;
+import kr.co.contxt.commonapi.exception.DeviceAlreadyExistException;
 import kr.co.contxt.commonapi.exception.DeviceNotFoundException;
 import kr.co.contxt.commonapi.repository.DeviceRepository;
 import kr.co.contxt.commonapi.service.DeviceService;
@@ -28,6 +29,7 @@ import java.util.stream.Collectors;
 public class DeviceServiceImpl implements DeviceService {
     private final DeviceRepository deviceRepository;
     private static final String DEVICE_NOT_FOUND_MESSAGE = "Device를 찾을 수 없습니다.";
+    private static final String DEVICE_ALREADY_EXIST_MESSAGE = "Device가 이미 존재합니다.";
 
     /**
      * Device 리스트 조회 메서드
@@ -128,6 +130,9 @@ public class DeviceServiceImpl implements DeviceService {
             }
     )
     public DeviceResponse addDevice(DeviceRequest deviceRequest) {
+        if (deviceRepository.existsByDeviceNameAndPlace_PlaceId(deviceRequest.getDeviceName(), deviceRequest.getPlaceId())) {
+            throw new DeviceAlreadyExistException(DEVICE_ALREADY_EXIST_MESSAGE);
+        }
         return deviceRepository.save(deviceRequest.toEntity()).toDto();
     }
 

@@ -2,6 +2,7 @@ package kr.co.contxt.commonapi.advice;
 
 import kr.co.contxt.commonapi.controller.DeviceRestController;
 import kr.co.contxt.commonapi.dto.ApiExceptionDto;
+import kr.co.contxt.commonapi.exception.DeviceAlreadyExistException;
 import kr.co.contxt.commonapi.exception.DeviceNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,6 +28,18 @@ public class DeviceAdvice {
     @ExceptionHandler(value = DeviceNotFoundException.class)
     public ResponseEntity<ApiExceptionDto> deviceNotFoundExceptionHandler(DeviceNotFoundException exception) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body(new ApiExceptionDto(LocalDateTime.now(), exception.getMessage()));
+    }
+
+    /**
+     * DeviceAlreadyExistException Handler 메서드
+     *
+     * @param exception the exception
+     * @return the response entity
+     */
+    @ExceptionHandler(value = DeviceAlreadyExistException.class)
+    public ResponseEntity<ApiExceptionDto> deviceAlreadyExistExceptionHandler(DeviceAlreadyExistException exception) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .body(new ApiExceptionDto(LocalDateTime.now(), exception.getMessage()));
     }
 }

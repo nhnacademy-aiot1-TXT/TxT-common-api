@@ -17,7 +17,8 @@ Content-Type: application/json
 
 {
   "placeId": 1,
-  "deviceName": "test-device2"
+  "deviceName": "test-device2",
+  "aiMode": 1
 }
 
 ### device 수정
@@ -39,4 +40,14 @@ Content-Type: application/json
 {
   "placeId": 2,
   "deviceName": "change-test"
+}
+
+### device 추가 exception
+POST http://localhost:8400/api/common/device
+Content-Type: application/json
+
+{
+  "placeId": 1,
+  "deviceName": "airConditioner",
+  "aiMode": 1
 }

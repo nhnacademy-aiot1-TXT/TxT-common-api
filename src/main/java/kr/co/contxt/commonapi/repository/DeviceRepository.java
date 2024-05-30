@@ -29,4 +29,13 @@ public interface DeviceRepository extends JpaRepository<Device, Long> {
      * @return device
      */
     Optional<Device> findByPlace_PlaceNameAndDeviceName(String placeName, String deviceName);
+
+    /**
+     * device name, place id로 존재여부 조회
+     *
+     * @param deviceName device name
+     * @param placeId    place id
+     * @return boolean
+     */
+    boolean existsByDeviceNameAndPlace_PlaceId(String deviceName, Long placeId);
 }

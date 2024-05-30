@@ -2,6 +2,7 @@ package kr.co.contxt.commonapi.controller;
 
 import kr.co.contxt.commonapi.dto.DeviceRequest;
 import kr.co.contxt.commonapi.dto.DeviceResponse;
+import kr.co.contxt.commonapi.exception.DeviceAlreadyExistException;
 import kr.co.contxt.commonapi.exception.DeviceNotFoundException;
 import kr.co.contxt.commonapi.service.DeviceService;
 import org.junit.jupiter.api.Test;
@@ -95,6 +96,15 @@ class DeviceRestControllerTest {
         assertAll(
                 () -> assertEquals(HttpStatus.CREATED, responseEntity.getStatusCode()),
                 () -> assertEquals(device, responseEntity.getBody())
+        );
+    }
+
+    @Test
+    void addDeviceException() {
+        given(deviceService.addDevice(any())).willThrow(DeviceAlreadyExistException.class);
+
+        assertAll(
+                () -> assertThrows(DeviceAlreadyExistException.class, () -> deviceRestController.addDevice(new DeviceRequest()))
         );
     }
 
