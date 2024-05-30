@@ -10,6 +10,7 @@ Content-Type: application/json
 
 {
   "sensorId": 7,
+  "sensorName": "occupancy",
   "begin": "00:00:00",
   "end": "08:00:00"
 }
@@ -22,5 +23,16 @@ Content-Type: application/json
   "sensorId": 7,
   "sensorName": "occupancy",
   "begin": "01:00:00",
+  "end": "08:00:00"
+}
+
+### 탐지 시간 등록 exception
+POST http://localhost:8400/api/common/time-interval
+Content-Type: application/json
+
+{
+  "sensorId": 7,
+  "sensorName": "occupancy",
+  "begin": "00:00:00",
   "end": "08:00:00"
 }
