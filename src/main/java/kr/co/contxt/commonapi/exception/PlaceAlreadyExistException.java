@@ -7,9 +7,17 @@ package kr.co.contxt.commonapi.exception;
  * @version 1.0.0
  */
 public class PlaceAlreadyExistException extends RuntimeException {
+    /**
+     * 기본 생성자 메서드
+     */
     public PlaceAlreadyExistException() {
     }
 
+    /**
+     * message를 가지는 생성자 메서드
+     *
+     * @param message
+     */
     public PlaceAlreadyExistException(String message) {
         super(message);
     }
