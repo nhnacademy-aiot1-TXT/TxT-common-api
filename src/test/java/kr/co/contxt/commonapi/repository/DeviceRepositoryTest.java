@@ -6,11 +6,11 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.time.LocalTime;
+import java.util.List;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertAll;
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
 
@@ -20,21 +20,47 @@ class DeviceRepositoryTest {
     private DeviceRepository deviceRepository;
 
     @Test
-    void findByName() {
+    void findByPlace() {
         Device device = Device.builder()
                 .deviceId(1L)
                 .deviceName("test")
-                .cycle(LocalTime.of(0, 10))
+                .aiMode(1)
                 .build();
 
-        given(deviceRepository.findByDeviceName(anyString())).willReturn(Optional.of(device));
+        given(deviceRepository.findByPlace_PlaceId(anyLong())).willReturn(List.of(device));
 
-        Device result = deviceRepository.findByDeviceName("test").get();
+        Device result = deviceRepository.findByPlace_PlaceId(1L).get(0);
 
         assertAll(() -> {
             assertEquals(device.getDeviceId(), result.getDeviceId());
             assertEquals(device.getDeviceName(), result.getDeviceName());
-            assertEquals(device.getCycle(), result.getCycle());
+        });
+    }
+
+    @Test
+    void findByPlaceAndName() {
+        Device device = Device.builder()
+                .deviceId(1L)
+                .deviceName("test")
+                .aiMode(1)
+                .build();
+
+        given(deviceRepository.findByPlace_PlaceCodeAndDeviceName(anyString(), anyString())).willReturn(Optional.of(device));
+
+        Device result = deviceRepository.findByPlace_PlaceCodeAndDeviceName("test place", "test").get();
+
+        assertAll(() -> {
+            assertEquals(device.getDeviceId(), result.getDeviceId());
+            assertEquals(device.getDeviceName(), result.getDeviceName());
+        });
+    }
+
+    @Test
+    void existsByDeviceNameAndPlace_PlaceId() {
+        given(deviceRepository.existsByDeviceNameAndPlace_PlaceId(anyString(), anyLong())).willReturn(true);
+
+        assertAll(() -> {
+            assertTrue(deviceRepository.existsByDeviceNameAndPlace_PlaceId("test", 1L));
         });
     }
 }

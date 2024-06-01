@@ -15,7 +15,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class WeatherResponseDto {
+public class WeatherResponse {
     private Float temperature;
     private String sky;
 }

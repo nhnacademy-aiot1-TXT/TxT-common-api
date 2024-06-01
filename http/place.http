@@ -1,0 +1,51 @@
+### 모든 장소 조회
+GET http://localhost:8400/api/common/place
+
+### 단일 장소 조회
+GET http://localhost:8400/api/common/place/1
+
+### 장소 추가
+POST http://localhost:8400/api/common/place
+Content-Type: application/json
+
+{
+  "placeName": "test place",
+  "placeCode": "test_place",
+  "cycle": "00:10:00"
+}
+
+### 장소 업데이트
+PUT http://localhost:8400/api/common/place/3
+Content-Type: application/json
+
+{
+  "placeName": "update place",
+  "placeCode": "update_place",
+  "cycle": "00:13:00"
+}
+
+### 장소 제거
+DELETE http://localhost:8400/api/common/place/3
+
+### 장소 단일 조회 exception
+GET http://localhost:8400/api/common/place/0
+
+### 장소 수정 exception
+PUT http://localhost:8400/api/common/place/0
+Content-Type: application/json
+
+{
+  "placeName": "update place",
+  "placeCode": "update_place",
+  "cycle": "00:10:00"
+}
+
+### 장소 추가 exception
+POST http://localhost:8400/api/common/place
+Content-Type: application/json
+
+{
+  "placeName": "강의실 A",
+  "placeCode": "class_a",
+  "cycle": "00:10:00"
+}

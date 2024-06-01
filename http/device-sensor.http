@@ -2,10 +2,50 @@
 GET http://localhost:8400/api/common/device-sensor/1/1
 
 ### 장비 이름, 센서 이름별 단일 센서 on/off 조회
-GET http://localhost:8400/api/common/device-sensor/sensor?deviceName=airconditioner&sensorName=temperature
+GET http://localhost:8400/api/common/device-sensor/sensor?deviceName=airconditioner&sensorName=temperature&
+    placeName=class_b
 
 ### 장비별 모든 센서 on/off 조회
 GET http://localhost:8400/api/common/device-sensor/1
 
 ### 장비 이름별 모든 센서 on/off 조회
-GET http://localhost:8400/api/common/device-sensor/sensors?deviceName=airconditioner
+GET http://localhost:8400/api/common/device-sensor/sensors?deviceName=airconditioner&placeName=class_a
+
+### 장비별 센서 업데이트
+PUT http://localhost:8400/api/common/device-sensor
+Content-Type: application/json
+
+{
+  "deviceName": "airconditioner",
+  "sensorName": "temperature",
+  "placeName": "class_a",
+  "onValue": 28,
+  "offValue": 20
+}
+
+### 장비별 센서 추가
+POST http://localhost:8400/api/common/device-sensor
+Content-Type: application/json
+
+{
+  "deviceName": "airconditioner",
+  "sensorName": "humidity",
+  "placeName": "class_a",
+  "onValue": 40,
+  "offValue": 30
+}
+
+### 장비별 센서 추가 already exist exception
+POST http://localhost:8400/api/common/device-sensor
+Content-Type: application/json
+
+{
+  "deviceName": "airconditioner",
+  "sensorName": "temperature",
+  "placeName": "class_a",
+  "onValue": 28,
+  "offValue": 20
+}
+
+### 장비별 센서 삭제
+DELETE http://localhost:8400/api/common/device-sensor/class_a/airconditioner

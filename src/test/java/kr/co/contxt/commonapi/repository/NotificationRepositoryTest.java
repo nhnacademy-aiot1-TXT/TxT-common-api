@@ -9,6 +9,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.BDDMockito.given;
 
@@ -28,7 +29,9 @@ class NotificationRepositoryTest {
 
         List<Notification> resultList = notificationRepository.findAll();
 
-        assertEquals(3, resultList.size());
+        assertAll(
+                () -> assertEquals(3, resultList.size())
+        );
     }
 
     @Test
@@ -44,7 +47,8 @@ class NotificationRepositoryTest {
         List<Notification> result = notificationRepository.findByRole_RoleId(roleId);
 
         // Assertions
-        assertEquals(3, result.size());
-
+        assertAll(
+                () -> assertEquals(3, result.size())
+        );
     }
 }

@@ -7,7 +7,9 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import java.util.Optional;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
@@ -23,9 +25,32 @@ class SensorRepositoryTest {
         Sensor sensor = Sensor.builder()
                 .sensorName(sensorName)
                 .build();
+
         entityManager.persist(sensor);
+
         boolean result = sensorRepository.existsBySensorName(sensorName);
 
-        assertTrue(result);
+        assertAll(
+                () -> assertTrue(result)
+        );
+    }
+
+    @Test
+    void findBySensorName() {
+        String sensorName = "test sensor2";
+        Sensor sensor = Sensor.builder()
+                .sensorName(sensorName)
+                .build();
+
+        entityManager.persist(sensor);
+
+        Optional<Sensor> resultSensorOptional = sensorRepository.findBySensorName(sensorName);
+        Sensor resultSensor = resultSensorOptional.get();
+
+        assertAll(
+                () -> assertNotNull(resultSensorOptional),
+                () -> assertNotNull(resultSensor),
+                () -> assertEquals(sensorName, resultSensor.getSensorName())
+        );
     }
 }

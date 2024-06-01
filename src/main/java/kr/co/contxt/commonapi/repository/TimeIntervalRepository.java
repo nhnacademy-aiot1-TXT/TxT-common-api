@@ -27,4 +27,12 @@ public interface TimeIntervalRepository extends JpaRepository<TimeInterval, Long
      * @return the optional
      */
     Optional<TimeInterval> findBySensor_SensorName(String sensorName);
+
+    /**
+     * 센서 아이디로 탐지 시간을 체크하는 메서드
+     *
+     * @param sensorId the sensor id
+     * @return boolean
+     */
+    boolean existsBySensor_SensorId(Long sensorId);
 }

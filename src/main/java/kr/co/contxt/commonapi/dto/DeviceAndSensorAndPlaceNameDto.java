@@ -4,6 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.NotBlank;
+
 /**
  * DeviceSensor 단일 조회 DTO 클래스
  *
@@ -13,7 +15,11 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class DeviceAndSensorNameDto {
+public class DeviceAndSensorAndPlaceNameDto {
+    @NotBlank
     private String deviceName;
+    @NotBlank
     private String sensorName;
+    @NotBlank
+    private String placeName;
 }

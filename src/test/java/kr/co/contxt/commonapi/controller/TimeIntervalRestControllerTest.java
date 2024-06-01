@@ -6,6 +6,7 @@ import kr.co.contxt.commonapi.dto.SensorNameDto;
 import kr.co.contxt.commonapi.dto.TimeIntervalRequest;
 import kr.co.contxt.commonapi.dto.TimeIntervalResponse;
 import kr.co.contxt.commonapi.exception.SensorNotFoundException;
+import kr.co.contxt.commonapi.exception.TimeIntervalAlreadyExistException;
 import kr.co.contxt.commonapi.service.TimeIntervalService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,8 +23,7 @@ import static org.hamcrest.Matchers.equalTo;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -35,6 +35,9 @@ class TimeIntervalRestControllerTest {
     private MockMvc mockMvc;
     @MockBean
     private TimeIntervalService timeIntervalService;
+
+    private static final String TIME_INTERVAL_NOT_FOUND_MESSAGE = "탐지 시간을 찾을 수 없습니다.";
+    private static final String TIME_INTERVAL_ALREADY_EXIST_EXCEPTION_MESSAGE = "탐지 시간이 이미 존재 합니다.";
 
     @Test
     void getTimeIntervalBySensor() throws Exception {
@@ -67,13 +70,13 @@ class TimeIntervalRestControllerTest {
         long sensorId = 1L;
 
         given(timeIntervalService.getTimeInterval(anyLong()))
-                .willThrow(new SensorNotFoundException("탐지 시간을 찾을 수 없습니다."));
+                .willThrow(new SensorNotFoundException(TIME_INTERVAL_NOT_FOUND_MESSAGE));
 
         mockMvc.perform(get("/api/common/time-interval/" + sensorId))
                 .andDo(print())
                 .andExpect(status().isNotFound())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.message", equalTo("탐지 시간을 찾을 수 없습니다.")));
+                .andExpect(jsonPath("$.message", equalTo(TIME_INTERVAL_NOT_FOUND_MESSAGE)));
     }
 
     @Test
@@ -109,22 +112,23 @@ class TimeIntervalRestControllerTest {
         SensorNameDto sensorNameDto = new SensorNameDto(sensorName);
 
         given(timeIntervalService.getTimeInterval(sensorNameDto))
-                .willThrow(new SensorNotFoundException("탐지 시간을 찾을 수 없습니다."));
+                .willThrow(new SensorNotFoundException(TIME_INTERVAL_NOT_FOUND_MESSAGE));
 
         mockMvc.perform(get("/api/common/time-interval")
                         .param("sensorName", sensorName))
                 .andDo(print())
                 .andExpect(status().isNotFound())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.message", equalTo("탐지 시간을 찾을 수 없습니다.")));
+                .andExpect(jsonPath("$.message", equalTo(TIME_INTERVAL_NOT_FOUND_MESSAGE)));
     }
 
     @Test
     void addTimeInterval() throws Exception {
         Long sensorId = 1L;
+        String sensorName = "test sensor";
         LocalTime begin = LocalTime.of(0, 0, 0);
         LocalTime end = LocalTime.of(7, 0, 0);
-        TimeIntervalRequest timeIntervalRequest = new TimeIntervalRequest(sensorId, begin, end);
+        TimeIntervalRequest timeIntervalRequest = new TimeIntervalRequest(sensorId, sensorName, begin, end);
 
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.registerModule(new JavaTimeModule());
@@ -138,6 +142,28 @@ class TimeIntervalRestControllerTest {
     }
 
     @Test
+    void addTimeIntervalException() throws Exception {
+        Long sensorId = 1L;
+        String sensorName = "test sensor";
+        LocalTime begin = LocalTime.of(0, 0, 0);
+        LocalTime end = LocalTime.of(7, 0, 0);
+        TimeIntervalRequest timeIntervalRequest = new TimeIntervalRequest(sensorId, sensorName, begin, end);
+
+        doThrow(new TimeIntervalAlreadyExistException(TIME_INTERVAL_ALREADY_EXIST_EXCEPTION_MESSAGE))
+                .when(timeIntervalService)
+                .createTimeInterval(any());
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.registerModule(new JavaTimeModule());
+        mockMvc.perform(post("/api/common/time-interval")
+                        .content(objectMapper.writeValueAsString(timeIntervalRequest))
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.message", equalTo(TIME_INTERVAL_ALREADY_EXIST_EXCEPTION_MESSAGE)));
+    }
+
+    @Test
     void updateTimeInterval() throws Exception {
         String sensorName = "test sensor";
         long timeIntervalId = 1L;
@@ -147,7 +173,7 @@ class TimeIntervalRestControllerTest {
         LocalTime end = LocalTime.of(7, 0, 0);
         String beginAsString = begin.format(formatter);
         String endAsString = end.format(formatter);
-        TimeIntervalRequest timeIntervalRequest = new TimeIntervalRequest(sensorId, begin, end);
+        TimeIntervalRequest timeIntervalRequest = new TimeIntervalRequest(sensorId, sensorName, begin, end);
         TimeIntervalResponse timeIntervalResponse = TimeIntervalResponse.builder()
                 .sensorName(sensorName)
                 .begin(begin)
@@ -173,11 +199,12 @@ class TimeIntervalRestControllerTest {
     void updateTimeIntervalException() throws Exception {
         long timeIntervalId = 1L;
         Long sensorId = 1L;
+        String sensorName = "test sensor";
         LocalTime begin = LocalTime.of(0, 0, 0);
         LocalTime end = LocalTime.of(7, 0, 0);
-        TimeIntervalRequest timeIntervalRequest = new TimeIntervalRequest(sensorId, begin, end);
+        TimeIntervalRequest timeIntervalRequest = new TimeIntervalRequest(sensorId, sensorName, begin, end);
 
-        given(timeIntervalService.updateTimeInterval(anyLong(), any())).willThrow(new SensorNotFoundException("탐지 시간을 찾을 수 없습니다."));
+        given(timeIntervalService.updateTimeInterval(anyLong(), any())).willThrow(new SensorNotFoundException(TIME_INTERVAL_NOT_FOUND_MESSAGE));
 
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.registerModule(new JavaTimeModule());
@@ -187,6 +214,6 @@ class TimeIntervalRestControllerTest {
                 .andDo(print())
                 .andExpect(status().isNotFound())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.message", equalTo("탐지 시간을 찾을 수 없습니다.")));
+                .andExpect(jsonPath("$.message", equalTo(TIME_INTERVAL_NOT_FOUND_MESSAGE)));
     }
 }

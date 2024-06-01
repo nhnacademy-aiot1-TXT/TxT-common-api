@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 /**
@@ -37,6 +38,18 @@ public class DeviceRestController {
     }
 
     /**
+     * 장소별 장비 정보 리스트 조회 api
+     *
+     * @param placeId the place id
+     * @return the device list
+     */
+    @GetMapping("/devices/{placeId}")
+    @Operation(summary = "장소별 장비 정보 리스트 조회")
+    public ResponseEntity<List<DeviceResponse>> getDeviceListByPlace(@PathVariable Long placeId) {
+        return ResponseEntity.ok(deviceService.getDeviceListByPlace(placeId));
+    }
+
+    /**
      * 장비 정보 ID로 단일 조회 api
      *
      * @param deviceId the device id
@@ -51,13 +64,14 @@ public class DeviceRestController {
     /**
      * 장비 정보 이름으로 단일 조회 api
      *
-     * @param name the device id
+     * @param placeName the place name
+     * @param name      the device name
      * @return the device
      */
     @GetMapping
     @Operation(summary = "장비 정보 단일 조회")
-    public ResponseEntity<DeviceResponse> getDeviceByName(@RequestParam String name) {
-        return ResponseEntity.ok(deviceService.getDeviceByName(name));
+    public ResponseEntity<DeviceResponse> getDeviceByName(@RequestParam String placeName, @RequestParam String name) {
+        return ResponseEntity.ok(deviceService.getDeviceByPlaceAndName(placeName, name));
     }
 
     /**
@@ -68,7 +82,7 @@ public class DeviceRestController {
      */
     @PostMapping
     @Operation(summary = "장비 정보 추가")
-    public ResponseEntity<DeviceResponse> addDevice(@RequestBody DeviceRequest deviceRequest) {
+    public ResponseEntity<DeviceResponse> addDevice(@RequestBody @Valid DeviceRequest deviceRequest) {
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(deviceService.addDevice(deviceRequest));
     }
@@ -82,7 +96,7 @@ public class DeviceRestController {
      */
     @PutMapping("/{deviceId}")
     @Operation(summary = "장비 정보 수정")
-    public ResponseEntity<DeviceResponse> updateDevice(@PathVariable Long deviceId, @RequestBody DeviceRequest deviceRequest) {
+    public ResponseEntity<DeviceResponse> updateDevice(@PathVariable Long deviceId, @RequestBody @Valid DeviceRequest deviceRequest) {
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(deviceService.updateDevice(deviceId, deviceRequest));
     }

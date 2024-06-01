@@ -1,11 +1,13 @@
 package kr.co.contxt.commonapi.dto;
 
 import kr.co.contxt.commonapi.entity.Device;
+import kr.co.contxt.commonapi.entity.Place;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalTime;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 /**
  * Device 생성, 수정 DTO 클래스
@@ -17,8 +19,12 @@ import java.time.LocalTime;
 @NoArgsConstructor
 @AllArgsConstructor
 public class DeviceRequest {
+    @NotNull
+    Long placeId;
+    @NotBlank
     String deviceName;
-    LocalTime cycle;
+    @NotNull
+    Integer aiMode;
 
     /**
      * To entity device.
@@ -27,8 +33,9 @@ public class DeviceRequest {
      */
     public Device toEntity() {
         return Device.builder()
+                .place(new Place(placeId, null, null, null))
                 .deviceName(deviceName)
-                .cycle(cycle)
+                .aiMode(aiMode)
                 .build();
     }
 }

@@ -2,14 +2,17 @@ package kr.co.contxt.commonapi.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import kr.co.contxt.commonapi.dto.DeviceAndSensorNameDto;
-import kr.co.contxt.commonapi.dto.DeviceNameDto;
+import kr.co.contxt.commonapi.dto.DeviceAndPlaceNameDto;
+import kr.co.contxt.commonapi.dto.DeviceAndSensorAndPlaceNameDto;
+import kr.co.contxt.commonapi.dto.DeviceSensorRequest;
 import kr.co.contxt.commonapi.dto.DeviceSensorResponse;
 import kr.co.contxt.commonapi.service.DeviceSensorService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 /**
@@ -42,13 +45,13 @@ public class DeviceSensorRestController {
     /**
      * 장비 정보 이름으로 센서 정보 리스트 조회 api
      *
-     * @param deviceNameDto the device name dto
+     * @param deviceAndPlaceNameDto the device name and place name dto
      * @return the deviceSensor list
      */
     @GetMapping("/sensors")
     @Operation(summary = "장비별 센서 정보 리스트 조회")
-    public ResponseEntity<List<DeviceSensorResponse>> getSensorListByDeviceName(@ModelAttribute DeviceNameDto deviceNameDto) {
-        List<DeviceSensorResponse> deviceSensors = deviceSensorService.getSensorListByDevice(deviceNameDto);
+    public ResponseEntity<List<DeviceSensorResponse>> getSensorListByDeviceName(@ModelAttribute @Valid DeviceAndPlaceNameDto deviceAndPlaceNameDto) {
+        List<DeviceSensorResponse> deviceSensors = deviceSensorService.getSensorListByDevice(deviceAndPlaceNameDto);
 
         return ResponseEntity.ok(deviceSensors);
     }
@@ -71,14 +74,57 @@ public class DeviceSensorRestController {
     /**
      * 장비 정보 이름, 센서 정보 이름으로 단일 조회 api
      *
-     * @param deviceAndSensorNameDto the device and sensor name dto
+     * @param deviceAndSensorAndPlaceNameDto the device and sensor name and place name dto
      * @return the deviceSensor
      */
     @GetMapping("/sensor")
     @Operation(summary = "장비별 센서 정보 단일 조회")
-    public ResponseEntity<DeviceSensorResponse> getSensorByDeviceNameAndSensorName(@ModelAttribute DeviceAndSensorNameDto deviceAndSensorNameDto) {
-        DeviceSensorResponse deviceSensor = deviceSensorService.getSensorByDeviceAndSensor(deviceAndSensorNameDto);
+    public ResponseEntity<DeviceSensorResponse> getSensorByDeviceNameAndSensorName(@ModelAttribute @Valid DeviceAndSensorAndPlaceNameDto deviceAndSensorAndPlaceNameDto) {
+        DeviceSensorResponse deviceSensor = deviceSensorService.getSensorByDeviceAndSensor(deviceAndSensorAndPlaceNameDto);
 
         return ResponseEntity.ok(deviceSensor);
+    }
+
+    /**
+     * 장비 정보 이름, 센서 정보 이름으로 업데이트 api
+     *
+     * @param deviceSensorRequest 장비별 센서 on/off dto
+     * @return 업데이트된 장비별 센서 dto
+     */
+    @PutMapping
+    @Operation(summary = "장비별 센서 정보 수정")
+    public ResponseEntity<DeviceSensorResponse> updateSensorByDeviceAndSensor(@RequestBody @Valid DeviceSensorRequest deviceSensorRequest) {
+        DeviceSensorResponse deviceSensor = deviceSensorService.updateSensorByDeviceAndSensor(deviceSensorRequest);
+
+        return ResponseEntity.ok(deviceSensor);
+    }
+
+    /**
+     * 장비별 센서 추가 api
+     *
+     * @param deviceSensorRequest 징비별 센서 on/off dto
+     * @return 추가된 장비별 센서 dto
+     */
+    @PostMapping
+    @Operation(summary = "장비별 센서 추가")
+    public ResponseEntity<DeviceSensorResponse> addSensor(@RequestBody @Valid DeviceSensorRequest deviceSensorRequest) {
+        DeviceSensorResponse deviceSensor = deviceSensorService.saveSensor(deviceSensorRequest);
+
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(deviceSensor);
+    }
+
+    /**
+     * 장소 코드, 장치 이름으로 삭제 api
+     *
+     * @param placeCode  placeCode
+     * @param deviceName deviceName
+     * @return ok
+     */
+    @Operation(summary = "장비별 센서 삭제")
+    @DeleteMapping("/{placeCode}/{deviceName}")
+    public ResponseEntity<Void> deleteSensorsByPlaceAndDevice(@PathVariable String placeCode, @PathVariable String deviceName) {
+        deviceSensorService.deleteSensors(placeCode, deviceName);
+        return ResponseEntity.ok().build();
     }
 }

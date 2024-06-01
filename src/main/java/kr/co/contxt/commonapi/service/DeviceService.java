@@ -20,6 +20,14 @@ public interface DeviceService {
     List<DeviceResponse> getDeviceList();
 
     /**
+     * Gets device list by place.
+     *
+     * @param placeId the placeId
+     * @return the device list
+     */
+    List<DeviceResponse> getDeviceListByPlace(Long placeId);
+
+    /**
      * Device Id로 단일 조회 메서드
      *
      * @param deviceId the device id
@@ -28,12 +36,13 @@ public interface DeviceService {
     DeviceResponse getDeviceById(Long deviceId);
 
     /**
-     * Device 이름으로 단일 조회 메서드
+     * place 이름, device 이름으로 단일 조회 메서드
      *
+     * @param placeName  the place name
      * @param deviceName the device name
      * @return the device
      */
-    DeviceResponse getDeviceByName(String deviceName);
+    DeviceResponse getDeviceByPlaceAndName(String placeName, String deviceName);
 
     /**
      * Device 추가 메서드

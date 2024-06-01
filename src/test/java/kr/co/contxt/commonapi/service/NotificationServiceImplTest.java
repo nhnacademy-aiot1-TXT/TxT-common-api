@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
@@ -44,8 +45,10 @@ class NotificationServiceImplTest {
 
         verify(notificationRepository).findAll();
 
-        assertEquals(notifications.size(), result.size());
-        assertEquals(notifications.stream().map(Notification::toDto).collect(Collectors.toList()), result);
+        assertAll(
+                () -> assertEquals(notifications.size(), result.size()),
+                () -> assertEquals(notifications.stream().map(Notification::toDto).collect(Collectors.toList()), result)
+        );
     }
 
     @Test
@@ -63,8 +66,10 @@ class NotificationServiceImplTest {
 
         verify(notificationRepository).findByRole_RoleId(roleId);
 
-        assertEquals(notifications.size(), result.size());
-        assertEquals(notifications.stream().map(Notification::toDto).collect(Collectors.toList()), result);
+        assertAll(
+                () -> assertEquals(notifications.size(), result.size()),
+                () -> assertEquals(notifications.stream().map(Notification::toDto).collect(Collectors.toList()), result)
+        );
     }
 
     @Test

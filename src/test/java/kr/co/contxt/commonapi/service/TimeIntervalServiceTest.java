@@ -5,6 +5,7 @@ import kr.co.contxt.commonapi.dto.TimeIntervalRequest;
 import kr.co.contxt.commonapi.dto.TimeIntervalResponse;
 import kr.co.contxt.commonapi.entity.Sensor;
 import kr.co.contxt.commonapi.entity.TimeInterval;
+import kr.co.contxt.commonapi.exception.TimeIntervalAlreadyExistException;
 import kr.co.contxt.commonapi.exception.TimeIntervalNotFoundException;
 import kr.co.contxt.commonapi.repository.TimeIntervalRepository;
 import org.junit.jupiter.api.Test;
@@ -21,7 +22,6 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
-//@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK)
 @WebMvcTest(TimeIntervalService.class)
 class TimeIntervalServiceTest {
     @Autowired
@@ -60,7 +60,9 @@ class TimeIntervalServiceTest {
         given(timeIntervalRepository.findBySensor_SensorId(anyLong()))
                 .willReturn(Optional.empty());
 
-        assertThrows(TimeIntervalNotFoundException.class, () -> timeIntervalService.getTimeInterval(1L));
+        assertAll(
+                () -> assertThrows(TimeIntervalNotFoundException.class, () -> timeIntervalService.getTimeInterval(1L))
+        );
     }
 
     @Test
@@ -93,13 +95,25 @@ class TimeIntervalServiceTest {
     @Test
     void createTimeInterval() {
         Long sensorId = 1L;
+        String sensorName = "test sensor";
         LocalTime begin = LocalTime.of(0, 0, 0);
         LocalTime end = LocalTime.of(7, 0, 0);
-        TimeIntervalRequest timeIntervalRequest = new TimeIntervalRequest(sensorId, begin, end);
+        TimeIntervalRequest timeIntervalRequest = new TimeIntervalRequest(sensorId, sensorName, begin, end);
 
         timeIntervalService.createTimeInterval(timeIntervalRequest);
 
         verify(timeIntervalRepository, times(1)).save(any());
+    }
+
+    @Test
+    void createTimeIntervalException() {
+        given(timeIntervalRepository.existsBySensor_SensorId(1L))
+                .willThrow(TimeIntervalAlreadyExistException.class);
+
+        assertAll(
+                () -> assertThrows(TimeIntervalAlreadyExistException.class,
+                        () -> timeIntervalService.createTimeInterval(new TimeIntervalRequest(1L, null, null, null)))
+        );
     }
 
     @Test
@@ -109,7 +123,7 @@ class TimeIntervalServiceTest {
         LocalTime begin = LocalTime.of(0, 0, 0);
         LocalTime end = LocalTime.of(7, 0, 0);
         String sensorName = "test sensor";
-        TimeIntervalRequest timeIntervalRequest = new TimeIntervalRequest(sensorId, begin, end);
+        TimeIntervalRequest timeIntervalRequest = new TimeIntervalRequest(sensorId, sensorName, begin, end);
         TimeInterval timeInterval = TimeInterval.builder()
                 .timeIntervalId(timeIntervalId)
                 .sensor(new Sensor(sensorId, sensorName))
@@ -133,13 +147,15 @@ class TimeIntervalServiceTest {
     @Test
     void updateTimeIntervalException() {
         Long sensorId = 1L;
+        String sensorName = "test sensor";
         LocalTime begin = LocalTime.of(0, 0, 0);
         LocalTime end = LocalTime.of(7, 0, 0);
-        TimeIntervalRequest timeIntervalRequest = new TimeIntervalRequest(sensorId, begin, end);
+        TimeIntervalRequest timeIntervalRequest = new TimeIntervalRequest(sensorId, sensorName, begin, end);
 
         given(timeIntervalRepository.findById(anyLong())).willReturn(Optional.empty());
 
-
-        assertThrows(TimeIntervalNotFoundException.class, () -> timeIntervalService.updateTimeInterval(1L, timeIntervalRequest));
+        assertAll(
+                () -> assertThrows(TimeIntervalNotFoundException.class, () -> timeIntervalService.updateTimeInterval(1L, timeIntervalRequest))
+        );
     }
 }

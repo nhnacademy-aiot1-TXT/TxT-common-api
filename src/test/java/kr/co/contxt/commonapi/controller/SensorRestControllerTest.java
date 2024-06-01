@@ -3,6 +3,7 @@ package kr.co.contxt.commonapi.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import kr.co.contxt.commonapi.dto.SensorResponse;
 import kr.co.contxt.commonapi.entity.Sensor;
+import kr.co.contxt.commonapi.exception.SensorAlreadyExistException;
 import kr.co.contxt.commonapi.exception.SensorNotFoundException;
 import kr.co.contxt.commonapi.service.SensorService;
 import org.junit.jupiter.api.Test;
@@ -30,6 +31,8 @@ class SensorRestControllerTest {
     private MockMvc mockMvc;
     @MockBean
     private SensorService sensorService;
+    private static final String SENSOR_NOT_FOUND_MESSAGE = "센서를 찾을 수 없습니다.";
+    private static final String SENSOR_ALREADY_EXIST_EXCEPTION = "센서가 이미 존재합니다.";
 
     @Test
     void getSensorList() throws Exception {
@@ -80,13 +83,13 @@ class SensorRestControllerTest {
         long sensorId = 1L;
 
         given(sensorService.getSensor(anyLong()))
-                .willThrow(new SensorNotFoundException("Sensor를 찾을 수 없습니다."));
+                .willThrow(new SensorNotFoundException(SENSOR_NOT_FOUND_MESSAGE));
 
         mockMvc.perform(get("/api/common/sensor/" + sensorId))
                 .andDo(print())
                 .andExpect(status().isNotFound())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.message", equalTo("Sensor를 찾을 수 없습니다.")));
+                .andExpect(jsonPath("$.message", equalTo(SENSOR_NOT_FOUND_MESSAGE)));
     }
 
     @Test
@@ -94,7 +97,7 @@ class SensorRestControllerTest {
         // given
         Long sensorId = 1L;
         String sensorName = "test sensor";
-        Sensor sensor = Sensor.builder()
+        SensorResponse sensor = SensorResponse.builder()
                 .sensorId(sensorId)
                 .sensorName(sensorName)
                 .build();
@@ -115,11 +118,35 @@ class SensorRestControllerTest {
     }
 
     @Test
+    void addSensorSensorAlreadyExistException() throws Exception {
+        // given
+        Long sensorId = 1L;
+        String sensorName = "test sensor";
+        SensorResponse sensor = SensorResponse.builder()
+                .sensorId(sensorId)
+                .sensorName(sensorName)
+                .build();
+
+        given(sensorService.saveSensor(any())).willThrow(new SensorAlreadyExistException(SENSOR_ALREADY_EXIST_EXCEPTION));
+
+        // when
+        // then
+        ObjectMapper objectMapper = new ObjectMapper();
+        mockMvc.perform(post("/api/common/sensor")
+                        .content(objectMapper.writeValueAsString(sensor))
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isBadRequest())
+                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.message", equalTo(SENSOR_ALREADY_EXIST_EXCEPTION)));
+    }
+
+    @Test
     void updateSensor() throws Exception {
         // given
         Long sensorId = 1L;
         String sensorName = "test sensor";
-        Sensor sensor = Sensor.builder()
+        SensorResponse sensor = SensorResponse.builder()
                 .sensorId(sensorId)
                 .sensorName(sensorName)
                 .build();
@@ -149,7 +176,7 @@ class SensorRestControllerTest {
                 .build();
 
         given(sensorService.updateSensor(anyLong(), any()))
-                .willThrow(new SensorNotFoundException("Sensor를 찾을 수 없습니다."));
+                .willThrow(new SensorNotFoundException(SENSOR_NOT_FOUND_MESSAGE));
 
         ObjectMapper objectMapper = new ObjectMapper();
         mockMvc.perform(put("/api/common/sensor/" + sensorId)
@@ -158,7 +185,7 @@ class SensorRestControllerTest {
                 .andDo(print())
                 .andExpect(status().isNotFound())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.message", equalTo("Sensor를 찾을 수 없습니다.")));
+                .andExpect(jsonPath("$.message", equalTo(SENSOR_NOT_FOUND_MESSAGE)));
     }
 
 }

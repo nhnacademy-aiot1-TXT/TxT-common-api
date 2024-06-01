@@ -3,6 +3,7 @@ package kr.co.contxt.commonapi.repository;
 import kr.co.contxt.commonapi.entity.Device;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -13,10 +14,28 @@ import java.util.Optional;
  */
 public interface DeviceRepository extends JpaRepository<Device, Long> {
     /**
+     * place id로 Device 조회
+     *
+     * @param placeId place id
+     * @return device
+     */
+    List<Device> findByPlace_PlaceId(Long placeId);
+
+    /**
      * device name으로 Device 조회
      *
+     * @param placeCode  place code
      * @param deviceName device name
      * @return device
      */
-    Optional<Device> findByDeviceName(String deviceName);
+    Optional<Device> findByPlace_PlaceCodeAndDeviceName(String placeCode, String deviceName);
+
+    /**
+     * device name, place id로 존재여부 조회
+     *
+     * @param deviceName device name
+     * @param placeId    place id
+     * @return boolean
+     */
+    boolean existsByDeviceNameAndPlace_PlaceId(String deviceName, Long placeId);
 }
