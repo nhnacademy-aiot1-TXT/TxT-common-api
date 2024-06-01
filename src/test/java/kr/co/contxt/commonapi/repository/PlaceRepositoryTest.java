@@ -9,6 +9,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 
 import java.time.LocalTime;
 
+import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @DataJpaTest
@@ -34,6 +35,8 @@ class PlaceRepositoryTest {
 
         boolean result = placeRepository.existsByPlaceName(placeName);
 
-        assertTrue(result);
+        assertAll(
+                () -> assertTrue(result)
+        );
     }
 }

@@ -62,8 +62,10 @@ class WeatherServiceTest {
         WeatherResponse result = weatherService.getWeather();
 
         // 결과 검증
-        assertEquals(25.5f, result.getTemperature());
-        assertEquals("맑음", result.getSky());
+        assertAll(
+                () -> assertEquals(25.5f, result.getTemperature()),
+                () -> assertEquals("맑음", result.getSky())
+        );
     }
 
     @Test
