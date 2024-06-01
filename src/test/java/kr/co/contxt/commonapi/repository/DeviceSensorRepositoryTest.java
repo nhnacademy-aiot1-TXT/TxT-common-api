@@ -266,11 +266,14 @@ class DeviceSensorRepositoryTest {
         entityManager.persist(deviceSensor);
 
         Optional<DeviceSensor> before = deviceSensorRepository.findById(deviceSensor.getDeviceSensorId());
-        assertTrue(before.isPresent());
 
         deviceSensorRepository.deleteAllByDevice_Place_PlaceCodeAndDevice_DeviceName(placeCode, deviceName);
 
         Optional<DeviceSensor> after = deviceSensorRepository.findById(deviceSensor.getDeviceSensorId());
-        assertFalse(after.isPresent());
+        
+        assertAll(
+                () -> assertTrue(before.isPresent()),
+                () -> assertFalse(after.isPresent())
+        );
     }
 }

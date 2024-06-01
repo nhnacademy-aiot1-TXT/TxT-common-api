@@ -91,7 +91,9 @@ class PlaceServiceTest {
     void getPlaceException() {
         given(placeRepository.findById(1L)).willThrow(PlaceNotFountException.class);
 
-        assertThrows(PlaceNotFountException.class, () -> placeService.getPlace(1L));
+        assertAll(
+                () -> assertThrows(PlaceNotFountException.class, () -> placeService.getPlace(1L))
+        );
     }
 
     @Test
@@ -128,8 +130,8 @@ class PlaceServiceTest {
         given(placeRepository.existsByPlaceName("test place")).willThrow(PlaceAlreadyExistException.class);
 
         assertAll(
-                () -> assertThrows(PlaceAlreadyExistException.class, ()
-                        -> placeService.savePlace(new PlaceRequest("test place", null, null).toEntity()))
+                () -> assertThrows(PlaceAlreadyExistException.class,
+                        () -> placeService.savePlace(new PlaceRequest("test place", null, null).toEntity()))
         );
     }
 
@@ -173,7 +175,9 @@ class PlaceServiceTest {
 
         given(placeRepository.findById(1L)).willThrow(PlaceNotFountException.class);
 
-        assertThrows(PlaceNotFountException.class, () -> placeService.updatePlace(1L, placeRequest));
+        assertAll(
+                () -> assertThrows(PlaceNotFountException.class, () -> placeService.updatePlace(1L, placeRequest))
+        );
     }
 
     @Test
@@ -193,6 +197,8 @@ class PlaceServiceTest {
 
         given(placeRepository.existsById(anyLong())).willReturn(false);
 
-        assertThrows(PlaceNotFountException.class, () -> placeService.deletePlace(placeId));
+        assertAll(
+                () -> assertThrows(PlaceNotFountException.class, () -> placeService.deletePlace(placeId))
+        );
     }
 }

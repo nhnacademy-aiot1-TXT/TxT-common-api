@@ -10,7 +10,6 @@ GET http://localhost:8400/api/common/device/592
 ### device 단일 조회 by name
 GET http://localhost:8400/api/common/device?placeName=class_b&name=airconditioner
 
-
 ### device 추가
 POST http://localhost:8400/api/common/device
 Content-Type: application/json

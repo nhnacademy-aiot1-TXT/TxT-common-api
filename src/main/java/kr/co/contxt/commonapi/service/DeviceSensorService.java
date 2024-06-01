@@ -68,7 +68,6 @@ public interface DeviceSensorService {
      *
      * @param placeCode  장소 코드
      * @param deviceName 장치 이름
-     * @return the deviceSensor
      */
     void deleteSensors(String placeCode, String deviceName);
 }

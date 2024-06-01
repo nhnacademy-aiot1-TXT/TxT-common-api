@@ -60,7 +60,9 @@ class TimeIntervalServiceTest {
         given(timeIntervalRepository.findBySensor_SensorId(anyLong()))
                 .willReturn(Optional.empty());
 
-        assertThrows(TimeIntervalNotFoundException.class, () -> timeIntervalService.getTimeInterval(1L));
+        assertAll(
+                () -> assertThrows(TimeIntervalNotFoundException.class, () -> timeIntervalService.getTimeInterval(1L))
+        );
     }
 
     @Test
@@ -108,8 +110,10 @@ class TimeIntervalServiceTest {
         given(timeIntervalRepository.existsBySensor_SensorId(1L))
                 .willThrow(TimeIntervalAlreadyExistException.class);
 
-        assertThrows(TimeIntervalAlreadyExistException.class,
-                () -> timeIntervalService.createTimeInterval(new TimeIntervalRequest(1L, null, null, null)));
+        assertAll(
+                () -> assertThrows(TimeIntervalAlreadyExistException.class,
+                        () -> timeIntervalService.createTimeInterval(new TimeIntervalRequest(1L, null, null, null)))
+        );
     }
 
     @Test
@@ -150,7 +154,8 @@ class TimeIntervalServiceTest {
 
         given(timeIntervalRepository.findById(anyLong())).willReturn(Optional.empty());
 
-
-        assertThrows(TimeIntervalNotFoundException.class, () -> timeIntervalService.updateTimeInterval(1L, timeIntervalRequest));
+        assertAll(
+                () -> assertThrows(TimeIntervalNotFoundException.class, () -> timeIntervalService.updateTimeInterval(1L, timeIntervalRequest))
+        );
     }
 }
