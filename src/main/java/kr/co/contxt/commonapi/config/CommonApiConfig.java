@@ -34,7 +34,7 @@ public class CommonApiConfig {
         sensors.add(Sensor.builder().sensorId(id.getAndIncrement()).sensorName("co2").build());
         sensors.add(Sensor.builder().sensorId(id.getAndIncrement()).sensorName("illumination").build());
         sensors.add(Sensor.builder().sensorId(id.getAndIncrement()).sensorName("total_people_count").build());
-        sensors.add(Sensor.builder().sensorId(id.getAndIncrement()).sensorName("voc").build());
+        sensors.add(Sensor.builder().sensorId(id.getAndIncrement()).sensorName("tvoc").build());
         sensors.add(Sensor.builder().sensorId(id.getAndIncrement()).sensorName("occupancy").build());
         sensors.add(Sensor.builder().sensorId(id.getAndIncrement()).sensorName("door").build());
 
