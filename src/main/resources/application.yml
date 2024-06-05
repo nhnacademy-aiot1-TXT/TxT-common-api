@@ -1,8 +1,8 @@
 weather:
   api:
     data-type: JSON
-    nx: '55'
-    ny: '127'
+    nx: '94'
+    ny: '77'
     num-of-rows: '1000'
     service-key: msxn0cepOugUhr1G3K5olmFo3beWmjwBgSRJ8DOBpMCksKe%2B32QkFEXo8rgGWDPeVHswh6bDuT7sfdz31DIzDw%3D%3D
     page-no: '1'
