@@ -13,6 +13,8 @@ spring:
     username: aiot01_txt
     url: jdbc:mysql://133.186.241.167:3306/aiot01_txt?useSSL=false&serverTimezone=UTC&characterEncoding=UTF-8
 eureka:
+  instance:
+    hostname: 125.6.39.120
   client:
     register-with-eureka: 'true'
     service-url:
