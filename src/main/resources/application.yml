@@ -20,12 +20,12 @@ springdoc:
   show-actuator: 'true'
 spring:
   redis:
-    host: 133.186.244.96
+    host: 133.186.241.167
     password: '*N2vya7H@muDTwdNMR!'
-    database: '12'
+    database: '262'
     port: '6379'
     place:
-      database: 15
+      database: 265
   jpa:
     hibernate:
       naming:
