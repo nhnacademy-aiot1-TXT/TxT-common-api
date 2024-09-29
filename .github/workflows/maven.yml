@@ -61,4 +61,4 @@ jobs:
             docker rm -f $(docker ps -q -f "name=TxT-common-api")
             docker rmi $(docker images ${{ secrets.DOCKER_REPO }} -q)
             docker pull ${{ secrets.DOCKER_REPO }}
-            docker run -d -p 8400:8400 --name TxT-common-api ${{ secrets.DOCKER_REPO }}
+            docker run -d --network config_txt -p 8400:8400 --name TxT-common-api ${{ secrets.DOCKER_REPO }}
